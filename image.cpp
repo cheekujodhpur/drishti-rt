@@ -7,7 +7,7 @@ class image{
 	double bgcolor[3];	//color bgcolor;
 
 public:
-	image(double w, double h, double bg){
+	image(double w, double h, double bg[]){
 		width = w;
 		height = h;
 		for(int i=0;i<3;i++)
