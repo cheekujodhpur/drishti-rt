@@ -1,22 +1,39 @@
-#include<iostream>
+#include "camera.hpp"
+
+#include<vector>
 using namespace std;
-class camera{
 
-	vector<float> lookat(3);
-	vector<float> eye(3);
-	vector<float> up(3);
-	double fov;	//angle fov;
-	double far;
-	double near;
 
-public:
-	camera(vector<float> look, vector<float> eye0, vector<float> up0, double fov0, double far0, double near0){
-		lookat = look;
-		eye = eye0;
-		up = up0;
-		fov = fov0;
-		far = far0;
-		near = near0;
-	}
-
+/*camera(vector<float> look, vector<float> eye0, vector<float> up0, double fov0, double far0, double near0)
+{
+	lookat = look;
+	eye = eye0;
+	up = up0;
+	fov = fov0;
+	near = near0;
+	far = far0;
+}*/
+setLookat(vector<double> look)
+{
+	lookat = look;
+}
+setEye(vector<float> eye0)
+{
+	eye = eye0;
+}
+setUp(vector<float> up0)
+{
+	up = up0;
+}
+setFov(double fov0)
+{
+	fov = fov0;
+}
+setNear(double near0)
+{
+	near = near0;
+}
+setFar(double far0)
+{
+	far = far0;
 }
