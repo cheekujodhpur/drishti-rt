@@ -19,7 +19,7 @@ using namespace std;
 const char* textValue(TiXmlElement* e)
 {
     TiXmlNode* first=e->FirstChild();
-    if(first!=0 && first==e->LastChild() && first->Type()==TiXmlNode::TEXT)
+    if(first!=0 && first==e->LastChild() && first->Type()==TiXmlNode::TINYXML_TEXT)
         return first->Value();
     else
         throw runtime_error(string("bad ") + e->Value( ) + " element");
@@ -38,6 +38,15 @@ vector<double> nodeTovector(TiXmlElement* Vect)
     result_vect.push_back(yval);
     result_vect.push_back(zval);
 }
+
+double doubleVal(TiXmlElement* dval, const char* attrib)
+{
+    string temp_str = dval->Attribute(attrib);
+    char* str = new char[temp_str.size()];
+    strcpy(str, temp_str.c_str());
+    delete str;
+}
+
 camera nodeToCamera(TiXmlElement* Camera)
 {
     camera result;
@@ -55,17 +64,41 @@ camera nodeToCamera(TiXmlElement* Camera)
     
     element=element->NextSiblingElement();
     if(element && strcmp(element->Value(),"fov")==0)
-        result.setFov(element->Attribute("angle"));
+        result.setFov(doubleVal(element,"angle"));
 
     element=element->NextSiblingElement();
     if(element && strcmp(element->Value(),"near")==0)
-        result.setNear(element->Attribute("double"));
+        result.setNear(doubleVal(element,"double"));
     
     element=element->NextSiblingElement();
     if(element && strcmp(element->Value(),"far")==0)
-        result.setFar(element->Attribute("double"));
+        result.setFar(doubleVal(element,"double"));
 
     return result;
 }
 
-//setFar,setNear etc are some of the functions we need to make in camera class.
+int main(){
+    TiXmlDocument doc("./scenes/sample-scene.xml");
+    
+    if(!doc.LoadFile())
+        throw runtime_error("bad parse");
+
+    TiXmlElement* root=doc.RootElement();
+    if(strcmp(root->Value(),"rt-scene")!=0)
+        throw runtime_error(string("bad root: ")+ root->Value());
+        
+    for(TiXmlElement* a=root->FirstChildElement();a;a=a->NextSiblingElement()){
+        if(strcmp(a->Value(),"camera")==0)
+            objectlist.push_back(nodeToCamera(a));
+        /*else if(strcmp(a->Value(),"image")==0)
+            objectlist.push_back(nodeToImage(a));
+        else if(strcmp(a->Value(),"materials")==0)
+            objectlist.push_back(nodeToMaterials(a));
+        else if(strcmp(a->Value(),"objects")==0)
+            objectlist.push_back(nodeToObjects(a));
+        else if(strcmp(a->Value(),"lights")==0)
+            objectlist.push_back(nodeToLights(a));
+        else if(strcmp(a->Value(),"integrator")==0)//need to edit this
+            objectlist.push_back(nodeToIntegrator(a));*/
+        }
+}

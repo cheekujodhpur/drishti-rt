@@ -6,20 +6,22 @@ using namespace std;
 
 class camera
 {
-	vector<float> lookat(3);
-	vector<float> eye(3);
-	vector<float> up(3);
+	vector<double> lookat = vector<double>(3);
+	vector<double> eye = vector<double>(3);
+	vector<double> up = vector<double>(3);
 	double fov;	//angle fov;
 	double far;
 	double near;
 
 public:
 	camera();
-	// camera(vector<float> look, vector<float> eye0, vector<float> up0, double fov0, double far0, double near0);
-	setLookat(vector<double> look);
-	setEye(vector<float> eye0);
-	setUp(vector<float> up0);
-	setFov(double fov0);
-	setNear(double near0);
-	setFar(double far0);
-}
+	// camera(vector<double> look, vector<double> eye0, vector<double> up0, double fov0, double far0, double near0);
+	void setLookat(vector<double> look);
+	void setEye(vector<double> eye0);
+	void setUp(vector<double> up0);
+	void setFov(double fov0);
+	void setNear(double near0);
+	void setFar(double far0);
+};
+
+#endif 
