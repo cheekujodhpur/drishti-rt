@@ -101,13 +101,13 @@ material* nodeToMaterials(TiXmlElement* Material)
 {
 	material *result;
 
-	TiXmlElement* mat = Material->FirstChildElement();
+	//TiXmlElement* mat = Material->FirstChildElement();
     const char *id;
-    if((id = mat->Attribute("id")) && strcmp(mat->Value(),"simplemat")==0) //simplemat material
+    if((id = Material->Attribute("id")) && strcmp(Material->Value(),"simplemat")==0) //simplemat material
     {
-        simplemat sim_mat("simplemat"); //creating a simplemat object
+        simplemat sim_mat(id); //creating a simplemat object
         
-        TiXmlElement* element = mat->FirstChildElement();
+        TiXmlElement* element = Material->FirstChildElement();
 
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"diffuse")==0)
