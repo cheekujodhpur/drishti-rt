@@ -2,16 +2,15 @@
 #include <stdexcept> // runtime_error
 #include <cstdlib> // EXIT_FAILURE
 #include <vector>
-#include <string.h>
+#include <string>
 #include <sstream>
 #include <iostream>
 #include "tinyxml.h"
 #include "camera.hpp"
-// #include "image.hpp"
-// #include "materials.hpp"
-// #include "objects.hpp"
-// #include "lights.hpp"
-// #include "integrator.hpp"
+#include "image.hpp"
+#include "materials.hpp"
+/*#include "objects.hpp"
+#include "lights.hpp"*/
 
 using namespace std;
 
@@ -44,7 +43,10 @@ double doubleVal(TiXmlElement* dval, const char* attrib)
     string temp_str = dval->Attribute(attrib);
     char* str = new char[temp_str.size()];
     strcpy(str, temp_str.c_str());
+
+    double result = atof(str);
     delete str;
+    return result;
 }
 
 camera nodeToCamera(TiXmlElement* Camera)
@@ -83,76 +85,88 @@ image nodeToImage(TiXmlElement* Image)
 	TiXmlElement* element = Image->FirstChildElement();
 	if(element && strcmp(element->Value(),"width")==0)
 		result.setWidth(doubleVal(element,"width"));
-	element=element->NextSiblingElement();
-
+	
+    element=element->NextSiblingElement();
 	if(element && strcmp(element->Value(),"height")==0)
 		result.setHeight(doubleVal(element,"height"));
-	element=element->NextSiblingElement();
-
+	
+    element=element->NextSiblingElement();
 	if(element && strcmp(element->Value(),"bgcolor")==0)
 		result.setBgcolor(nodeTovector(element));
-	element=element->NextSiblingElement();
-
+	
 	return result;
-
 }
 
-image nodeToMaterials(TiXmlElement* Material)
+material* nodeToMaterials(TiXmlElement* Material)
 {
-	material result;
-	result=new Simplemat();
-	TiXmlElement* element= Material->FirstChildElement();
+	material *result;
 
-	result.setId(doubleVal(Material,"simplemat"));
+	TiXmlElement* mat = Material->FirstChildElement();
+    const char *id;
+    if((id = mat->Attribute("id")) && strcmp(mat->Value(),"simplemat")==0) //simplemat material
+    {
+        simplemat sim_mat("simplemat"); //creating a simplemat object
+        
+        TiXmlElement* element = mat->FirstChildElement();
 
-	if(element && strcmp(element->Value(),"diffuse")==0)
-		result.setDiffuse(nodeTovector(element));
-	element=element->NextSiblingElement();
+        element=element->NextSiblingElement();
+        if(element && strcmp(element->Value(),"diffuse")==0)
+            sim_mat.setDiffuse(nodeTovector(element));
+        
+        element=element->NextSiblingElement();
+        if(element && strcmp(element->Value(),"specular")==0)
+            sim_mat.setSpecular(nodeTovector(element));
+        
+        element=element->NextSiblingElement();
+        if(element && strcmp(element->Value(),"reflect")==0)
+            sim_mat.setReflect(nodeTovector(element));
+        
+        element=element->NextSiblingElement();
+        if(element && strcmp(element->Value(),"transmit")==0)
+            sim_mat.setTransmit(nodeTovector(element));
+        
+        element=element->NextSiblingElement();
+        if(element && strcmp(element->Value(),"eta")==0)
+            sim_mat.setEta(doubleVal(element,"eta"));
+        
+        element=element->NextSiblingElement();
+        if(element && strcmp(element->Value(),"n")==0)
+            sim_mat.setN(doubleVal(element,"n"));
+        
+        element=element->NextSiblingElement();
+        if(element && strcmp(element->Value(),"isreflect")==0)
+            sim_mat.setIsreflect(strcmp(element->Attribute("isreflect"),"true"));
+        
+        element=element->NextSiblingElement();
+        if(element && strcmp(element->Value(),"istransmit")==0)
+            sim_mat.setIstransmit(strcmp(element->Attribute("istransmit"),"true"));
 
-	if(element && strcmp(element->Value(),"specular")==0)
-		result.setSpecular(nodeTovector(element));
-	element=element->NextSiblingElement();
-
-	if(element && strcmp(element->Value(),"reflect")==0)
-		result.setReflect(nodeTovector(element));
-	element=element->NextSiblingElement();
-
-	if(element && strcmp(element->Value(),"transmit")==0)
-		result.setTransmit(nodeTovector(element));
-	element=element->NextSiblingElement();
-
-	if(element && strcmp(element->Value(),"eta")==0)
-		result.setEta(doubleVal(element,"eta"));
-	element=element->NextSiblingElement();
-
-	if(element && strcmp(element->Value(),"n")==0)
-		result.setN(doubleVal(element,"n"));
-	element=element->NextSiblingElement();
-
-	if(element && strcmp(element->Value(),"isreflect")==0)
-		result.setIsreflect(doubleVal(element,"isreflect"));
-	element=element->NextSiblingElement();
-
-	if(element && strcmp(element->Value(),"istransmit")==0)
-		result.setIstransmit(doubleVal(element,"istransmit"));
-	element=element->NextSiblingElement();
+        result = &sim_mat;
+    }
+    else
+        throw runtime_error(string("bad ") + mat->Value( ) + " element");
 
 	return result;
+}
 
-
-
+/*object* nodeToObjects()
+{
 
 }
 
+light* nodeToLights()
+{
+
+}*/
 
 int main(){
     TiXmlDocument doc("./scenes/sample-scene.xml");
     
     vector<camera> cameralist;
     vector<image> imagelist;
-    vector<materials> materialslist;
-    vector<objects> objectlist;
-    vector<lights> lightslist;
+    vector<material> materialslist;
+    /*vector<object> objectlist;
+    vector<light> lightslist;*/
 
     if(!doc.LoadFile())
         throw runtime_error("bad parse");
@@ -161,7 +175,8 @@ int main(){
     if(strcmp(root->Value(),"rt-scene")!=0)
         throw runtime_error(string("bad root: ")+ root->Value());
         
-    for(TiXmlElement* a=root->FirstChildElement();a;a=a->NextSiblingElement()){
+    for(TiXmlElement* a=root->FirstChildElement();a;a=a->NextSiblingElement())
+    {
         if(strcmp(a->Value(),"camera")==0)
             cameralist.push_back(nodeToCamera(a));
         else if(strcmp(a->Value(),"image")==0)
@@ -170,15 +185,15 @@ int main(){
         {
         	for(TiXmlElement* b=a->FirstChildElement();b;b->NextSiblingElement())
         	{
-        		materialslist.push_back(nodeTomaterials(b));
+        		materialslist.push_back(*(nodeToMaterials(b)));
         	}
            
         }
-        else if(strcmp(a->Value(),"objects")==0)
+        /*else if(strcmp(a->Value(),"objects")==0)
         {    
         	for(TiXmlElement* b=a->FirstChildElement();b;b->NextSiblingElement())
         	{
-        		objectslist.push_back(nodeToobjects(b));
+        		objectslist.push_back(nodeToObjects(b));
         	}
         }	
 
@@ -186,10 +201,12 @@ int main(){
         {
            for(TiXmlElement* b=a->FirstChildElement();b;b->NextSiblingElement())
         	{
-        		lightslist.push_back(nodeTolights(b));
+        		lightslist.push_back(nodeToLights(b));
         	}
-        }	
-        /*else if(strcmp(a->Value(),"integrator")==0)//need to edit this
+        }*/	
+
+        //need to edit this
+        /*else if(strcmp(a->Value(),"integrator")==0)
             integratorlist.push_back(nodeToIntegrator(a));*/
-        }
+    }
 }

@@ -4,7 +4,7 @@ class lights{
 
 }
 
-class pointlight : lights{
+class pointlight : light{
 	vector<double> position(3);
 	double color[3];             //color color;
 	double ka;

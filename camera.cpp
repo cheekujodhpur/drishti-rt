@@ -1,6 +1,5 @@
 #include "camera.hpp"
 
-#include<vector>
 using namespace std;
 
 

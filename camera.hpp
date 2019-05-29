@@ -1,7 +1,7 @@
-#ifndef __CAMERA_H_INCLUDED__
-#define __CAMERA_H_INCLUDED__
+#ifndef __CAMERA_HPP_INCLUDED__
+#define __CAMERA_HPP_INCLUDED__
 
-#include<vector>
+#include <vector>
 using namespace std;
 
 class camera
@@ -14,7 +14,6 @@ class camera
 	double near;
 
 public:
-	camera();
 	// camera(vector<double> look, vector<double> eye0, vector<double> up0, double fov0, double far0, double near0);
 	void setLookat(vector<double> look);
 	void setEye(vector<double> eye0);
