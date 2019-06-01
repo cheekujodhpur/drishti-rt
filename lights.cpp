@@ -1,19 +1,21 @@
-#include<iostream>
-using namespace std;
-class lights{
+#include "lights.hpp"
 
+using namespace std;
+
+void pointlight::setPos(vector<double> pos)
+{
+	position=pos;
 }
 
-class pointlight : light{
-	vector<double> position(3);
-	double color[3];             //color color;
-	double ka;
+void pointlight::setKa(double ka0)
+{
+	ka=ka0;
+}
 
-public:
-	pointlight(vector<double> pos, double col[], double ka0){
-		position = pos;
-		ka = ka0;
-		for(int i=0;i<3;i++)
-			color[i] = col[i];
+void pointlight::setColor(double color0[])
+{
+	for(int i=0;i<3;i++)
+	{
+		color[i]=color0[i];
 	}
 }

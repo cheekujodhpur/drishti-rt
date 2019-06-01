@@ -1,21 +1,14 @@
 #include<iostream>
-#include "materials.cpp"
+#include "objects.hpp"
+
 using namespace std;
-class object{
-protected:
-	material mat;
-public:
-	object(material m){
-		mat = m;
-	}
+
+void sphere::setRadius(double r)
+{
+	radius=r;
 }
 
-class sphere{
-	vector<double> center(3);
-	double radius;
-public:
-	sphere(double r, vector<double> c, material mat):object(mat){
-		radius = r;
-		center = c;
-	}
+void sphere::setCenter(vector<double> center0)
+{
+	center=center0;
 }

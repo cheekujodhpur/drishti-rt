@@ -109,7 +109,7 @@ material* nodeToMaterials(TiXmlElement* Material)
         
         TiXmlElement* element = Material->FirstChildElement();
 
-        element=element->NextSiblingElement();
+       // element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"diffuse")==0)
             sim_mat.setDiffuse(nodeTovector(element));
         
@@ -152,12 +152,42 @@ material* nodeToMaterials(TiXmlElement* Material)
 /*object* nodeToObjects()
 {
 
-}
-
-light* nodeToLights()
-{
-
 }*/
+
+light* nodeToLights(TiXmlElement* Light)
+{
+	lights *result;
+
+	if(strcmp(Light->Value(),"pointlight")==0)
+	{
+		pointlight plight;
+		TiXmlElement* element = Light->Value();
+
+		// element=element->NextSiblingElement();
+        if(element && strcmp(element->Value(),"position")==0)
+            plight.setPos(nodeTovector(element));
+        
+        element=element->NextSiblingElement();
+
+        // element=element->NextSiblingElement();
+        if(element && strcmp(element->Value(),"color")==0)
+            plight.setColor(nodeTovector(element));
+        
+        element=element->NextSiblingElement();
+
+        // element=element->NextSiblingElement();
+        if(element && strcmp(element->Value(),"ka")==0)
+            plight.setKa(doubleVal(element,"ka"));
+        
+       // element=element->NextSiblingElement();
+        result=&plight;
+
+	}
+	else
+		throw runtime_error(string("bad ") + " element");
+
+	return result;
+}
 
 int main(){
     TiXmlDocument doc("./scenes/sample-scene.xml");
@@ -189,7 +219,7 @@ int main(){
         	}
            
         }
-        /*else if(strcmp(a->Value(),"objects")==0)
+        else if(strcmp(a->Value(),"objects")==0)
         {    
         	for(TiXmlElement* b=a->FirstChildElement();b;b->NextSiblingElement())
         	{
@@ -201,9 +231,9 @@ int main(){
         {
            for(TiXmlElement* b=a->FirstChildElement();b;b->NextSiblingElement())
         	{
-        		lightslist.push_back(nodeToLights(b));
+        		lightslist.push_back(*(nodeToLights(b)));
         	}
-        }*/	
+        }	
 
         //need to edit this
         /*else if(strcmp(a->Value(),"integrator")==0)
