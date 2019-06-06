@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <fstream>
 #include "tinyxml.h"
 #include "camera.hpp"
 #include "image.hpp"
@@ -13,6 +14,53 @@
 #include "lights.hpp"*/
 
 using namespace std;
+
+
+
+int write_to_ppm(int arr[w][h][3]){
+    ofstream img ("picture.ppm");
+    img << "P6" <<endl;
+    img << w <<" "<< h <<endl;
+    img << "255" <<endl;
+
+    for(int i=0;i<h;i++)
+    {
+        for(int j=0;j<w;j++)
+        {
+            int r = arr[j][i][0];
+            int g = arr[j][i][1];
+            int b = arr[j][i][2];
+
+            img << r <<" " << g <<" "<< b << endl;
+        }
+    }
+
+    return 0;
+
+}
+
+
+
+vector<double> world_to_camera(vector<double> world-c)
+{
+    vector<double> camera-c(world-c.size(),0);
+    camera-c=mat-mult(mat-mult(rotation-mat,translation-mat),world-c);
+
+    return camera-c;
+}
+
+
+
+vector<double> camera_to_world(vector<double> camera-c)
+{
+    vector<double> world-c(camera-c.size(),0);
+    world-c=mat-mult(mat-mult(inv(translation-mat),inv(rotation-mat)),camera-c);
+
+    return world-c;
+}
+
+
+
 
 // Extracts the content of an XML element that contains only text
 const char* textValue(TiXmlElement* e)
