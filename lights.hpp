@@ -6,10 +6,10 @@ using namespace std;
 
 class lights{
 
-}
+};
 
 class pointlight: lights{
-	vector<double> position(3);
+	vector<double> position;
 	double color[3];             //color color;
 	double ka;
 public:
@@ -18,4 +18,5 @@ public:
 	void setColor(double color0[]);
 
 
-}
+};
+#endif

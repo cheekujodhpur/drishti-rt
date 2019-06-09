@@ -6,7 +6,7 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
-#include "tinyxml.h"
+#include "inc/tinyxml/tinyxml.h"
 #include "camera.hpp"
 #include "image.hpp"
 #include "materials.hpp"
@@ -192,7 +192,7 @@ material* nodeToMaterials(TiXmlElement* Material)
         result = &sim_mat;
     }
     else
-        throw runtime_error(string("bad ") + mat->Value( ) + " element");
+        throw runtime_error(string("bad ") + " element");
 
 	return result;
 }
@@ -202,7 +202,7 @@ material* nodeToMaterials(TiXmlElement* Material)
 
 }*/
 
-light* nodeToLights(TiXmlElement* Light)
+lights* nodeToLights(TiXmlElement* Light)
 {
 	lights *result;
 
@@ -243,8 +243,8 @@ int main(){
     vector<camera> cameralist;
     vector<image> imagelist;
     vector<material> materialslist;
-    /*vector<object> objectlist;
-    vector<light> lightslist;*/
+    vector<object> objectslist;
+    vector<light> lightslist;
 
     if(!doc.LoadFile())
         throw runtime_error("bad parse");
