@@ -11,15 +11,14 @@ class object{
 protected:
 	material mat;
 public:
-	objects(material m):mat(m);	
+	object(material m):mat(m){}
 };
 
-class sphere{
+class sphere: public object{
 	vector<double> center;
 	double radius;
 public:
 	  void setRadius(double r);
 	  void setCenter(vector<double> center0);
-	  
 };
 #endif

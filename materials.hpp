@@ -11,6 +11,7 @@ protected:
 	string id;
 
 public:
+	material(){}
 	material(string s):id(s){}
 };
 

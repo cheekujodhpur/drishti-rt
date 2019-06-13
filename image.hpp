@@ -6,7 +6,7 @@ class image{
 
 	double width;
 	double height;
-	vector<double> bgcolor = vector<double>(3);	//color bgcolor;
+	vector<double> bgcolor = vector<double>(3);
 
 public:
 	void setWidth(double w);

@@ -72,7 +72,7 @@ const char* textValue(TiXmlElement* e)
         throw runtime_error(string("bad ") + e->Value( ) + " element");
 }
 
-vector<double> nodeTovector(TiXmlElement* Vect)
+vector<double> nodeToVector(TiXmlElement* Vect)
 {
     string vect = textValue(Vect);
     stringstream ss(vect);
@@ -92,7 +92,9 @@ double doubleVal(TiXmlElement* dval, const char* attrib)
     char* str = new char[temp_str.size()];
     strcpy(str, temp_str.c_str());
 
-    double result = atof(str);
+    stringstream ss(str);
+    double result; ss>>result;
+    
     delete str;
     return result;
 }
@@ -102,15 +104,15 @@ camera nodeToCamera(TiXmlElement* Camera)
     camera result;
     TiXmlElement* element = Camera->FirstChildElement();
     if(element && strcmp(element->Value(),"lookat")==0)
-        result.setLookat(nodeTovector(element));
+        result.setLookat(nodeToVector(element));
 
     element=element->NextSiblingElement();
     if(element && strcmp(element->Value(),"eye")==0)
-        result.setEye(nodeTovector(element));
+        result.setEye(nodeToVector(element));
 
     element=element->NextSiblingElement();
     if(element && strcmp(element->Value(),"up")==0)
-        result.setUp(nodeTovector(element));
+        result.setUp(nodeToVector(element));
     
     element=element->NextSiblingElement();
     if(element && strcmp(element->Value(),"fov")==0)
@@ -140,16 +142,15 @@ image nodeToImage(TiXmlElement* Image)
 	
     element=element->NextSiblingElement();
 	if(element && strcmp(element->Value(),"bgcolor")==0)
-		result.setBgcolor(nodeTovector(element));
+		result.setBgcolor(nodeToVector(element));
 	
 	return result;
 }
 
-material* nodeToMaterials(TiXmlElement* Material)
+material* nodeToMaterial(TiXmlElement* Material)
 {
 	material *result;
 
-	//TiXmlElement* mat = Material->FirstChildElement();
     const char *id;
     if((id = Material->Attribute("id")) && strcmp(Material->Value(),"simplemat")==0) //simplemat material
     {
@@ -157,21 +158,20 @@ material* nodeToMaterials(TiXmlElement* Material)
         
         TiXmlElement* element = Material->FirstChildElement();
 
-       // element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"diffuse")==0)
-            sim_mat.setDiffuse(nodeTovector(element));
+            sim_mat.setDiffuse(nodeToVector(element));
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"specular")==0)
-            sim_mat.setSpecular(nodeTovector(element));
+            sim_mat.setSpecular(nodeToVector(element));
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"reflect")==0)
-            sim_mat.setReflect(nodeTovector(element));
+            sim_mat.setReflect(nodeToVector(element));
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"transmit")==0)
-            sim_mat.setTransmit(nodeTovector(element));
+            sim_mat.setTransmit(nodeToVector(element));
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"eta")==0)
@@ -197,38 +197,55 @@ material* nodeToMaterials(TiXmlElement* Material)
 	return result;
 }
 
-/*object* nodeToObjects()
+object* nodeToObject(TiXmlElement* Object) //INCOMPLETE!
 {
+    object *result;
 
-}*/
+    const char* mat_name;
+    if((mat_name = Object->Attribute("material")) && strcmp(Object->Value(),"sphere")==0) //sphere object
+    {
+        sphere sph_obj(id); //creating a simplemat object
+        
+        TiXmlElement* element = Object->FirstChildElement();
 
-lights* nodeToLights(TiXmlElement* Light)
+        /*if(element && strcmp(element->Value(),"diffuse")==0)
+            sim_mat.setDiffuse(nodeToVector(element));
+        
+        element=element->NextSiblingElement();
+        if(element && strcmp(element->Value(),"specular")==0)
+            sim_mat.setSpecular(nodeToVector(element));*/
+        
+        result = &result;
+    }
+    else
+        throw runtime_error(string("bad ") + " element");
+
+    return result;
+}
+
+light* nodeToLight(TiXmlElement* Light)
 {
-	lights *result;
+	light *result;
 
 	if(strcmp(Light->Value(),"pointlight")==0)
 	{
 		pointlight plight;
 		TiXmlElement* element = Light->Value();
 
-		// element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"position")==0)
-            plight.setPos(nodeTovector(element));
+            plight.setPos(nodeToVector(element));
         
         element=element->NextSiblingElement();
 
-        // element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"color")==0)
-            plight.setColor(nodeTovector(element));
+            plight.setColor(nodeToVector(element));
         
         element=element->NextSiblingElement();
 
-        // element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"ka")==0)
             plight.setKa(doubleVal(element,"ka"));
         
-       // element=element->NextSiblingElement();
-        result=&plight;
+        result = &plight;
 
 	}
 	else
@@ -263,7 +280,7 @@ int main(){
         {
         	for(TiXmlElement* b=a->FirstChildElement();b;b->NextSiblingElement())
         	{
-        		materialslist.push_back(*(nodeToMaterials(b)));
+        		materialslist.push_back(*(nodeToMaterial(b)));
         	}
            
         }
@@ -271,7 +288,7 @@ int main(){
         {    
         	for(TiXmlElement* b=a->FirstChildElement();b;b->NextSiblingElement())
         	{
-        		objectslist.push_back(nodeToObjects(b));
+        		objectslist.push_back(nodeToObject(b));
         	}
         }	
 
@@ -279,7 +296,7 @@ int main(){
         {
            for(TiXmlElement* b=a->FirstChildElement();b;b->NextSiblingElement())
         	{
-        		lightslist.push_back(*(nodeToLights(b)));
+        		lightslist.push_back(*(nodeToLight(b)));
         	}
         }	
 
