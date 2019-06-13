@@ -39,7 +39,58 @@ int write_to_ppm(int arr[w][h][3]){
 
 }
 
+vector<vector<double> > rotation-matrix-formation()
+{
+	vector<double> x = s.camera_object.lookat;
+	vector<double> z = s.camera_object.up;
+	vector<double> y = s.camera_object.third;//third is axis perp to lookat and up
+	x.push_back(0);
+	y.push_back(0);
+	z.push_back(0);
+	vector<double> fourth(3,0);  //supposed to be fourth row of matrix
+	fourth.push_back(1);
+	vector<vector<double> > v;
+	v.push_back(x);
+	v.push_back(y);
+	v.push_back(z);
+	v.push_back(fourth);
 
+	return v;
+
+}
+
+vector<vector<double> > translation-matrix-formation()
+{
+	vector<double> fourth = s.camera_object.eye;  //supposed to be fourth column of translation matrix
+	vector<double> x;
+	x.push_back(1);
+	x.push_back(0);
+	x.push_back(0);
+	x.push_back(fourth[0]);
+
+	y.push_back(0);
+	y.push_back(1);
+	y.push_back(0);
+	y.push_back(fourth[1]);
+
+	z.push_back(0);
+	z.push_back(0);
+	z.push_back(1);
+	z.push_back(fourth[2]);
+
+	vector<double> a(3,0)
+	a.push_back(1);
+
+	vector<vector<double> > v;
+	v.push_back(x);
+	v.push_back(y);
+	v.push_back(z);
+	v.push_back(a);
+
+}
+
+vector<vector<double> > rotation-mat = rotation-matrix-formation();
+vector<vector<double> > translation-mat = translation-matrix-formation();
 
 vector<double> world_to_camera(vector<double> world-c)
 {
