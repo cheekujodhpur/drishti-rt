@@ -26,6 +26,7 @@ class simplemat : public material{
 	bool istransmit;
 
 public:
+	simplemat(){}
 	simplemat(string s):material(s){}//parameterized constructor
 	void setId(const char *ID);//don't actually need this as of now
 	void setDiffuse(vector<double> diff);

@@ -11,6 +11,7 @@ class object{
 protected:
 	material mat;
 public:
+	object(){}
 	object(material m):mat(m){}
 };
 
@@ -18,7 +19,8 @@ class sphere: public object{
 	vector<double> center;
 	double radius;
 public:
-	  void setRadius(double r);
-	  void setCenter(vector<double> center0);
+	sphere(){}
+	void setRadius(double r);
+	void setCenter(vector<double> center0);
 };
 #endif

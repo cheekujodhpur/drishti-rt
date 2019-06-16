@@ -10,8 +10,8 @@
 #include "camera.hpp"
 #include "image.hpp"
 #include "materials.hpp"
-/*#include "objects.hpp"
-#include "lights.hpp"*/
+#include "objects.hpp"
+#include "lights.hpp"
 
 using namespace std;
 
