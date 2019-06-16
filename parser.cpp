@@ -101,9 +101,9 @@ vector<vector<double> > transpose(vector<vector<double> > a)
 
 vector<vector<double> > rotation-matrix-formation()
 {
-	vector<double> x = s.camera_object.lookat;
-	vector<double> z = s.camera_object.up;
-	vector<double> y = s.camera_object.third;//third is axis perp to lookat and up
+	vector<double> x = sample_scene.cam.lookat;
+	vector<double> z = sample_scene.cam.up;
+	vector<double> y = sample_scene.cam.third;//third is axis perp to lookat and up
 	x.push_back(0);
 	y.push_back(0);
 	z.push_back(0);
@@ -121,7 +121,7 @@ vector<vector<double> > rotation-matrix-formation()
 
 vector<vector<double> > translation-matrix-formation()
 {
-	vector<double> fourth = s.camera_object.eye;  //supposed to be fourth column of translation matrix
+	vector<double> fourth = sample_scene.cam.eye;  //supposed to be fourth column of translation matrix
 	vector<double> x;
 	x.push_back(1);
 	x.push_back(0);
