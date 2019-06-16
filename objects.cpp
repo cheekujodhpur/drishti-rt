@@ -1,14 +1,27 @@
-#include<iostream>
 #include "objects.hpp"
 
 using namespace std;
 
-void sphere::setRadius(double r)
+//object class
+void object::setMaterial(material m)
 {
-	radius=r;
+	mat = m;
 }
 
+//sphere class
+double sphere::getRadius()
+{
+	return radius;
+}
+vector<double> sphere::getCenter()
+{
+	return center;
+}
+void sphere::setRadius(double r)
+{
+	radius = r;
+}
 void sphere::setCenter(vector<double> center0)
 {
-	center=center0;
+	center = center0;
 }

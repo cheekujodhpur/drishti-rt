@@ -12,7 +12,8 @@ protected:
 	material mat;
 public:
 	object(){}
-	object(material m):mat(m){}
+	// object(material m):mat(m){}
+	void setMaterial(material m);
 };
 
 class sphere: public object{
@@ -20,6 +21,9 @@ class sphere: public object{
 	double radius;
 public:
 	sphere(){}
+	// sphere(material m):object(m){}
+	double getRadius();
+	vector<double> getCenter();
 	void setRadius(double r);
 	void setCenter(vector<double> center0);
 };

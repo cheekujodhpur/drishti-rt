@@ -7,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include "inc/tinyxml/tinyxml.h"
+#include "scene.hpp"
 #include "camera.hpp"
 #include "image.hpp"
 #include "materials.hpp"
@@ -307,25 +308,43 @@ material* nodeToMaterial(TiXmlElement* Material)
 	return result;
 }
 
-object* nodeToObject(TiXmlElement* Object) //INCOMPLETE!
+object* nodeToObject(TiXmlElement* Object, scene scene_obj) //INCOMPLETE!
 {
     object *result;
 
     const char* mat_name;
     if((mat_name = Object->Attribute("material")) && strcmp(Object->Value(),"sphere")==0) //sphere object
     {
-        sphere sph_obj(id); //creating a simplemat object
+        vector<material> materialslist = scene_obj.getMaterials();
+        vector<string> mat_names;//to store the ID of the materials in materialslist
+        for (vector<material>::iterator it = materialslist.begin() ; it != materialslist.end(); ++it)
+        {
+            mat_names.push_back(*it.getID);//extracting material IDs
+        }
+        string search_mat(mat_name);//material ID to be searched (from scene file)
+        vector<string>::iterator it_str;
+        it_str =  find(mat_names.begin(),mat_names.end(),search_mat);
+        
+        sphere sph_obj;
+
+        if(it_str!=mat_names.end())
+        {
+            sph_obj.setMaterial(*it_str);//calls the superclass function
+        }
+        else
+            throw runtime_error(string("material ") + " for sphere object not found");
+
         
         TiXmlElement* element = Object->FirstChildElement();
 
-        /*if(element && strcmp(element->Value(),"diffuse")==0)
-            sim_mat.setDiffuse(nodeToVector(element));
+        if(element && strcmp(element->Value(),"center")==0)
+            sph_obj.setCenter(nodeToVector(element));
         
         element=element->NextSiblingElement();
-        if(element && strcmp(element->Value(),"specular")==0)
-            sim_mat.setSpecular(nodeToVector(element));*/
+        if(element && strcmp(element->Value(),"radius")==0)
+            sph_obj.setRadius(doubleVal(element));
         
-        result = &result;
+        result = &sph_obj;
     }
     else
         throw runtime_error(string("bad ") + " element");
@@ -364,11 +383,30 @@ light* nodeToLight(TiXmlElement* Light)
 	return result;
 }
 
+integrator* nodeToIntegrator(TiXmlElement* Integrator)
+{
+    integrator *result;
+    if(strcmp(Integrator->Value(),"whitted")==0)//whitted integrator
+    {
+        whitted whit_intg;
+        TiXmlElement* element = Integrator->Value();
+
+        if(element && strcmp(element->Value(),"depth-of-recursion")==0)
+            whit_intg.setDepth(int(doubleVal(element)));
+        
+        result = &whit_intg;
+    }
+    else
+        throw runtime_error(string("bad ") + " element");
+
+
+    return result;
+}
+
 int main(){
     TiXmlDocument doc("./scenes/sample-scene.xml");
     
-    vector<camera> cameralist;
-    vector<image> imagelist;
+    scene sample_scene;
     vector<material> materialslist;
     vector<object> objectslist;
     vector<light> lightslist;
@@ -383,35 +421,34 @@ int main(){
     for(TiXmlElement* a=root->FirstChildElement();a;a=a->NextSiblingElement())
     {
         if(strcmp(a->Value(),"camera")==0)
-            cameralist.push_back(nodeToCamera(a));
+            sample_scene.setCamera(nodeToCamera(a));
         else if(strcmp(a->Value(),"image")==0)
-            imagelist.push_back(nodeToImage(a));
+            sample_scene.setImage(nodeToImage(a));
         else if(strcmp(a->Value(),"materials")==0)
         {
         	for(TiXmlElement* b=a->FirstChildElement();b;b->NextSiblingElement())
         	{
         		materialslist.push_back(*(nodeToMaterial(b)));
         	}
-           
+            sample_scene.setMaterials(materialslist);
         }
         else if(strcmp(a->Value(),"objects")==0)
         {    
         	for(TiXmlElement* b=a->FirstChildElement();b;b->NextSiblingElement())
         	{
-        		objectslist.push_back(nodeToObject(b));
+        		objectslist.push_back(*(nodeToObject(b,sample_scene)));
         	}
+            sample_scene.setObjects(objectslist);
         }	
-
         else if(strcmp(a->Value(),"lights")==0)
         {
            for(TiXmlElement* b=a->FirstChildElement();b;b->NextSiblingElement())
         	{
         		lightslist.push_back(*(nodeToLight(b)));
         	}
+            sample_scene.setLights(lightslist);
         }	
-
-        //need to edit this
-        /*else if(strcmp(a->Value(),"integrator")==0)
-            integratorlist.push_back(nodeToIntegrator(a));*/
+        else if(strcmp(a->Value(),"integrator")==0)
+            sample_scene.setIntegrator(*(nodeToIntegrator(a)));
     }
 }
