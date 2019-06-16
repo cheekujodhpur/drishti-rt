@@ -39,6 +39,65 @@ int write_to_ppm(int arr[w][h][3]){
 
 }
 
+vector<vector<double> > mat-mult1(vector<vector<double> > a,vector<vector<double> > b)
+{
+	int num_row1 = a.size();
+	int num_column1 = a[0].size();
+
+	int num_row2 = b.size();
+	int num_column2 = b[0].size();
+
+
+	vector<double> x(4,0);
+
+	vector<vector<double> > c(4,x);
+
+	for(int i=0;i<4;i++)
+	{
+		for(int j=0;j<4;j++)
+		{
+			for(int k=0;k<4;k++)
+			{
+				c[i][j]+=a[i][k]*b[k][j];
+			}
+		}
+	}
+
+	return c;
+
+
+}
+
+vector<double> mat-mult2(vector<vector<double> > a,vector<double> b)
+{
+	
+	vector<double> c(4,0);
+	for(int i=0;i<4;i++)
+	{
+		for(int j=0;j<4;j++)
+		{
+			c[i]+=a[i][j]*b[j];
+		}
+
+	}
+
+	return c;
+}
+
+vector<vector<double> > transpose(vector<vector<double> > a)
+{	vector<double> x(4,0);
+	vector<vector<double> > v(4,x);
+
+	for(int i=0;i<4;i++)
+	{
+		for(int j=0;j<4;j++)
+		{
+			v[j][i]=a[i][j];
+		}
+	}
+		return v;
+}
+
 vector<vector<double> > rotation-matrix-formation()
 {
 	vector<double> x = s.camera_object.lookat;
@@ -95,7 +154,7 @@ vector<vector<double> > translation-mat = translation-matrix-formation();
 vector<double> world_to_camera(vector<double> world-c)
 {
     vector<double> camera-c(world-c.size(),0);
-    camera-c=mat-mult(mat-mult(rotation-mat,translation-mat),world-c);
+    camera-c=mat-mult2(mat-mult1(rotation-mat,translation-mat),world-c);
 
     return camera-c;
 }
@@ -105,7 +164,7 @@ vector<double> world_to_camera(vector<double> world-c)
 vector<double> camera_to_world(vector<double> camera-c)
 {
     vector<double> world-c(camera-c.size(),0);
-    world-c=mat-mult(mat-mult(inv(translation-mat),inv(rotation-mat)),camera-c);
+    world-c=mat-mult2(mat-mult1(inv(translation-mat),inv(rotation-mat)),camera-c);
 
     return world-c;
 }
