@@ -40,7 +40,8 @@ int write_to_ppm(int arr[w][h][3]){
 
 }
 
-vector<vector<double> > mat-mult1(vector<vector<double> > a,vector<vector<double> > b)
+//array*array
+vector<vector<double> > mat_mult(vector<vector<double> > a,vector<vector<double> > b)
 {
 	int num_row1 = a.size();
 	int num_column1 = a[0].size();
@@ -69,7 +70,8 @@ vector<vector<double> > mat-mult1(vector<vector<double> > a,vector<vector<double
 
 }
 
-vector<double> mat-mult2(vector<vector<double> > a,vector<double> b)
+//array*vector
+vector<double> mat_mult(vector<vector<double> > a,vector<double> b)
 {
 	
 	vector<double> c(4,0);
@@ -99,81 +101,7 @@ vector<vector<double> > transpose(vector<vector<double> > a)
 		return v;
 }
 
-vector<vector<double> > rotation-matrix-formation()
-{
-	vector<double> x = sample_scene.cam.lookat;
-	vector<double> z = sample_scene.cam.up;
-	vector<double> y = sample_scene.cam.third;//third is axis perp to lookat and up
-	x.push_back(0);
-	y.push_back(0);
-	z.push_back(0);
-	vector<double> fourth(3,0);  //supposed to be fourth row of matrix
-	fourth.push_back(1);
-	vector<vector<double> > v;
-	v.push_back(x);
-	v.push_back(y);
-	v.push_back(z);
-	v.push_back(fourth);
 
-	return v;
-
-}
-
-vector<vector<double> > translation-matrix-formation()
-{
-	vector<double> fourth = sample_scene.cam.eye;  //supposed to be fourth column of translation matrix
-	vector<double> x;
-	x.push_back(1);
-	x.push_back(0);
-	x.push_back(0);
-	x.push_back(fourth[0]);
-
-	y.push_back(0);
-	y.push_back(1);
-	y.push_back(0);
-	y.push_back(fourth[1]);
-
-	z.push_back(0);
-	z.push_back(0);
-	z.push_back(1);
-	z.push_back(fourth[2]);
-
-	vector<double> a(3,0)
-	a.push_back(1);
-
-	vector<vector<double> > v;
-	v.push_back(x);
-	v.push_back(y);
-	v.push_back(z);
-	v.push_back(a);
-
-}
-
-vector<vector<double> > rotation-mat = rotation-matrix-formation();
-vector<vector<double> > translation-mat = translation-matrix-formation();
-
-vector<double> world_to_camera(vector<double> world-c)
-{
-    vector<double> camera-c(world-c.size(),0);
-    camera-c=mat-mult2(mat-mult1(rotation-mat,translation-mat),world-c);
-
-    return camera-c;
-}
-
-
-
-vector<double> camera_to_world(vector<double> camera-c)
-{
-    vector<double> world-c(camera-c.size(),0);
-    world-c=mat-mult2(mat-mult1(inv(translation-mat),inv(rotation-mat)),camera-c);
-
-    return world-c;
-}
-
-
-
-
-// Extracts the content of an XML element that contains only text
 const char* textValue(TiXmlElement* e)
 {
     TiXmlNode* first=e->FirstChild();
@@ -406,7 +334,7 @@ integrator* nodeToIntegrator(TiXmlElement* Integrator)
 int main(){
     TiXmlDocument doc("./scenes/sample-scene.xml");
     
-    scene sample_scene;
+    scene scene_obj;
     vector<material> materialslist;
     vector<object> objectslist;
     vector<light> lightslist;
@@ -421,24 +349,24 @@ int main(){
     for(TiXmlElement* a=root->FirstChildElement();a;a=a->NextSiblingElement())
     {
         if(strcmp(a->Value(),"camera")==0)
-            sample_scene.setCamera(nodeToCamera(a));
+            scene_obj.setCamera(nodeToCamera(a));
         else if(strcmp(a->Value(),"image")==0)
-            sample_scene.setImage(nodeToImage(a));
+            scene_obj.setImage(nodeToImage(a));
         else if(strcmp(a->Value(),"materials")==0)
         {
         	for(TiXmlElement* b=a->FirstChildElement();b;b->NextSiblingElement())
         	{
         		materialslist.push_back(*(nodeToMaterial(b)));
         	}
-            sample_scene.setMaterials(materialslist);
+            scene_obj.setMaterials(materialslist);
         }
         else if(strcmp(a->Value(),"objects")==0)
         {    
         	for(TiXmlElement* b=a->FirstChildElement();b;b->NextSiblingElement())
         	{
-        		objectslist.push_back(*(nodeToObject(b,sample_scene)));
+        		objectslist.push_back(*(nodeToObject(b,scene_obj)));
         	}
-            sample_scene.setObjects(objectslist);
+            scene_obj.setObjects(objectslist);
         }	
         else if(strcmp(a->Value(),"lights")==0)
         {
@@ -446,9 +374,11 @@ int main(){
         	{
         		lightslist.push_back(*(nodeToLight(b)));
         	}
-            sample_scene.setLights(lightslist);
+            scene_obj.setLights(lightslist);
         }	
         else if(strcmp(a->Value(),"integrator")==0)
-            sample_scene.setIntegrator(*(nodeToIntegrator(a)));
+            scene_obj.setIntegrator(*(nodeToIntegrator(a)));
+        scene_obj.rotation_matrix_formation();
+        scene_obj.translation_matrix_formation();
     }
 }
