@@ -17,8 +17,10 @@ class scene{
     vector<material> materialslist;
     vector<object> objectslist;
     vector<light> lightslist;
-    vector<vector<double> > rotation-mat;
-    vector<vector<double> > translation-mat;
+    vector<vector<double> > rotation_mat;
+    vector<vector<double> > translation_mat;
+    vector<vector<double> > inv_rotation_mat;
+    vector<vector<double> > inv_translation_mat;
 
 public:
 	void setCamera(camera cam0);
@@ -35,8 +37,10 @@ public:
 	vector<light> getLights();
 	void rotation_matrix_formation();
 	void translation_matrix_formation();
-	vector<double> world_to_camera(vector<double> world-c);
-	vector<double> camera_to_world(vector<double> camera-c);
+	void inv_translation_matrix_formation();
+	void inv_rotation_matrix_formation();
+	vector<double> world_to_camera(vector<double> world_c);
+	vector<double> camera_to_world(vector<double> camera_c);
 };
 
 #endif

@@ -378,7 +378,11 @@ int main(){
         }	
         else if(strcmp(a->Value(),"integrator")==0)
             scene_obj.setIntegrator(*(nodeToIntegrator(a)));
-        scene_obj.rotation_matrix_formation();
-        scene_obj.translation_matrix_formation();
+
     }
+
+     scene_obj.rotation_matrix_formation();
+        scene_obj.translation_matrix_formation();
+        scene_obj.inv_translation_matrix_formation();
+        scene_obj.inv_rotation_matrix_formation();
 }
