@@ -25,3 +25,10 @@ void sphere::setCenter(vector<double> center0)
 {
 	center = center0;
 }
+vector<double> sphere::intersect(ray Ray)
+{
+	vector<double> point_of_int = vector<double>(3);
+
+	//find intersection with Ray
+	return point_of_int;
+}

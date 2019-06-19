@@ -41,6 +41,7 @@ public:
 	void inv_rotation_matrix_formation();
 	vector<double> world_to_camera(vector<double> world_c);
 	vector<double> camera_to_world(vector<double> camera_c);
+	object* intersect(ray Ray);
 };
 
 #endif
