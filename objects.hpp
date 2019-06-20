@@ -29,4 +29,20 @@ public:
 	void setCenter(vector<double> center0);
 	vector<double> intersect(ray Ray);
 };
+
+class cylinder: public object{
+	
+	double radius;
+	double height;
+	vector<double> axis;
+	vector<double> top_center;
+
+	public:
+	cylinder(){}
+	double get_radius();
+	double get_height();
+	vector<double> get_axis();
+	vector<double> get_center();
+	vector<double> intersect(ray Ray);
+}
 #endif

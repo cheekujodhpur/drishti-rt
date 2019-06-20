@@ -32,3 +32,24 @@ vector<double> sphere::intersect(ray Ray)
 	//find intersection with Ray
 	return point_of_int;
 }
+
+//cylinder class
+double cylinder::get_radius()
+{
+	return radius;
+}
+double cylinder::get_height()
+{
+	return height;
+}
+vector<double> cylinder::get_axis()
+{
+	return axis;
+}
+
+vector<double> cylinder::get_center()
+{
+	return top_center;
+}
+
+//set functions remaining for cylinder and intersect
