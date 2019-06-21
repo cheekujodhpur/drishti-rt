@@ -6,6 +6,8 @@
 #include "materials.hpp"
 #include "objects.hpp"
 #include "lights.hpp"
+#include "ray.hpp"
+#include "integrator.hpp"
 #include <vector>
 
 using namespace std;

@@ -2,6 +2,7 @@
 #define __OBJECTS_HPP_INCLUDED__
 #include "materials.hpp"
 #include "materials.cpp"
+#include "ray.hpp"
 
 #include<vector>
 using namespace std;
@@ -44,5 +45,5 @@ class cylinder: public object{
 	vector<double> get_axis();
 	vector<double> get_center();
 	vector<double> intersect(ray Ray);
-}
+};
 #endif

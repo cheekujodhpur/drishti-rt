@@ -18,7 +18,7 @@ using namespace std;
 
 
 
-int write_to_ppm(int arr[w][h][3]){
+/*int write_to_ppm(int arr[w][h][3]){
     ofstream img ("picture.ppm");
     img << "P6" <<endl;
     img << w <<" "<< h <<endl;
@@ -38,68 +38,7 @@ int write_to_ppm(int arr[w][h][3]){
 
     return 0;
 
-}
-
-//array*array
-vector<vector<double> > mat_mult(vector<vector<double> > a,vector<vector<double> > b)
-{
-	int num_row1 = a.size();
-	int num_column1 = a[0].size();
-
-	int num_row2 = b.size();
-	int num_column2 = b[0].size();
-
-
-	vector<double> x(4,0);
-
-	vector<vector<double> > c(4,x);
-
-	for(int i=0;i<4;i++)
-	{
-		for(int j=0;j<4;j++)
-		{
-			for(int k=0;k<4;k++)
-			{
-				c[i][j]+=a[i][k]*b[k][j];
-			}
-		}
-	}
-
-	return c;
-
-
-}
-
-//array*vector
-vector<double> mat_mult(vector<vector<double> > a,vector<double> b)
-{
-	
-	vector<double> c(4,0);
-	for(int i=0;i<4;i++)
-	{
-		for(int j=0;j<4;j++)
-		{
-			c[i]+=a[i][j]*b[j];
-		}
-
-	}
-
-	return c;
-}
-
-vector<vector<double> > transpose(vector<vector<double> > a)
-{	vector<double> x(4,0);
-	vector<vector<double> > v(4,x);
-
-	for(int i=0;i<4;i++)
-	{
-		for(int j=0;j<4;j++)
-		{
-			v[j][i]=a[i][j];
-		}
-	}
-		return v;
-}
+}*/
 
 
 const char* textValue(TiXmlElement* e)
@@ -153,6 +92,8 @@ camera nodeToCamera(TiXmlElement* Camera)
     if(element && strcmp(element->Value(),"up")==0)
         result.setUp(nodeToVector(element));
     
+    result.setThird();
+
     element=element->NextSiblingElement();
     if(element && strcmp(element->Value(),"fov")==0)
         result.setFov(doubleVal(element,"angle"));
@@ -247,7 +188,7 @@ object* nodeToObject(TiXmlElement* Object, scene scene_obj) //INCOMPLETE!
         vector<string> mat_names;//to store the ID of the materials in materialslist
         for (vector<material>::iterator it = materialslist.begin() ; it != materialslist.end(); ++it)
         {
-            mat_names.push_back(*it.getID);//extracting material IDs
+            mat_names.push_back((*it).getID());//extracting material IDs
         }
         string search_mat(mat_name);//material ID to be searched (from scene file)
         vector<string>::iterator it_str;
@@ -262,7 +203,6 @@ object* nodeToObject(TiXmlElement* Object, scene scene_obj) //INCOMPLETE!
         else
             throw runtime_error(string("material ") + " for sphere object not found");
 
-        
         TiXmlElement* element = Object->FirstChildElement();
 
         if(element && strcmp(element->Value(),"center")==0)
@@ -270,7 +210,7 @@ object* nodeToObject(TiXmlElement* Object, scene scene_obj) //INCOMPLETE!
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"radius")==0)
-            sph_obj.setRadius(doubleVal(element));
+            sph_obj.setRadius(doubleVal(element,"radius"));
         
         result = &sph_obj;
     }
@@ -284,10 +224,10 @@ light* nodeToLight(TiXmlElement* Light)
 {
 	light *result;
 
-	if(strcmp(Light->Value(),"pointlight")==0)
+	if(strcmp(Light->Value(),"pointlight")==0) //point light source
 	{
 		pointlight plight;
-		TiXmlElement* element = Light->Value();
+		TiXmlElement* element = Light->FirstChildElement();
 
         if(element && strcmp(element->Value(),"position")==0)
             plight.setPos(nodeToVector(element));
@@ -317,10 +257,10 @@ integrator* nodeToIntegrator(TiXmlElement* Integrator)
     if(strcmp(Integrator->Value(),"whitted")==0)//whitted integrator
     {
         whitted whit_intg;
-        TiXmlElement* element = Integrator->Value();
+        TiXmlElement* element = Integrator->FirstChildElement();
 
         if(element && strcmp(element->Value(),"depth-of-recursion")==0)
-            whit_intg.setDepth(int(doubleVal(element)));
+            whit_intg.setDepth(int(doubleVal(element,"depth-of-recursion")));
         
         result = &whit_intg;
     }

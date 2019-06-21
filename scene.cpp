@@ -1,5 +1,66 @@
 #include "scene.hpp"
 
+//array*array
+vector<vector<double> > mat_mult(vector<vector<double> > a,vector<vector<double> > b)
+{
+	int num_row1 = a.size();
+	int num_column1 = a[0].size();
+
+	int num_row2 = b.size();
+	int num_column2 = b[0].size();
+
+
+	vector<double> x(4,0);
+
+	vector<vector<double> > c(4,x);
+
+	for(int i=0;i<4;i++)
+	{
+		for(int j=0;j<4;j++)
+		{
+			for(int k=0;k<4;k++)
+			{
+				c[i][j]+=a[i][k]*b[k][j];
+			}
+		}
+	}
+
+	return c;
+
+
+}
+
+//array*vector
+vector<double> mat_mult(vector<vector<double> > a,vector<double> b)
+{
+	
+	vector<double> c(4,0);
+	for(int i=0;i<4;i++)
+	{
+		for(int j=0;j<4;j++)
+		{
+			c[i]+=a[i][j]*b[j];
+		}
+
+	}
+
+	return c;
+}
+
+vector<vector<double> > transpose(vector<vector<double> > a)
+{	vector<double> x(4,0);
+	vector<vector<double> > v(4,x);
+
+	for(int i=0;i<4;i++)
+	{
+		for(int j=0;j<4;j++)
+		{
+			v[j][i]=a[i][j];
+		}
+	}
+		return v;
+}
+
 void scene::setCamera(camera cam0)
 {
 	cam = cam0;
@@ -52,9 +113,9 @@ vector<light> scene::getLights()
 
 void scene::rotation_matrix_formation()
 {
-	vector<double> x = cam.lookat;
-	vector<double> z = cam.up;
-	vector<double> y = cam.third;//third is axis perp to lookat and up --> @shalabh: define it, it's not a member variable
+	vector<double> x = cam.getLookat();
+	vector<double> z = cam.getUp();
+	vector<double> y = cam.getThird();
 	x.push_back(0);
 	y.push_back(0);
 	z.push_back(0);
@@ -75,7 +136,7 @@ void scene::inv_rotation_matrix_formation()
 
 void scene::inv_translation_matrix_formation()
 {
-	vector<double> fourth = cam.eye;
+	vector<double> fourth = cam.getEye();
 	vector<double> x;
 	vector<double> y;
 	vector<double> z;
@@ -95,7 +156,7 @@ void scene::inv_translation_matrix_formation()
 	z.push_back(-1*fourth[2]);
 
 
-	vector<double> a(3,0)
+	vector<double> a(3,0);
 	a.push_back(1);
 
 	inv_translation_mat.push_back(x);
@@ -107,7 +168,7 @@ void scene::inv_translation_matrix_formation()
 }
 void scene::translation_matrix_formation()
 {
-	vector<double> fourth = cam.eye;  //supposed to be fourth column of translation matrix
+	vector<double> fourth = cam.getEye();  //supposed to be fourth column of translation matrix
 	vector<double> x;
 	vector<double> y;
 	vector<double> z;
@@ -126,7 +187,7 @@ void scene::translation_matrix_formation()
 	z.push_back(1);
 	z.push_back(fourth[2]);
 
-	vector<double> a(3,0)
+	vector<double> a(3,0);
 	a.push_back(1);
 
 	translation_mat.push_back(x);

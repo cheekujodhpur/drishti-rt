@@ -13,6 +13,8 @@ protected:
 public:
 	material(){}
 	material(string s):id(s){}
+	void setID(const char *ID);//don't actually need this as of now
+	string getID();
 };
 
 class simplemat : public material{
@@ -28,7 +30,6 @@ class simplemat : public material{
 public:
 	simplemat(){}
 	simplemat(string s):material(s){}//parameterized constructor
-	void setId(const char *ID);//don't actually need this as of now
 	void setDiffuse(vector<double> diff);
 	void setSpecular(vector<double> spec);
 	void setReflect(vector<double> ref);

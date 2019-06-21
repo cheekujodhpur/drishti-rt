@@ -2,10 +2,17 @@
 
 using namespace std;
 
-void simplemat::setId(const char *ID)//don't actually need this as of now
+//material class
+void material::setID(const char *ID)//don't actually need this as of now
 {
 	id = ID;
 }
+string material::getID()
+{
+	return id;
+}
+
+//simplemat class
 void simplemat::setDiffuse(vector<double> diff)
 {
 	diffuse = diff;

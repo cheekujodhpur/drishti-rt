@@ -1,7 +1,7 @@
 #include "integrator.hpp"
 using namespace std;
 
-char* integrator::getID()
+string integrator::getID()
 {
 	return ID;
 }

@@ -16,6 +16,12 @@ void camera::setLookat(vector<double> look)
 {
 	lookat = look;
 }
+void camera::setThird()
+{
+	third.push_back(up[1]*lookat[2] - up[2]*lookat[1]);
+	third.push_back(up[2]*lookat[0] - up[0]*lookat[2]);
+	third.push_back(up[0]*lookat[1] - up[1]*lookat[0]);  
+}
 void camera::setEye(vector<double> eye0)
 {
 	eye = eye0;
@@ -35,4 +41,20 @@ void camera::setNear(double near0)
 void camera::setFar(double far0)
 {
 	far = far0;
+}
+vector<double> camera::getLookat()
+{
+	return lookat;
+}
+vector<double> camera::getUp()
+{
+	return up;
+}
+vector<double> camera::getThird()
+{
+	return third;
+}
+vector<double> camera::getEye()
+{
+	return eye;
 }

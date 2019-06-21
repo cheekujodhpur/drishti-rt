@@ -2,14 +2,15 @@
 #define __INTEGRATOR_HPP_INCLUDED__
 
 #include <vector>
+#include <string>
 using namespace std;
 
 class integrator
 {
 protected:
-	char* ID;
+	string ID;
 public:
-	char* getID();
+	string getID();
 	void setID(const char* id);
 };
 
@@ -20,6 +21,6 @@ protected:
 public:
 	int getDepth();
 	void setDepth(int dep);
-}
+};
 
 #endif 
