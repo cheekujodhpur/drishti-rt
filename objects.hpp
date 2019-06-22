@@ -45,5 +45,9 @@ class cylinder: public object{
 	vector<double> get_axis();
 	vector<double> get_center();
 	vector<double> intersect(ray Ray);
+	void setRadius(double r);
+	void setHeight(double h);
+	void set_center(vector<double> v);
+	void set_axis(vector<double> x);
 };
 #endif
