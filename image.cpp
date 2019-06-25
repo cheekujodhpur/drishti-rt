@@ -14,3 +14,18 @@ void image::setBgcolor(vector<double> bg)
 {
 	bgcolor = bg;
 }
+
+double image::getWidth()
+{
+	return width;
+}
+
+double image::getHeight()
+{
+	return height;
+}
+
+vector<double> getBgcolor()
+{
+	return bgcolor;
+}

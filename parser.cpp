@@ -17,9 +17,10 @@
 
 using namespace std;
 
+//int w;
+//int h;
 
-
-/*int write_to_ppm(int arr[w][h][3]){
+void write_to_ppm(int arr[][][3],double w,double h){
     ofstream img ("picture.ppm");
     img << "P6" <<endl;
     img << w <<" "<< h <<endl;
@@ -29,17 +30,17 @@ using namespace std;
     {
         for(int j=0;j<w;j++)
         {
-            int r = arr[j][i][0];
-            int g = arr[j][i][1];
-            int b = arr[j][i][2];
+            double r = arr[j][i][0];
+            double g = arr[j][i][1];
+            double b = arr[j][i][2];
 
             img << r <<" " << g <<" "<< b << endl;
         }
     }
 
-    return 0;
+    //return 0;
 
-}*/
+}
 
 
 const char* textValue(TiXmlElement* e)
@@ -323,4 +324,22 @@ int main(){
     scene_obj.translation_matrix_formation();
     scene_obj.inv_translation_matrix_formation();
     scene_obj.inv_rotation_matrix_formation();
+
+     int w=scene_obj.img.getWidth();
+     int h=scene_obj.img.getHeight();
+
+    int arr[w][h][3];
+
+    vector<double> v = scene_obj.img.getBgcolor();
+    for(int i=0;i<w;i++)
+    {
+        for(int j=0;j<h;j++)
+        {
+            arr[i][j][0]=v[0];
+            arr[i][j][1]=v[1];
+            arr[i][j][2]=v[2];
+        }
+    }
+
+    write_to_ppm(arr,w,h);
 }
