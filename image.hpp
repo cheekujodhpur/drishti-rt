@@ -12,5 +12,8 @@ public:
 	void setWidth(double w);
 	void setHeight(double h);
 	void setBgcolor(vector<double> bg);
+	double getWidth();
+	double getHeight();
+	vector<double> getBgcolor();
 };
 #endif 
