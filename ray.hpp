@@ -3,16 +3,15 @@
 
 #include<iostream>
 #include<vector>
+#include<math.h>
 using namespace std;
 
 class ray{
 
-	 vector<double> _origin;
- 	   vector<double> _direction;
+	vector<double> _origin;
+ 	vector<double> _direction;
 
-    public:
-
-   
+public:   
     ray(vector<double> origin,vector<double> direction);
     vector<double> get_direction();
     vector<double> get_origin();

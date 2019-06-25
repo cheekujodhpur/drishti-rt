@@ -77,7 +77,7 @@ void scene::setMaterials(vector<material> materials)
 {
 	materialslist = materials;
 }
-void scene::setObjects(vector<object> objects)
+void scene::setObjects(vector<shared_ptr<object>> objects)
 {
 	objectslist = objects;
 }
@@ -102,7 +102,7 @@ vector<material> scene::getMaterials()
 {
 	return materialslist;
 }
-vector<object> scene::getObjects()
+vector<shared_ptr<object>> scene::getObjects()
 {
 	return objectslist;
 }

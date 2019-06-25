@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 #include "inc/tinyxml/tinyxml.h"
 #include "scene.hpp"
 #include "camera.hpp"
@@ -177,10 +178,8 @@ material* nodeToMaterial(TiXmlElement* Material)
 	return result;
 }
 
-object* nodeToObject(TiXmlElement* Object, scene scene_obj) //INCOMPLETE!
+shared_ptr<object> nodeToObject(TiXmlElement* Object, scene scene_obj) //INCOMPLETE!
 {
-    object *result;
-
     const char* mat_name;
     if((mat_name = Object->Attribute("material")) && strcmp(Object->Value(),"sphere")==0) //sphere object
     {
@@ -194,11 +193,11 @@ object* nodeToObject(TiXmlElement* Object, scene scene_obj) //INCOMPLETE!
         vector<string>::iterator it_str;
         it_str =  find(mat_names.begin(),mat_names.end(),search_mat);
         
-        sphere sph_obj;
+        sphere* sph_obj = new sphere();
 
         if(it_str!=mat_names.end())
         {
-            sph_obj.setMaterial(*it_str);//calls the superclass function
+            sph_obj->setMaterial(*it_str);//calls the superclass function
         }
         else
             throw runtime_error(string("material ") + " for sphere object not found");
@@ -206,18 +205,17 @@ object* nodeToObject(TiXmlElement* Object, scene scene_obj) //INCOMPLETE!
         TiXmlElement* element = Object->FirstChildElement();
 
         if(element && strcmp(element->Value(),"center")==0)
-            sph_obj.setCenter(nodeToVector(element));
+            sph_obj->setCenter(nodeToVector(element));
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"radius")==0)
-            sph_obj.setRadius(doubleVal(element,"radius"));
+            sph_obj->setRadius(doubleVal(element,"radius"));
         
-        result = &sph_obj;
+        return shared_ptr<object> (sph_obj);
     }
     else
         throw runtime_error(string("bad ") + " element");
 
-    return result;
 }
 
 light* nodeToLight(TiXmlElement* Light)
@@ -276,7 +274,7 @@ int main(){
     
     scene scene_obj;
     vector<material> materialslist;
-    vector<object> objectslist;
+    vector<shared_ptr<object>> objectslist;
     vector<light> lightslist;
 
     if(!doc.LoadFile())
@@ -304,7 +302,7 @@ int main(){
         {    
         	for(TiXmlElement* b=a->FirstChildElement();b;b->NextSiblingElement())
         	{
-        		objectslist.push_back(*(nodeToObject(b,scene_obj)));
+        		objectslist.push_back(nodeToObject(b,scene_obj));
         	}
             scene_obj.setObjects(objectslist);
         }	

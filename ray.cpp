@@ -26,7 +26,7 @@ vector<double> ray::get_direction()                                     //need t
     return _direction;
 }
 
-vector<double> ray::get_point(int x)
+vector<double> ray::get_point(int x) //returns point at parameter x
 {   vector<double> new1(3,0);
     vector<double> new2(3,0);
     for(int i=0;i<3;i++)

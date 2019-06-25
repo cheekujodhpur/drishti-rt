@@ -1,5 +1,6 @@
 #include "objects.hpp"
 #include<limits>
+#include<math.h>
 using namespace std;
 double INF = numeric_limits<double>::infinity();
 
@@ -29,8 +30,8 @@ void sphere::setCenter(vector<double> center0)
 vector<double> sphere::intersect(ray Ray)
 {
 	vector<double> point_of_int = vector<double>(3);
-	vector<double> dirn = Ray.get_direction;
-	vector<double> origin_ray = Ray.get_origin;
+	vector<double> dirn = Ray.get_direction();
+	vector<double> origin_ray = Ray.get_origin();
 	double x0 = origin_ray[0];
 	double y0 = origin_ray[1];
 	double z0 = origin_ray[2];
