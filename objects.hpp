@@ -4,13 +4,13 @@
 #include "materials.cpp"
 #include "ray.hpp"
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 #include<vector>
-using namespace std;
-=======
-#include <vector>
 //using namespace std;
->>>>>>> fb33c64... Removed std
+//=======
+//#include <vector>
+//using namespace std;
+//>>>>>>> fb33c64... Removed std
 
 class object{
 

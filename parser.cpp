@@ -271,9 +271,9 @@ int main(){
     TiXmlDocument doc("./scenes/sample-scene.xml");
     
     scene scene_obj;
-    vector<material> materialslist;
-    vector<shared_ptr<object>> objectslist;
-    vector<light> lightslist;
+    std::vector<material> materialslist;
+    std::vector<std::shared_ptr<object> > objectslist;
+    std::vector<light> lightslist;
 
     if(!doc.LoadFile())
         throw std::runtime_error("bad parse");
