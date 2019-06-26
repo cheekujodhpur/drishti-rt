@@ -6,8 +6,12 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
-#include <algorithm>
-#include "inc/tinyxml/tinyxml.h"
+#include <algorithm> //find()
+
+// #include "inc/tinyxml/tinyxml.h"
+// #include "inc/tinyxml/tinystr.h"
+#include "tinyxml.h"
+// #include "tinystr.h" //TinyXML
 #include "scene.hpp"
 #include "camera.hpp"
 #include "image.hpp"
@@ -17,10 +21,8 @@
 
 using namespace std;
 
-//int w;
-//int h;
-
-void write_to_ppm(int arr[][][3],double w,double h){
+void write_to_ppm(int ***arr,double w,double h)
+{
     ofstream img ("picture.ppm");
     img << "P6" <<endl;
     img << w <<" "<< h <<endl;
@@ -37,8 +39,6 @@ void write_to_ppm(int arr[][][3],double w,double h){
             img << r <<" " << g <<" "<< b << endl;
         }
     }
-
-    //return 0;
 
 }
 
@@ -274,9 +274,9 @@ int main(){
     TiXmlDocument doc("./scenes/sample-scene.xml");
     
     scene scene_obj;
-    vector<material> materialslist;
+    /*vector<material> materialslist;
     vector<shared_ptr<object>> objectslist;
-    vector<light> lightslist;
+    vector<light> lightslist;*/
 
     if(!doc.LoadFile())
         throw runtime_error("bad parse");
@@ -291,12 +291,12 @@ int main(){
             scene_obj.setCamera(nodeToCamera(a));
         else if(strcmp(a->Value(),"image")==0)
             scene_obj.setImage(nodeToImage(a));
-        else if(strcmp(a->Value(),"materials")==0)
+        /*else if(strcmp(a->Value(),"materials")==0)
         {
-        	for(TiXmlElement* b=a->FirstChildElement();b;b->NextSiblingElement())
-        	{
-        		materialslist.push_back(*(nodeToMaterial(b)));
-        	}
+            for(TiXmlElement* b=a->FirstChildElement();b;b->NextSiblingElement())
+            {
+                materialslist.push_back(*(nodeToMaterial(b)));
+            }
             scene_obj.setMaterials(materialslist);
         }
         else if(strcmp(a->Value(),"objects")==0)
@@ -317,29 +317,36 @@ int main(){
         }	
         else if(strcmp(a->Value(),"integrator")==0)
             scene_obj.setIntegrator(*(nodeToIntegrator(a)));
-
+*/
     }
 
-    scene_obj.rotation_matrix_formation();
+    /*scene_obj.rotation_matrix_formation();
     scene_obj.translation_matrix_formation();
     scene_obj.inv_translation_matrix_formation();
-    scene_obj.inv_rotation_matrix_formation();
+    scene_obj.inv_rotation_matrix_formation();*/
 
-     int w=scene_obj.img.getWidth();
-     int h=scene_obj.img.getHeight();
+    int w = scene_obj.getImage().getWidth();
+    int h = scene_obj.getImage().getHeight();
 
-    int arr[w][h][3];
+    int ***img_arr;
+    img_arr = new int **[w];
+    for(int i=0;i<w;i++)
+    {
+        img_arr [i] = new int*[h];
+        for(int j=0;j<h;j++)
+            img_arr[i][j] = new int[3];
+    }
 
-    vector<double> v = scene_obj.img.getBgcolor();
+    vector<double> v = scene_obj.getImage().getBgcolor();
     for(int i=0;i<w;i++)
     {
         for(int j=0;j<h;j++)
         {
-            arr[i][j][0]=v[0];
-            arr[i][j][1]=v[1];
-            arr[i][j][2]=v[2];
+            img_arr[i][j][0] = v[0];
+            img_arr[i][j][1] = v[1];
+            img_arr[i][j][2] = v[2];
         }
     }
 
-    write_to_ppm(arr,w,h);
+    write_to_ppm(img_arr,w,h);
 }

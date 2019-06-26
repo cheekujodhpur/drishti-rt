@@ -1,6 +1,6 @@
 #include "objects.hpp"
-#include<limits>
-#include<math.h>
+#include <limits> //infinity()
+#include <math.h>
 using namespace std;
 double INF = numeric_limits<double>::infinity();
 
@@ -77,9 +77,6 @@ vector<double> sphere::intersect(ray Ray)
 			}
 		}
 	}
-
-	//find intersection with Ray
-	//return point_of_int;
 }
 
 //cylinder class

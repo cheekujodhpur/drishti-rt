@@ -1,9 +1,9 @@
 #ifndef __RAY_HPP_INCLUDED__
 #define __RAY_HPP_INCLUDED__
 
-#include<iostream>
-#include<vector>
-#include<math.h>
+#include <iostream>
+#include <vector>
+#include <math.h>
 using namespace std;
 
 class ray{
