@@ -8,8 +8,8 @@
 #include "lights.hpp"
 #include "ray.hpp"
 #include "integrator.hpp"
-#include<vector>
-#include<memory>
+#include <vector>
+#include <memory>
 
 //using namespace std;
 

@@ -1,17 +1,9 @@
 #ifndef __RAY_HPP_INCLUDED__
 #define __RAY_HPP_INCLUDED__
 
-//<<<<<<< HEAD
-#include<iostream>
-#include<vector>
-#include<math.h>
-//using namespace std;
-//=======
-//#include <iostream>
-//#include <vector>
-//#include <math.h>
-//using namespace std;
-//>>>>>>> fb33c64... Removed std
+#include <iostream>
+#include <vector>
+#include <math.h>
 
 class ray{
 

@@ -1,16 +1,8 @@
 #ifndef __OBJECTS_HPP_INCLUDED__
 #define __OBJECTS_HPP_INCLUDED__
 #include "materials.hpp"
-#include "materials.cpp"
 #include "ray.hpp"
-
-//<<<<<<< HEAD
-#include<vector>
-//using namespace std;
-//=======
-//#include <vector>
-//using namespace std;
-//>>>>>>> fb33c64... Removed std
+#include <vector>
 
 class object{
 

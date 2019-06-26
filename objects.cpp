@@ -1,15 +1,8 @@
 #include "objects.hpp"
-//<<<<<<< HEAD
-//#include<limits>
-//#include<math.h>
-//using namespace std;
-//double INF = numeric_limits<double>::infinity();
-//=======
 #include <limits> //infinity()
 #include <math.h>
-//using namespace std;
+
 double INF = std::numeric_limits<double>::infinity();
-//>>>>>>> fb33c64... Removed std
 
 //object class
 void object::setMaterial(material m)
@@ -84,9 +77,6 @@ std::vector<double> sphere::intersect(ray Ray)
 			}
 		}
 	}
-
-	//find intersection with Ray
-	//return point_of_int;
 }
 
 //cylinder class
