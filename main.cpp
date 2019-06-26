@@ -19,7 +19,7 @@
 #include "objects.hpp"
 #include "lights.hpp"
 
-void write_to_ppm(int ***arr,double w,double h)
+void write_to_ppm(double ***arr,double w,double h)
 {
     std::ofstream img ("image.ppm");
     img << "P6" <<std::endl;
@@ -30,9 +30,9 @@ void write_to_ppm(int ***arr,double w,double h)
     {
         for(int j=0;j<w;j++)
         {
-            double r = arr[j][i][0];
-            double g = arr[j][i][1];
-            double b = arr[j][i][2];
+            int r = (int)255*arr[j][i][0];
+            int g = (int)255*arr[j][i][1];
+            int b = (int)255*arr[j][i][2];
 
             img << r <<" " << g <<" "<< b << std::endl;
         }
@@ -357,13 +357,13 @@ int main(){
     int w = scene_obj.getImage().getWidth();
     int h = scene_obj.getImage().getHeight();
 
-    int ***img_arr;
-    img_arr = new int **[w];
+    double ***img_arr;
+    img_arr = new double **[w];
     for(int i=0;i<w;i++)
     {
-        img_arr [i] = new int*[h];
+        img_arr [i] = new double*[h];
         for(int j=0;j<h;j++)
-            img_arr[i][j] = new int[3];
+            img_arr[i][j] = new double[3];
     }
 
     std::vector<double> v = scene_obj.getImage().getBgcolor();
@@ -372,11 +372,9 @@ int main(){
         for(int j=0;j<h;j++)
         {
             img_arr[i][j][0] = v[0];
-            std::cout<<"("<<v[0]<<",";
             img_arr[i][j][1] = v[1];
-            std::cout<<v[1]<<",";
             img_arr[i][j][2] = v[2];
-            std::cout<<v[2]<<")"<<endl;
+            // if(i==0 && j==0) std::cout<<"("<<v[0]<<","<<v[1]<<","<<v[2]<<")"<<std::endl;
         }
     }
 
