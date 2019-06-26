@@ -25,7 +25,7 @@ double image::getHeight()
 	return height;
 }
 
-vector<double> getBgcolor()
+vector<double> image::getBgcolor()
 {
 	return bgcolor;
 }

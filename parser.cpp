@@ -17,10 +17,9 @@
 
 using namespace std;
 
-//int w;
-//int h;
 
-void write_to_ppm(int arr[][][3],double w,double h){
+void write_to_ppm(int ***arr,double w,double h)
+{
     ofstream img ("picture.ppm");
     img << "P6" <<endl;
     img << w <<" "<< h <<endl;
@@ -37,8 +36,6 @@ void write_to_ppm(int arr[][][3],double w,double h){
             img << r <<" " << g <<" "<< b << endl;
         }
     }
-
-    //return 0;
 
 }
 
@@ -325,21 +322,28 @@ int main(){
     scene_obj.inv_translation_matrix_formation();
     scene_obj.inv_rotation_matrix_formation();
 
-     int w=scene_obj.img.getWidth();
-     int h=scene_obj.img.getHeight();
+    int w = scene_obj.getImage().getWidth();
+    int h = scene_obj.getImage().getHeight();
 
-    int arr[w][h][3];
+    int ***img_arr;
+    img_arr = new int **[w];
+    for(int i=0;i<w;i++)
+    {
+        img_arr [i] = new int*[h];
+        for(int j=0;j<h;j++)
+            img_arr[i][j] = new int[3];
+    }
 
-    vector<double> v = scene_obj.img.getBgcolor();
+    vector<double> v = scene_obj.getImage().getBgcolor();
     for(int i=0;i<w;i++)
     {
         for(int j=0;j<h;j++)
         {
-            arr[i][j][0]=v[0];
-            arr[i][j][1]=v[1];
-            arr[i][j][2]=v[2];
+            img_arr[i][j][0] = v[0];
+            img_arr[i][j][1] = v[1];
+            img_arr[i][j][2] = v[2];
         }
     }
 
-    write_to_ppm(arr,w,h);
+    write_to_ppm(img_arr,w,h);
 }
