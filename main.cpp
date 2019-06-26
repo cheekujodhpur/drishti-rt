@@ -52,10 +52,13 @@ const char* textValue(TiXmlElement* e)
         throw std::runtime_error(std::string("bad ") + e->Value( ) + " element");
 }
 
-std::vector<double> nodeToVector(TiXmlElement* Vect)
+std::vector<double> nodeToVector(TiXmlElement* Vect, const char* attrib)
 {
-    std::string vect = textValue(Vect);
-    std::stringstream ss(vect);
+    std::string vect = Vect->Attribute(attrib);
+    char* str = new char[vect.size()];
+    strcpy(str, vect.c_str());
+
+    std::stringstream ss(str);
     double xval; ss>>xval;
     double yval; ss>>yval;
     double zval; ss>>zval;
@@ -64,6 +67,7 @@ std::vector<double> nodeToVector(TiXmlElement* Vect)
     result_vect.push_back(xval);
     result_vect.push_back(yval);
     result_vect.push_back(zval);
+    return result_vect;
 }
 
 double doubleVal(TiXmlElement* dval, const char* attrib)
@@ -81,23 +85,25 @@ double doubleVal(TiXmlElement* dval, const char* attrib)
 
 camera nodeToCamera(TiXmlElement* Camera)
 {
+    std::cout<<"*nodeToCamera() called*"<<std::endl;
+
     camera result;
     TiXmlElement* element = Camera->FirstChildElement();
     if(element && strcmp(element->Value(),"lookat")==0)
-        result.setLookat(nodeToVector(element));
+        result.setLookat(nodeToVector(element,"vector3"));
 
     element=element->NextSiblingElement();
     if(element && strcmp(element->Value(),"eye")==0)
-        result.setEye(nodeToVector(element));
+        result.setEye(nodeToVector(element,"vector3"));
 
     element=element->NextSiblingElement();
     if(element && strcmp(element->Value(),"up")==0)
-        result.setUp(nodeToVector(element));
+        result.setUp(nodeToVector(element,"vector3"));
     
     result.setThird();
 
     element=element->NextSiblingElement();
-    if(element && strcmp(element->Value(),"fov")==0)
+    if(element && strcmp(element->Value(),"fov")==0) //assume this to be in degrees
         result.setFov(doubleVal(element,"angle"));
 
     element=element->NextSiblingElement();
@@ -107,25 +113,39 @@ camera nodeToCamera(TiXmlElement* Camera)
     element=element->NextSiblingElement();
     if(element && strcmp(element->Value(),"far")==0)
         result.setFar(doubleVal(element,"double"));
+    
+    std::cout<<"*Camera Created*"<<std::endl;
 
     return result;
 }
 
 image nodeToImage(TiXmlElement* Image)
 {
+    std::cout<<"*nodeToImage() called*"<<std::endl;
+
 	image result;
 	TiXmlElement* element = Image->FirstChildElement();
 	if(element && strcmp(element->Value(),"width")==0)
-		result.setWidth(doubleVal(element,"width"));
+    {
+        std::cout<<"*Image width being set*"<<std::endl;
+		result.setWidth(doubleVal(element,"double"));
+        std::cout<<"*Image width was succesfully set*"<<std::endl;
+    }
 	
     element=element->NextSiblingElement();
 	if(element && strcmp(element->Value(),"height")==0)
-		result.setHeight(doubleVal(element,"height"));
+    {
+        std::cout<<"*Image height being set*"<<std::endl;
+		result.setHeight(doubleVal(element,"double"));
+        std::cout<<"*Image height was succesfully set*"<<std::endl;
+    }
 	
     element=element->NextSiblingElement();
 	if(element && strcmp(element->Value(),"bgcolor")==0)
-		result.setBgcolor(nodeToVector(element));
+		result.setBgcolor(nodeToVector(element,"color"));
 	
+    std::cout<<"*Image Created*"<<std::endl;
+
 	return result;
 }
 
@@ -141,27 +161,27 @@ material* nodeToMaterial(TiXmlElement* Material)
         TiXmlElement* element = Material->FirstChildElement();
 
         if(element && strcmp(element->Value(),"diffuse")==0)
-            sim_mat.setDiffuse(nodeToVector(element));
+            sim_mat.setDiffuse(nodeToVector(element,"color"));
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"specular")==0)
-            sim_mat.setSpecular(nodeToVector(element));
+            sim_mat.setSpecular(nodeToVector(element,"color"));
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"reflect")==0)
-            sim_mat.setReflect(nodeToVector(element));
+            sim_mat.setReflect(nodeToVector(element,"color"));
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"transmit")==0)
-            sim_mat.setTransmit(nodeToVector(element));
+            sim_mat.setTransmit(nodeToVector(element,"color"));
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"eta")==0)
-            sim_mat.setEta(doubleVal(element,"eta"));
+            sim_mat.setEta(doubleVal(element,"double"));
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"n")==0)
-            sim_mat.setN(doubleVal(element,"n"));
+            sim_mat.setN(doubleVal(element,"double"));
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"isreflect")==0)
@@ -206,11 +226,11 @@ std::shared_ptr<object> nodeToObject(TiXmlElement* Object, scene scene_obj) //IN
         TiXmlElement* element = Object->FirstChildElement();
 
         if(element && strcmp(element->Value(),"center")==0)
-            sph_obj->setCenter(nodeToVector(element));
+            sph_obj->setCenter(nodeToVector(element,"vector3"));
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"radius")==0)
-            sph_obj->setRadius(doubleVal(element,"radius"));
+            sph_obj->setRadius(doubleVal(element,"double"));
         
         return std::shared_ptr<object> (sph_obj);
     }
@@ -229,17 +249,17 @@ light* nodeToLight(TiXmlElement* Light)
 		TiXmlElement* element = Light->FirstChildElement();
 
         if(element && strcmp(element->Value(),"position")==0)
-            plight.setPos(nodeToVector(element));
+            plight.setPos(nodeToVector(element,"vector3"));
         
         element=element->NextSiblingElement();
 
         if(element && strcmp(element->Value(),"color")==0)
-            plight.setColor(nodeToVector(element));
+            plight.setColor(nodeToVector(element,"color"));
         
         element=element->NextSiblingElement();
 
         if(element && strcmp(element->Value(),"ka")==0)
-            plight.setKa(doubleVal(element,"ka"));
+            plight.setKa(doubleVal(element,"double"));
         
         result = &plight;
 
@@ -259,7 +279,7 @@ integrator* nodeToIntegrator(TiXmlElement* Integrator)
         TiXmlElement* element = Integrator->FirstChildElement();
 
         if(element && strcmp(element->Value(),"depth-of-recursion")==0)
-            whit_intg.setDepth(int(doubleVal(element,"depth-of-recursion")));
+            whit_intg.setDepth(int(doubleVal(element,"int")));
         
         result = &whit_intg;
     }
@@ -283,14 +303,24 @@ int main(){
 
     TiXmlElement* root=doc.RootElement();
     if(strcmp(root->Value(),"rt-scene")!=0)
+    {
+        std::cout<<"Root->Value()"<<root->Value()<<std::endl;
         throw std::runtime_error(std::string("bad root: ")+ root->Value());
+    }
         
     for(TiXmlElement* a=root->FirstChildElement();a;a=a->NextSiblingElement())
     {
+        std::cout<<"Root->Child being parsed: "<<a->Value()<<std::endl;
         if(strcmp(a->Value(),"camera")==0)
+        {   
+            std::cout<<"**Parsing Camera**"<<std::endl;
             scene_obj.setCamera(nodeToCamera(a));
+        }
         else if(strcmp(a->Value(),"image")==0)
+        {
+            std::cout<<"**Parsing Image**"<<std::endl;
             scene_obj.setImage(nodeToImage(a));
+        }
         /*else if(strcmp(a->Value(),"materials")==0)
         {
             for(TiXmlElement* b=a->FirstChildElement();b;b->NextSiblingElement())

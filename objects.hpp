@@ -1,7 +1,7 @@
 #ifndef __OBJECTS_HPP_INCLUDED__
 #define __OBJECTS_HPP_INCLUDED__
 #include "materials.hpp"
-#include "materials.cpp"
+
 #include "ray.hpp"
 
 #include <vector>
