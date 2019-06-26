@@ -34,8 +34,9 @@ void write_to_ppm(double ***arr,double w,double h)
             int g = (int)255*arr[j][i][1];
             int b = (int)255*arr[j][i][2];
 
-            img << r <<" " << g <<" "<< b << std::endl;
+            img << r <<" " << g <<" "<< b << "     ";
         }
+        img<<std::endl;
     }
 
 }
