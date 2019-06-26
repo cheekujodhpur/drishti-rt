@@ -372,8 +372,11 @@ int main(){
         for(int j=0;j<h;j++)
         {
             img_arr[i][j][0] = v[0];
+            std::cout<<"("<<v[0]<<",";
             img_arr[i][j][1] = v[1];
+            std::cout<<v[1]<<",";
             img_arr[i][j][2] = v[2];
+            std::cout<<v[2]<<")"<<endl;
         }
     }
 
