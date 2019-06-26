@@ -1,19 +1,19 @@
 #ifndef __IMAGE_HPP_INCLUDED__
 #define __IMAGE_HPP_INCLUDED__
 #include <vector>
-using namespace std;
+//using namespace std;
 class image{
 
 	double width;
 	double height;
-	vector<double> bgcolor = vector<double>(3);
+	std::vector<double> bgcolor = std::vector<double>(3);
 
 public:
 	void setWidth(double w);
 	void setHeight(double h);
-	void setBgcolor(vector<double> bg);
+	void setBgcolor(std::vector<double> bg);
 	double getWidth();
 	double getHeight();
-	vector<double> getBgcolor();
+	std::vector<double> getBgcolor();
 };
 #endif 

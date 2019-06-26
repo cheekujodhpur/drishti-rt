@@ -1,6 +1,6 @@
 #include "image.hpp"
 
-using namespace std;
+//using namespace std;
 
 void image::setWidth(double w)
 {
@@ -10,7 +10,7 @@ void image::setHeight(double h)
 {
 	height = h;
 }
-void image::setBgcolor(vector<double> bg)
+void image::setBgcolor(std::vector<double> bg)
 {
 	bgcolor = bg;
 }
@@ -25,7 +25,7 @@ double image::getHeight()
 	return height;
 }
 
-vector<double> image::getBgcolor()
+std::vector<double> image::getBgcolor()
 {
 	return bgcolor;
 }

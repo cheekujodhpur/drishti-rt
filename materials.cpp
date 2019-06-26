@@ -1,31 +1,31 @@
 #include "materials.hpp"
 
-using namespace std;
+//using namespace std;
 
 //material class
 void material::setID(const char *ID)//don't actually need this as of now
 {
 	id = ID;
 }
-string material::getID()
+std::string material::getID()
 {
 	return id;
 }
 
 //simplemat class
-void simplemat::setDiffuse(vector<double> diff)
+void simplemat::setDiffuse(std::vector<double> diff)
 {
 	diffuse = diff;
 }
-void simplemat::setSpecular(vector<double> spec)
+void simplemat::setSpecular(std::vector<double> spec)
 {
 	specular = spec;
 }
-void simplemat::setReflect(vector<double> ref)
+void simplemat::setReflect(std::vector<double> ref)
 {
 	reflect = ref;
 }
-void simplemat::setTransmit(vector<double> trans)
+void simplemat::setTransmit(std::vector<double> trans)
 {
 	transmit = trans;
 }

@@ -4,24 +4,24 @@
 #include <vector>
 #include <string>
 
-using namespace std;
+//using namespace std;
 
 class material{
 protected:
-	string id;
+	std::string id;
 
 public:
 	material(){}
-	material(string s):id(s){}
+	material(std::string s):id(s){}
 	void setID(const char *ID);//don't actually need this as of now
-	string getID();
+	std::string getID();
 };
 
 class simplemat : public material{
-	vector<double> diffuse = vector<double>(3);    
-	vector<double> specular = vector<double>(3);
-	vector<double> reflect = vector<double>(3);
-	vector<double> transmit = vector<double>(3);
+	std::vector<double> diffuse = std::vector<double>(3);    
+	std::vector<double> specular = std::vector<double>(3);
+	std::vector<double> reflect = std::vector<double>(3);
+	std::vector<double> transmit = std::vector<double>(3);
 	double eta;
 	double n;
 	bool isreflect;
@@ -29,11 +29,11 @@ class simplemat : public material{
 
 public:
 	simplemat(){}
-	simplemat(string s):material(s){}//parameterized constructor
-	void setDiffuse(vector<double> diff);
-	void setSpecular(vector<double> spec);
-	void setReflect(vector<double> ref);
-	void setTransmit(vector<double> trans);
+	simplemat(std::string s):material(s){}//parameterized constructor
+	void setDiffuse(std::vector<double> diff);
+	void setSpecular(std::vector<double> spec);
+	void setReflect(std::vector<double> ref);
+	void setTransmit(std::vector<double> trans);
 	void setEta(double eta0);
 	void setN(double n0);
 	void setIsreflect(bool isref);
