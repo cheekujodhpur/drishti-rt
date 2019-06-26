@@ -4,8 +4,13 @@
 #include "materials.cpp"
 #include "ray.hpp"
 
+<<<<<<< HEAD
 #include<vector>
 using namespace std;
+=======
+#include <vector>
+//using namespace std;
+>>>>>>> fb33c64... Removed std
 
 class object{
 
@@ -15,39 +20,39 @@ public:
 	object(){}
 	// object(material m):mat(m){}
 	void setMaterial(material m);
-	virtual vector<double> intersect(ray Ray) = 0; //abstract intersect function
+	virtual std::vector<double> intersect(ray Ray) = 0; //abstract intersect function
 };
 
 class sphere: public object{
-	vector<double> center;
+	std::vector<double> center;
 	double radius;
 public:
 	sphere(){}
 	// sphere(material m):object(m){}
 	double getRadius();
-	vector<double> getCenter();
+	std::vector<double> getCenter();
 	void setRadius(double r);
-	void setCenter(vector<double> center0);
-	vector<double> intersect(ray Ray);
+	void setCenter(std::vector<double> center0);
+	std::vector<double> intersect(ray Ray);
 };
 
 class cylinder: public object{
 	
 	double radius;
 	double height;
-	vector<double> axis;
-	vector<double> top_center;
+	std::vector<double> axis;
+	std::vector<double> top_center;
 
 	public:
 	cylinder(){}
 	double get_radius();
 	double get_height();
-	vector<double> get_axis();
-	vector<double> get_center();
-	vector<double> intersect(ray Ray);
+	std::vector<double> get_axis();
+	std::vector<double> get_center();
+	std::vector<double> intersect(ray Ray);
 	void setRadius(double r);
 	void setHeight(double h);
-	void set_center(vector<double> v);
-	void set_axis(vector<double> x);
+	void set_center(std::vector<double> v);
+	void set_axis(std::vector<double> x);
 };
 #endif

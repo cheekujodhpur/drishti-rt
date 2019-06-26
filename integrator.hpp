@@ -3,14 +3,14 @@
 
 #include <vector>
 #include <string>
-using namespace std;
+//using namespace std;
 
 class integrator
 {
 protected:
-	string ID;
+	std::string ID;
 public:
-	string getID();
+	std::string getID();
 	void setID(const char* id);
 };
 

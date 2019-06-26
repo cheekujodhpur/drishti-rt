@@ -1,21 +1,28 @@
 #ifndef __RAY_HPP_INCLUDED__
 #define __RAY_HPP_INCLUDED__
 
+<<<<<<< HEAD
 #include<iostream>
 #include<vector>
 #include<math.h>
 using namespace std;
+=======
+#include <iostream>
+#include <vector>
+#include <math.h>
+//using namespace std;
+>>>>>>> fb33c64... Removed std
 
 class ray{
 
-	vector<double> _origin;
- 	vector<double> _direction;
+	std::vector<double> _origin;
+ 	std::vector<double> _direction;
 
 public:   
-    ray(vector<double> origin,vector<double> direction);
-    vector<double> get_direction();
-    vector<double> get_origin();
-    vector<double> get_point(int x);
+    ray(std::vector<double> origin,std::vector<double> direction);
+    std::vector<double> get_direction();
+    std::vector<double> get_origin();
+    std::vector<double> get_point(int x);
 
 };
 
