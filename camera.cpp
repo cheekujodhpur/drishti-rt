@@ -1,6 +1,6 @@
 #include "camera.hpp"
 
-using namespace std;
+//using namespace std;
 
 
 /*camera(vector<double> look, vector<double> eye0, vector<double> up0, double fov0, double far0, double near0)
@@ -12,7 +12,7 @@ using namespace std;
 	near = near0;
 	far = far0;
 }*/
-void camera::setLookat(vector<double> look)
+void camera::setLookat(std::vector<double> look)
 {
 	lookat = look;
 }
@@ -22,11 +22,11 @@ void camera::setThird()
 	third.push_back(up[2]*lookat[0] - up[0]*lookat[2]);
 	third.push_back(up[0]*lookat[1] - up[1]*lookat[0]);  
 }
-void camera::setEye(vector<double> eye0)
+void camera::setEye(std::vector<double> eye0)
 {
 	eye = eye0;
 }
-void camera::setUp(vector<double> up0)
+void camera::setUp(std::vector<double> up0)
 {
 	up = up0;
 }
@@ -42,19 +42,19 @@ void camera::setFar(double far0)
 {
 	far = far0;
 }
-vector<double> camera::getLookat()
+std::vector<double> camera::getLookat()
 {
 	return lookat;
 }
-vector<double> camera::getUp()
+std::vector<double> camera::getUp()
 {
 	return up;
 }
-vector<double> camera::getThird()
+std::vector<double> camera::getThird()
 {
 	return third;
 }
-vector<double> camera::getEye()
+std::vector<double> camera::getEye()
 {
 	return eye;
 }

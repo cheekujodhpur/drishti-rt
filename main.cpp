@@ -1,5 +1,5 @@
 #include <exception>
-#include <stdexcept> // runtime_error
+#include <stdexcept> // std::runtime_error
 #include <cstdlib> // EXIT_FAILURE
 #include <vector>
 #include <string>
@@ -19,14 +19,14 @@
 #include "objects.hpp"
 #include "lights.hpp"
 
-using namespace std;
+//using namespace std;
 
 void write_to_ppm(int ***arr,double w,double h)
 {
-    ofstream img ("picture.ppm");
-    img << "P6" <<endl;
-    img << w <<" "<< h <<endl;
-    img << "255" <<endl;
+    std::ofstream img ("picture.ppm");
+    img << "P6" <<std::endl;
+    img << w <<" "<< h <<std::endl;
+    img << "255" <<std::endl;
 
     for(int i=0;i<h;i++)
     {
@@ -36,7 +36,7 @@ void write_to_ppm(int ***arr,double w,double h)
             double g = arr[j][i][1];
             double b = arr[j][i][2];
 
-            img << r <<" " << g <<" "<< b << endl;
+            img << r <<" " << g <<" "<< b << std::endl;
         }
     }
 
@@ -49,18 +49,18 @@ const char* textValue(TiXmlElement* e)
     if(first!=0 && first==e->LastChild() && first->Type()==TiXmlNode::TINYXML_TEXT)
         return first->Value();
     else
-        throw runtime_error(string("bad ") + e->Value( ) + " element");
+        throw std::runtime_error(std::string("bad ") + e->Value( ) + " element");
 }
 
-vector<double> nodeToVector(TiXmlElement* Vect)
+std::vector<double> nodeToVector(TiXmlElement* Vect)
 {
-    string vect = textValue(Vect);
-    stringstream ss(vect);
+    std::string vect = textValue(Vect);
+    std::stringstream ss(vect);
     double xval; ss>>xval;
     double yval; ss>>yval;
     double zval; ss>>zval;
 
-    vector<double> result_vect;
+    std::vector<double> result_vect;
     result_vect.push_back(xval);
     result_vect.push_back(yval);
     result_vect.push_back(zval);
@@ -68,11 +68,11 @@ vector<double> nodeToVector(TiXmlElement* Vect)
 
 double doubleVal(TiXmlElement* dval, const char* attrib)
 {
-    string temp_str = dval->Attribute(attrib);
+    std::string temp_str = dval->Attribute(attrib);
     char* str = new char[temp_str.size()];
     strcpy(str, temp_str.c_str());
 
-    stringstream ss(str);
+    std::stringstream ss(str);
     double result; ss>>result;
     
     delete str;
@@ -174,24 +174,24 @@ material* nodeToMaterial(TiXmlElement* Material)
         result = &sim_mat;
     }
     else
-        throw runtime_error(string("bad ") + " element");
+        throw std::runtime_error(std::string("bad ") + " element");
 
 	return result;
 }
 
-shared_ptr<object> nodeToObject(TiXmlElement* Object, scene scene_obj) //INCOMPLETE!
+std::shared_ptr<object> nodeToObject(TiXmlElement* Object, scene scene_obj) //INCOMPLETE!
 {
     const char* mat_name;
     if((mat_name = Object->Attribute("material")) && strcmp(Object->Value(),"sphere")==0) //sphere object
     {
-        vector<material> materialslist = scene_obj.getMaterials();
-        vector<string> mat_names;//to store the ID of the materials in materialslist
-        for (vector<material>::iterator it = materialslist.begin() ; it != materialslist.end(); ++it)
+        std::vector<material> materialslist = scene_obj.getMaterials();
+        std::vector<std::string> mat_names;//to store the ID of the materials in materialslist
+        for (std::vector<material>::iterator it = materialslist.begin() ; it != materialslist.end(); ++it)
         {
             mat_names.push_back((*it).getID());//extracting material IDs
         }
-        string search_mat(mat_name);//material ID to be searched (from scene file)
-        vector<string>::iterator it_str;
+        std::string search_mat(mat_name);//material ID to be searched (from scene file)
+        std::vector<std::string>::iterator it_str;
         it_str =  find(mat_names.begin(),mat_names.end(),search_mat);
         
         sphere* sph_obj = new sphere();
@@ -201,7 +201,7 @@ shared_ptr<object> nodeToObject(TiXmlElement* Object, scene scene_obj) //INCOMPL
             sph_obj->setMaterial(*it_str);//calls the superclass function
         }
         else
-            throw runtime_error(string("material ") + " for sphere object not found");
+            throw std::runtime_error(std::string("material ") + " for sphere object not found");
 
         TiXmlElement* element = Object->FirstChildElement();
 
@@ -212,10 +212,10 @@ shared_ptr<object> nodeToObject(TiXmlElement* Object, scene scene_obj) //INCOMPL
         if(element && strcmp(element->Value(),"radius")==0)
             sph_obj->setRadius(doubleVal(element,"radius"));
         
-        return shared_ptr<object> (sph_obj);
+        return std::shared_ptr<object> (sph_obj);
     }
     else
-        throw runtime_error(string("bad ") + " element");
+        throw std::runtime_error(std::string("bad ") + " element");
 
 }
 
@@ -245,7 +245,7 @@ light* nodeToLight(TiXmlElement* Light)
 
 	}
 	else
-		throw runtime_error(string("bad ") + " element");
+		throw std::runtime_error(std::string("bad ") + " element");
 
 	return result;
 }
@@ -264,7 +264,7 @@ integrator* nodeToIntegrator(TiXmlElement* Integrator)
         result = &whit_intg;
     }
     else
-        throw runtime_error(string("bad ") + " element");
+        throw std::runtime_error(std::string("bad ") + " element");
 
 
     return result;
@@ -279,11 +279,11 @@ int main(){
     vector<light> lightslist;*/
 
     if(!doc.LoadFile())
-        throw runtime_error("bad parse");
+        throw std::runtime_error("bad parse");
 
     TiXmlElement* root=doc.RootElement();
     if(strcmp(root->Value(),"rt-scene")!=0)
-        throw runtime_error(string("bad root: ")+ root->Value());
+        throw std::runtime_error(std::string("bad root: ")+ root->Value());
         
     for(TiXmlElement* a=root->FirstChildElement();a;a=a->NextSiblingElement())
     {
@@ -337,7 +337,7 @@ int main(){
             img_arr[i][j] = new int[3];
     }
 
-    vector<double> v = scene_obj.getImage().getBgcolor();
+    std::vector<double> v = scene_obj.getImage().getBgcolor();
     for(int i=0;i<w;i++)
     {
         for(int j=0;j<h;j++)

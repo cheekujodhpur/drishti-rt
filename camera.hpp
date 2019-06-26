@@ -2,31 +2,31 @@
 #define __CAMERA_HPP_INCLUDED__
 
 #include <vector>
-using namespace std;
+//using namespace std;
 
 class camera
 {
-	vector<double> lookat = vector<double>(3);
-	vector<double> eye = vector<double>(3);
-	vector<double> up = vector<double>(3);
-	vector<double> third = vector<double>(3);
+	std::vector<double> lookat = std::vector<double>(3);
+	std::vector<double> eye = std::vector<double>(3);
+	std::vector<double> up = std::vector<double>(3);
+	std::vector<double> third = std::vector<double>(3);
 	double fov;	//angle fov;
 	double far;
 	double near;
 
 public:
 	// camera(vector<double> look, vector<double> eye0, vector<double> up0, double fov0, double far0, double near0);
-	void setLookat(vector<double> look);
+	void setLookat(std::vector<double> look);
 	void setThird();
-	void setEye(vector<double> eye0);
-	void setUp(vector<double> up0);
+	void setEye(std::vector<double> eye0);
+	void setUp(std::vector<double> up0);
 	void setFov(double fov0);
 	void setNear(double near0);
 	void setFar(double far0);
-	vector<double> getLookat();
-	vector<double> getUp();
-	vector<double> getThird();
-	vector<double> getEye();
+	std::vector<double> getLookat();
+	std::vector<double> getUp();
+	std::vector<double> getThird();
+	std::vector<double> getEye();
 };
 
 #endif 

@@ -1,6 +1,6 @@
 #include "ray.hpp"
 
-ray::ray(vector<double> origin,vector<double> direction)
+ray::ray(std::vector<double> origin,std::vector<double> direction)
 {
     _origin = origin;
   //  _direction = direction;
@@ -16,19 +16,19 @@ ray::ray(vector<double> origin,vector<double> direction)
     }
 }
 
-vector<double> ray::get_origin()
+std::vector<double> ray::get_origin()
 {
     return _origin;
 }
 
-vector<double> ray::get_direction()                                     //need to return normalised direction
+std::vector<double> ray::get_direction()                                     //need to return normalised direction
 {
     return _direction;
 }
 
-vector<double> ray::get_point(int x) //returns point at parameter x
-{   vector<double> new1(3,0);
-    vector<double> new2(3,0);
+std::vector<double> ray::get_point(int x) //returns point at parameter x
+{   std::vector<double> new1(3,0);
+    std::vector<double> new2(3,0);
     for(int i=0;i<3;i++)
     {
         new1[i]=x*_direction[i];
