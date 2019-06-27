@@ -28,10 +28,24 @@ void render()
              std::vector<double> R_in_world = camera_to_world(R_in_cam);
             ray Ray(origin,R_in_world)   //need to check whether order of parameters is ok and whether direction is normalised or not:checked.
 
-    //Now call intersect function on all objects.
-    //Need to find the nearest object which intersects
+    //Now call intersect function on all objects: done.
+    //Need to find the nearest object which intersects:done
     //extract colour out of that material and fill into arr[i][j][]
     //send arr[w][h][] to write_to_ppm
+
+            for(int i=0;i<objectlist;i++)
+            {
+            	double x = *objectlist[i].intersect(Ray);
+            	if(x < mini)
+            	{
+            		mini = x;
+            		index = i;
+            	}
+            }
+
+            //now object nearest is *objectlist[i] but the problem is how to extract colour from it. Maybe we should have inherited object from simplemat as colours are parameters of simplemat,not material according to our code.
+
+
         }
     }
 
