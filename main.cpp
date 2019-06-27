@@ -22,7 +22,7 @@
 void write_to_ppm(double ***arr,double w,double h)
 {
     std::ofstream img ("image.ppm");
-    img << "P6" <<std::endl;
+    img << "P3" <<std::endl;
     img << w <<" "<< h <<std::endl;
     img << "255" <<std::endl;
 

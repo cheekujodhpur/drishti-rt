@@ -12,7 +12,7 @@
 <image>
 	<width double="1024" />
 	<height double="768" />
-	<bgcolor color="0.99 0.99 0.99" />	
+	<bgcolor color="0.2 0.3 0.4" />	
 </image>
 
 <materials>
