@@ -27,6 +27,7 @@ public:
 	std::vector<double> getUp();
 	std::vector<double> getThird();
 	std::vector<double> getEye();
+	std::vector<double> getFov();
 };
 
 #endif 

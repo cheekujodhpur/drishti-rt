@@ -58,3 +58,7 @@ std::vector<double> camera::getEye()
 {
 	return eye;
 }
+double camera::getFov()
+{
+	return fov;
+}

@@ -12,7 +12,7 @@ public:
 	object(){}
 	// object(material m):mat(m){}
 	void setMaterial(material m);
-	virtual std::vector<double> intersect(ray Ray) = 0; //abstract intersect function
+	virtual double intersect(ray Ray) = 0; //abstract intersect function
 };
 
 class sphere: public object{
@@ -25,7 +25,7 @@ public:
 	std::vector<double> getCenter();
 	void setRadius(double r);
 	void setCenter(std::vector<double> center0);
-	std::vector<double> intersect(ray Ray);
+	double intersect(ray Ray);
 };
 
 class cylinder: public object{
@@ -41,7 +41,7 @@ class cylinder: public object{
 	double get_height();
 	std::vector<double> get_axis();
 	std::vector<double> get_center();
-	std::vector<double> intersect(ray Ray);
+	double intersect(ray Ray);
 	void setRadius(double r);
 	void setHeight(double h);
 	void set_center(std::vector<double> v);

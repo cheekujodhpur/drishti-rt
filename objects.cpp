@@ -27,7 +27,7 @@ void sphere::setCenter(std::vector<double> center0)
 {
 	center = center0;
 }
-std::vector<double> sphere::intersect(ray Ray)
+double sphere::intersect(ray Ray)
 {
 	std::vector<double> point_of_int = std::vector<double>(3);
 	std::vector<double> dirn = Ray.get_direction();
@@ -51,7 +51,7 @@ std::vector<double> sphere::intersect(ray Ray)
 	std::vector<double> v(3,INF);                               //returning a std::vector containing all three coordinates as infinity when ray doesnt intersect.
 	if(d<0)
 	{
-		return v;
+		return INF;
 	}
 	else
 	{
@@ -59,21 +59,21 @@ std::vector<double> sphere::intersect(ray Ray)
 		double t1 = (-b + sqrt(d))/2;
 
 		if((t0 < 0) && (t1 < 0))                               // t cant be negative by definition of ray.
-			return v;
+			return INF;
 		else
 		{
 			if((t0 > 0) && (t1 > 0))
 			{													//we need first positive root
 				double t = std::min(t0,t1);
-				return Ray.get_point(t);
+				return t;
 			}
 			else
 			{
 				double t = std::max(t0,t1);
 				if(t>0)											//take the positive one amongst both.
-					return Ray.get_point(t);
+					return t;
 				else
-					return v;
+					return INF;
 			}
 		}
 	}
@@ -118,7 +118,7 @@ void cylinder::set_center(std::vector<double> v)
 	top_center = v;
 }
 
-std::vector<double> cylinder::intersect(ray Ray)
+double cylinder::intersect(ray Ray)
 {
 	
 }
