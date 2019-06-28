@@ -27,6 +27,11 @@ void sphere::setCenter(std::vector<double> center0)
 {
 	center = center0;
 }
+std::shared_ptr<material> object::getMaterial()
+{
+	return mat;
+}
+
 double sphere::intersect(ray Ray)
 {
 	std::vector<double> point_of_int = std::vector<double>(3);

@@ -32,32 +32,19 @@ void render()
     //Now call intersect function on all objects: done.
     //Need to find the nearest object which intersects:done
     //extract colour out of that material and fill into arr[i][j][]
-    //send arr[w][h][] to write_to_ppm
+    //send arr[w][h][] to write_to_ppm: Already done in main.
 
-            for(int i=0;i<objectlist;i++)
-            {
-            	double x = *objectlist[i].intersect(Ray);
-            	if(x < mini)
-            	{
-            		mini = x;
-            		index = i;
-            	}
-            }
+          std::shared_ptr<object> nearest_obj = scene_obj.intersect(Ray);
+          std::vector<double> diff_color = nearest_obj->getMaterial()->getDiffuse();
 
-            //now object nearest is *objectlist[i] but the problem is how to extract colour from it. Maybe we should have inherited object from simplemat as colours are parameters of simplemat,not material according to our code.
-
+          	for(int k=0;k<3;k++)
+          	{
+          		img_arr[i][j][k] = diff_color[k];
+          	}
+            
 
         }
     }
 
 }
 
-std::vector<double> normalise(vector<double> v)
-{   std::vector<double> a(3,0);
-    double sqmod = v[0]*v[0] + v[1]*v[1] + v[2]*v[2];
-    for(int i=0;i<3;i++)
-    {
-        a[i]=v[i]/sqrt(sqmod);
-    }
-    return a;
-}

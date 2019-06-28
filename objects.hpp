@@ -12,6 +12,7 @@ public:
 	object(){}
 	// object(material m):mat(m){}
 	void setMaterial(std::shared_ptr<material> m);
+	std::shared_ptr<material> getMaterial();
 	virtual double intersect(ray Ray) = 0; //abstract intersect function
 };
 
@@ -26,6 +27,7 @@ public:
 	void setRadius(double r);
 	void setCenter(std::vector<double> center0);
 	double intersect(ray Ray);
+	
 };
 
 class cylinder: public object{

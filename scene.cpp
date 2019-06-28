@@ -1,6 +1,17 @@
 #include "scene.hpp"
 
 //array*array
+
+std::vector<double> normalise(vector<double> v)
+{   std::vector<double> a(3,0);
+    double sqmod = v[0]*v[0] + v[1]*v[1] + v[2]*v[2];
+    for(int i=0;i<3;i++)
+    {
+        a[i]=v[i]/sqrt(sqmod);
+    }
+    return a;
+}
+
 std::vector<std::vector<double> > mat_mult(std::vector<std::vector<double> > a,std::vector<std::vector<double> > b)
 {
 	int num_row1 = a.size();
@@ -215,6 +226,19 @@ std::vector<double> scene::camera_to_world(std::vector<double> camera_c)
 }
 
 std::shared_ptr<object> scene::intersect(ray Ray)
-{
-	
+{	double mini = INF;
+	double index = -1;
+	  for(int i=0;i<objectlist.size();i++)
+            {
+            	double x = objectlist[i]->intersect(Ray);
+            	if(x < mini)
+            	{
+            		mini = x;
+            		index = i;
+            	}
+            }
+
+            if(index!=-1)
+            return objectlist[index];
+        										//couldnt figure out what to return when ray doesnt intersect with any of the object(index==-1)
 }
