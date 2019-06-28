@@ -7,11 +7,7 @@
 
 class integrator
 {
-protected:
-	std::string ID;
-public:
-	std::string getID();
-	void setID(const char* id);
+
 };
 
 class whitted: public integrator

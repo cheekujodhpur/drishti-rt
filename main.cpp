@@ -192,10 +192,10 @@ std::shared_ptr<material> nodeToMaterial(TiXmlElement* Material)
         return std::shared_ptr<material>(sim_mat);
     }
     else
-        throw std::runtime_error(std::string("bad ") + " element");
+        throw std::runtime_error(std::string("bad ") + "material element: " + Material->Value());
 }
 
-std::shared_ptr<object> nodeToObject(TiXmlElement* Object, scene scene_obj) //INCOMPLETE!
+std::shared_ptr<object> nodeToObject(TiXmlElement* Object, scene scene_obj)
 {
     const char* mat_name;
     if((mat_name = Object->Attribute("material")) && strcmp(Object->Value(),"sphere")==0) //sphere object
@@ -231,59 +231,51 @@ std::shared_ptr<object> nodeToObject(TiXmlElement* Object, scene scene_obj) //IN
         return std::shared_ptr<object> (sph_obj);
     }
     else
-        throw std::runtime_error(std::string("bad ") + " element");
+        throw std::runtime_error(std::string("bad ") + "object element: " + Object->Value());
 
 }
 
-light* nodeToLight(TiXmlElement* Light)
+std::shared_ptr<light> nodeToLight(TiXmlElement* Light)
 {
-	light *result;
-
 	if(strcmp(Light->Value(),"pointlight")==0) //point light source
 	{
-		pointlight plight;
+		pointlight* plight = new pointlight();
 		TiXmlElement* element = Light->FirstChildElement();
 
         if(element && strcmp(element->Value(),"position")==0)
-            plight.setPos(nodeToVector(element,"vector3"));
+            plight->setPos(nodeToVector(element,"vector3"));
         
         element=element->NextSiblingElement();
 
         if(element && strcmp(element->Value(),"color")==0)
-            plight.setColor(nodeToVector(element,"color"));
+            plight->setColor(nodeToVector(element,"color"));
         
         element=element->NextSiblingElement();
 
         if(element && strcmp(element->Value(),"ka")==0)
-            plight.setKa(doubleVal(element,"double"));
+            plight->setKa(doubleVal(element,"double"));
         
-        result = &plight;
-
+        result = std::shared_ptr<light>(plight);
 	}
 	else
-		throw std::runtime_error(std::string("bad ") + " element");
-
-	return result;
+		throw std::runtime_error(std::string("bad ") + "light element: " + Light->Value());
 }
 
-integrator* nodeToIntegrator(TiXmlElement* Integrator)
+std::shared_ptr<integrator> nodeToIntegrator(TiXmlElement* Integrator)
 {
-    integrator *result;
     if(strcmp(Integrator->Value(),"whitted")==0)//whitted integrator
     {
-        whitted whit_intg;
+        whitted* whit_intg = new whitted();
         TiXmlElement* element = Integrator->FirstChildElement();
 
         if(element && strcmp(element->Value(),"depth-of-recursion")==0)
-            whit_intg.setDepth(int(doubleVal(element,"int")));
+            whit_intg->setDepth(int(doubleVal(element,"int")));
         
-        result = &whit_intg;
+        return std::shared_ptr<integrator>(whit_intg);
     }
     else
-        throw std::runtime_error(std::string("bad ") + " element");
+        throw std::runtime_error(std::string("bad ") + "integrator element: " + Integrator->Value());
 
-
-    return result;
 }
 
 int main(){
@@ -292,7 +284,7 @@ int main(){
     scene scene_obj;
     vector<std::shared_ptr<material>> materialslist;
     vector<std::shared_ptr<object>> objectslist;
-    vector<light> lightslist;
+    vector<std::shared_ptr<light>> lightslist;
 
     if(!doc.LoadFile())
         throw std::runtime_error("bad parse");
@@ -337,12 +329,12 @@ int main(){
         {
            for(TiXmlElement* b=a->FirstChildElement();b;b->NextSiblingElement())
         	{
-        		lightslist.push_back(*(nodeToLight(b)));
+        		lightslist.push_back(nodeToLight(b));
         	}
             scene_obj.setLights(lightslist);
         }	
         else if(strcmp(a->Value(),"integrator")==0)
-            scene_obj.setIntegrator(*(nodeToIntegrator(a)));
+            scene_obj.setIntegrator(nodeToIntegrator(a));
 
     }
 

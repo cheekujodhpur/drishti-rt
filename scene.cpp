@@ -1,6 +1,7 @@
 #include "scene.hpp"
+#include <stddef.h> //NULL
+#include <limits>
 
-//array*array
 
 std::vector<double> normalise(vector<double> v)
 {   std::vector<double> a(3,0);
@@ -12,6 +13,7 @@ std::vector<double> normalise(vector<double> v)
     return a;
 }
 
+//array*array
 std::vector<std::vector<double> > mat_mult(std::vector<std::vector<double> > a,std::vector<std::vector<double> > b)
 {
 	int num_row1 = a.size();
@@ -41,10 +43,9 @@ std::vector<std::vector<double> > mat_mult(std::vector<std::vector<double> > a,s
 
 }
 
-//array*std::vector
+//array*vector
 std::vector<double> mat_mult(std::vector<std::vector<double> > a,std::vector<double> b)
 {
-	
 	std::vector<double> c(4,0);
 	for(int i=0;i<4;i++)
 	{
@@ -80,7 +81,7 @@ void scene::setImage(image img0)
 {
 	img = img0;
 }
-void scene::setIntegrator(integrator intg0)
+void scene::setIntegrator(std::shared_ptr<integrator> intg0)
 {
 	intg = intg0;
 }
@@ -92,7 +93,7 @@ void scene::setObjects(std::vector<std::shared_ptr<object> > objects)
 {
 	objectslist = objects;
 }
-void scene::setLights(std::vector<light> lights)
+void scene::setLights(std::vector<std::shared_ptr<light>> lights)
 {
 	lightslist = lights;
 }
@@ -105,7 +106,7 @@ image scene::getImage()
 {
 	return img;
 }
-integrator scene::getIntegrator()
+std::shared_ptr<integrator> scene::getIntegrator()
 {
 	return intg;
 }
@@ -117,7 +118,7 @@ std::vector<std::shared_ptr<object> > scene::getObjects()
 {
 	return objectslist;
 }
-std::vector<light> scene::getLights()
+std::vector<std::shared_ptr<light>> scene::getLights()
 {
 	return lightslist;
 }
@@ -226,19 +227,21 @@ std::vector<double> scene::camera_to_world(std::vector<double> camera_c)
 }
 
 std::shared_ptr<object> scene::intersect(ray Ray)
-{	double mini = INF;
-	double index = -1;
-	  for(int i=0;i<objectlist.size();i++)
-            {
-            	double x = objectlist[i]->intersect(Ray);
-            	if(x < mini)
-            	{
-            		mini = x;
-            		index = i;
-            	}
-            }
+{	
+	double mini = INF;
+	int index = -1;
+	for(int i=0;i<objectlist.size();i++)
+    {
+    	double x = objectlist[i]->intersect(Ray);
+    	if(x < mini)
+    	{
+    		mini = x;
+    		index = i;
+    	}
+    }
 
-            if(index!=-1)
-            return objectlist[index];
-        										//couldnt figure out what to return when ray doesnt intersect with any of the object(index==-1)
+    if(index!=-1)
+    	return objectlist[index];
+	else
+		return NULL;
 }

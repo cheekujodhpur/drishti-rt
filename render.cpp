@@ -17,32 +17,30 @@ void render()
     {
         for(double j=0;j<Hres;j++)
         {
-           std::vector<double> r(3,0);
-           std::vector<double> R_in_cam(3,0);
-           for(int k=0;k<3;k++)
-           {
-                r[k]= ((i-Wres/2)*y[k] + (Hres/2-j)*z[k])*delta_W;
+            std::vector<double> r(3,0);
+            std::vector<double> R_in_cam(3,0);
+            for(int k=0;k<3;k++)
+            {
+                r[k]= (i-Wres/2)*delta_W*y[k] + (Hres/2-j)*delta_H*z[k];
                 R_in_cam[k]= r[k] + x[k];
-           }
+            }
 
-             std::vector<double> origin = scene_obj.getCamera().getEye();
-             std::vector<double> R_in_world = camera_to_world(R_in_cam);
+            std::vector<double> origin = scene_obj.getCamera().getEye();
+            std::vector<double> R_in_world = camera_to_world(R_in_cam);
             ray Ray(origin,R_in_world)   //need to check whether order of parameters is ok and whether direction is normalised or not:checked.
 
-    //Now call intersect function on all objects: done.
-    //Need to find the nearest object which intersects:done
-    //extract colour out of that material and fill into arr[i][j][]
-    //send arr[w][h][] to write_to_ppm: Already done in main.
+            //Now call intersect function on all objects: done.
+            //Need to find the nearest object which intersects:done
+            //extract colour out of that material and fill into arr[i][j][]
+            //send arr[w][h][] to write_to_ppm: Already done in main.
 
-          std::shared_ptr<object> nearest_obj = scene_obj.intersect(Ray);
-          std::vector<double> diff_color = nearest_obj->getMaterial()->getDiffuse();
-
-          	for(int k=0;k<3;k++)
-          	{
-          		img_arr[i][j][k] = diff_color[k];
-          	}
-            
-
+            std::shared_ptr<object> nearest_obj = scene_obj.intersect(Ray);
+            if(nearest_obj!=NULL)
+                {
+                    std::vector<double> diff_color = nearest_obj->getMaterial()->getDiffuse();
+                    for(int k=0;k<3;k++)
+                        img_arr[i][j][k] = diff_color[k];
+                }            
         }
     }
 

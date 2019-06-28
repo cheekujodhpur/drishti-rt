@@ -48,39 +48,24 @@ double sphere::intersect(ray Ray)
 	double zc = this->center[2];
 	double r = this->radius;
 
-	double a = 1;                                                // return normalised direction.
+	double a = 1;
 	double b = 2*(xd*(x0-xc) + yd*(y0-yc) + zd*(z0-zc));
 	double c = (x0-xc)*(x0-xc) + (y0-yc)*(y0-yc) + (z0-zc)*(z0-zc) - r*r;
 
 	double d = b*b - 4*c;
-	std::vector<double> v(3,INF);                               //returning a std::vector containing all three coordinates as infinity when ray doesnt intersect.
 	if(d<0)
-	{
 		return INF;
-	}
 	else
 	{
 		double t0 = (-b - sqrt(d))/2;
 		double t1 = (-b + sqrt(d))/2;
 
-		if((t0 < 0) && (t1 < 0))                               // t cant be negative by definition of ray.
+		if((t0 < 0) && (t1 < 0)) //t cant be negative by definition of ray.
 			return INF;
+		else if((t0 > 0) && (t1 > 0)) 
+			return std::min(t0,t1); //we need first positive root
 		else
-		{
-			if((t0 > 0) && (t1 > 0))
-			{													//we need first positive root
-				double t = std::min(t0,t1);
-				return t;
-			}
-			else
-			{
-				double t = std::max(t0,t1);
-				if(t>0)											//take the positive one amongst both.
-					return t;
-				else
-					return INF;
-			}
-		}
+			return std::max(t0,t1); //take the positive one among the two
 	}
 }
 
@@ -127,4 +112,4 @@ double cylinder::intersect(ray Ray)
 {
 	
 }
-//set functions remaining for cylinder and intersect
+//set functions and intersect remaining for cylinder 
