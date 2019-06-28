@@ -3,6 +3,7 @@
 #include "materials.hpp"
 #include "ray.hpp"
 #include <vector>
+#include <memory>
 
 class object{
 

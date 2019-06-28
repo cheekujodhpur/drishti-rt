@@ -45,3 +45,8 @@ void simplemat::setIstransmit(bool istrans)
 {
 	istransmit = istrans;
 }
+
+std::vector<double> simplemat::getDiffuse()
+{
+	return diffuse;
+}

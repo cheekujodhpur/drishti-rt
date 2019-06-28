@@ -19,29 +19,6 @@
 #include "objects.hpp"
 #include "lights.hpp"
 
-void write_to_ppm(double ***arr,double w,double h)
-{
-    std::ofstream img ("image.ppm");
-    img << "P3" <<std::endl;
-    img << w <<" "<< h <<std::endl;
-    img << "255" <<std::endl;
-
-    for(int i=0;i<h;i++)
-    {
-        for(int j=0;j<w;j++)
-        {
-            int r = (int)255*arr[j][i][0];
-            int g = (int)255*arr[j][i][1];
-            int b = (int)255*arr[j][i][2];
-
-            img << r <<" " << g <<" "<< b << "     ";
-        }
-        img<<std::endl;
-    }
-
-}
-
-
 const char* textValue(TiXmlElement* e)
 {
     TiXmlNode* first=e->FirstChild();
@@ -154,40 +131,40 @@ std::shared_ptr<material> nodeToMaterial(TiXmlElement* Material)
     const char *id;
     if((id = Material->Attribute("id")) && strcmp(Material->Value(),"simplemat")==0) //simplemat material
     {
-        simplemat sim_mat(id); //creating a simplemat object
+        simplemat* sim_mat = new simplemat(id); //creating a simplemat object
         
         TiXmlElement* element = Material->FirstChildElement();
 
         if(element && strcmp(element->Value(),"diffuse")==0)
-            sim_mat.setDiffuse(nodeToVector(element,"color"));
+            sim_mat->setDiffuse(nodeToVector(element,"color"));
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"specular")==0)
-            sim_mat.setSpecular(nodeToVector(element,"color"));
+            sim_mat->setSpecular(nodeToVector(element,"color"));
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"reflect")==0)
-            sim_mat.setReflect(nodeToVector(element,"color"));
+            sim_mat->setReflect(nodeToVector(element,"color"));
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"transmit")==0)
-            sim_mat.setTransmit(nodeToVector(element,"color"));
+            sim_mat->setTransmit(nodeToVector(element,"color"));
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"eta")==0)
-            sim_mat.setEta(doubleVal(element,"double"));
+            sim_mat->setEta(doubleVal(element,"double"));
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"n")==0)
-            sim_mat.setN(doubleVal(element,"double"));
+            sim_mat->setN(doubleVal(element,"double"));
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"isreflect")==0)
-            sim_mat.setIsreflect(strcmp(element->Attribute("isreflect"),"true"));
+            sim_mat->setIsreflect(strcmp(element->Attribute("isreflect"),"true"));
         
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"istransmit")==0)
-            sim_mat.setIstransmit(strcmp(element->Attribute("istransmit"),"true"));
+            sim_mat->setIstransmit(strcmp(element->Attribute("istransmit"),"true"));
 
         return std::shared_ptr<material>(sim_mat);
     }
@@ -200,9 +177,9 @@ std::shared_ptr<object> nodeToObject(TiXmlElement* Object, scene scene_obj)
     const char* mat_name;
     if((mat_name = Object->Attribute("material")) && strcmp(Object->Value(),"sphere")==0) //sphere object
     {
-        std::vector<std::shared_ptr<material>> materialslist = scene_obj.getMaterials();
+        std::vector<std::shared_ptr<material> > materialslist = scene_obj.getMaterials();
         std::vector<std::string> mat_names;//to store the ID of the materials in materialslist
-        for (std::vector<std::shared_ptr<material>>::iterator it = materialslist.begin() ; it != materialslist.end(); ++it)
+        for (std::vector<std::shared_ptr<material> >::iterator it = materialslist.begin() ; it != materialslist.end(); ++it)
         {
             mat_names.push_back((*it)->getID());//extracting material IDs from shared_ptr<material> element
         }
@@ -255,7 +232,7 @@ std::shared_ptr<light> nodeToLight(TiXmlElement* Light)
         if(element && strcmp(element->Value(),"ka")==0)
             plight->setKa(doubleVal(element,"double"));
         
-        result = std::shared_ptr<light>(plight);
+        return std::shared_ptr<light>(plight);
 	}
 	else
 		throw std::runtime_error(std::string("bad ") + "light element: " + Light->Value());
@@ -282,9 +259,9 @@ int main(){
     TiXmlDocument doc("./scenes/sample-scene.xml");
     
     scene scene_obj;
-    vector<std::shared_ptr<material>> materialslist;
-    vector<std::shared_ptr<object>> objectslist;
-    vector<std::shared_ptr<light>> lightslist;
+    std::vector<std::shared_ptr<material> > materialslist;
+    std::vector<std::shared_ptr<object> > objectslist;
+    std::vector<std::shared_ptr<light> > lightslist;
 
     if(!doc.LoadFile())
         throw std::runtime_error("bad parse");
@@ -342,30 +319,6 @@ int main(){
     scene_obj.translation_matrix_formation();
     scene_obj.inv_translation_matrix_formation();
     scene_obj.inv_rotation_matrix_formation();
-
-    int w = scene_obj.getImage().getWidth();
-    int h = scene_obj.getImage().getHeight();
-
-    double ***img_arr;
-    img_arr = new double **[w];
-    for(int i=0;i<w;i++)
-    {
-        img_arr [i] = new double*[h];
-        for(int j=0;j<h;j++)
-            img_arr[i][j] = new double[3];
-    }
-
-    std::vector<double> v = scene_obj.getImage().getBgcolor();
-    for(int i=0;i<w;i++)
-    {
-        for(int j=0;j<h;j++)
-        {
-            img_arr[i][j][0] = v[0];
-            img_arr[i][j][1] = v[1];
-            img_arr[i][j][2] = v[2];
-            // if(i==0 && j==0) std::cout<<"("<<v[0]<<","<<v[1]<<","<<v[2]<<")"<<std::endl;
-        }
-    }
-
-    write_to_ppm(img_arr,w,h);
+    scene_obj.init_img_arr();
+    scene_obj.render();
 }

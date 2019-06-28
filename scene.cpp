@@ -1,10 +1,15 @@
 #include "scene.hpp"
 #include <stddef.h> //NULL
 #include <limits>
+#include <math.h>
+#include <fstream>
+#include <iostream>
 
+const double INF = std::numeric_limits<double>::infinity();
 
-std::vector<double> normalise(vector<double> v)
-{   std::vector<double> a(3,0);
+std::vector<double> normalise(std::vector<double> v)
+{   
+	std::vector<double> a(3,0);
     double sqmod = v[0]*v[0] + v[1]*v[1] + v[2]*v[2];
     for(int i=0;i<3;i++)
     {
@@ -85,7 +90,7 @@ void scene::setIntegrator(std::shared_ptr<integrator> intg0)
 {
 	intg = intg0;
 }
-void scene::setMaterials(std::vector<std::shared_ptr<material>> materials)
+void scene::setMaterials(std::vector<std::shared_ptr<material> > materials)
 {
 	materialslist = materials;
 }
@@ -93,9 +98,34 @@ void scene::setObjects(std::vector<std::shared_ptr<object> > objects)
 {
 	objectslist = objects;
 }
-void scene::setLights(std::vector<std::shared_ptr<light>> lights)
+void scene::setLights(std::vector<std::shared_ptr<light> > lights)
 {
 	lightslist = lights;
+}
+
+void scene::init_img_arr()
+{
+	int w = this->getImage().getWidth();
+    int h = this->getImage().getHeight();
+	this->img_arr = new double **[w];
+    for(int i=0;i<w;i++)
+    {
+        img_arr [i] = new double*[h];
+        for(int j=0;j<h;j++)
+            img_arr[i][j] = new double[3];
+    }
+    
+    std::vector<double> v = this->getImage().getBgcolor();
+    for(int i=0;i<w;i++)
+    {
+        for(int j=0;j<h;j++)
+        {
+            img_arr[i][j][0] = v[0];
+            img_arr[i][j][1] = v[1];
+            img_arr[i][j][2] = v[2];
+            // if(i==0 && j==0) std::cout<<"("<<v[0]<<","<<v[1]<<","<<v[2]<<")"<<std::endl;
+        }
+    }
 }
 
 camera scene::getCamera()
@@ -110,7 +140,7 @@ std::shared_ptr<integrator> scene::getIntegrator()
 {
 	return intg;
 }
-std::vector<std::shared_ptr<material>> scene::getMaterials()
+std::vector<std::shared_ptr<material> > scene::getMaterials()
 {
 	return materialslist;
 }
@@ -118,7 +148,7 @@ std::vector<std::shared_ptr<object> > scene::getObjects()
 {
 	return objectslist;
 }
-std::vector<std::shared_ptr<light>> scene::getLights()
+std::vector<std::shared_ptr<light> > scene::getLights()
 {
 	return lightslist;
 }
@@ -230,9 +260,9 @@ std::shared_ptr<object> scene::intersect(ray Ray)
 {	
 	double mini = INF;
 	int index = -1;
-	for(int i=0;i<objectlist.size();i++)
+	for(int i=0;i<objectslist.size();i++)
     {
-    	double x = objectlist[i]->intersect(Ray);
+    	double x = objectslist[i]->intersect(Ray);
     	if(x < mini)
     	{
     		mini = x;
@@ -241,7 +271,76 @@ std::shared_ptr<object> scene::intersect(ray Ray)
     }
 
     if(index!=-1)
-    	return objectlist[index];
+    	return objectslist[index];
 	else
 		return NULL;
 }
+
+void scene::write_to_ppm()
+{
+	int w = this->getImage().getWidth();
+	int h = this->getImage().getHeight();
+    std::ofstream img ("image.ppm");
+    img << "P3" <<std::endl;
+    img << w <<" "<< h <<std::endl;
+    img << "255" <<std::endl;
+
+    for(int i=0;i<h;i++)
+    {
+        for(int j=0;j<w;j++)
+        {
+            int r = (int)255 * this->img_arr[j][i][0];
+            int g = (int)255 * this->img_arr[j][i][1];
+            int b = (int)255 * this->img_arr[j][i][2];
+
+            img << r <<" " << g <<" "<< b << "     ";
+        }
+        img<<std::endl;
+    }
+
+}
+
+void scene::render()
+{
+    double Wres = this->getImage().getWidth();
+    double Hres = this->getImage().getHeight();
+    double fov = this->getCamera().getFov();
+    double H_phy = 2.0*tan(M_PI/180*fov/2);
+    double delta_H = H_phy/Hres;
+    double delta_W = delta_H;
+    double W_phy = delta_W*Wres;
+
+    std::vector<double> y = normalise(this->getCamera().getThird());
+    std::vector<double> z = normalise(this->getCamera().getUp());
+    std::vector<double> x = normalise(this->getCamera().getLookat());
+
+    for(int i=0;i<Wres;i++)
+    {
+        for(int j=0;j<Hres;j++)
+        {
+            std::vector<double> r(3,0);
+            std::vector<double> R_in_cam(3,0);
+            for(int k=0;k<3;k++)
+            {
+				r[k]= (i-Wres/2)*delta_W*y[k] + (Hres/2-j)*delta_H*z[k];
+				R_in_cam[k]= r[k] + x[k];
+            }
+
+            std::vector<double> origin = this->getCamera().getEye();
+            std::vector<double> R_in_world = camera_to_world(R_in_cam);
+            ray Ray(origin,R_in_world); //ray generated, originating from camera 
+
+        	//call intersect function on all objects and find the nearest one which intersects
+            std::shared_ptr<object> nearest_obj = this->intersect(Ray);
+            if(nearest_obj!=NULL)
+            {
+            	//extract colour out of that material and fill into arr[i][j][]
+                std::vector<double> diff_color = nearest_obj->getMaterial()->getDiffuse(); //assuming simplemat
+                for(int k=0;k<3;k++)
+                    img_arr[i][j][k] = diff_color[k];
+            }            
+        }
+    }
+    write_to_ppm();
+}
+

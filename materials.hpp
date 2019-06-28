@@ -38,5 +38,6 @@ public:
 	void setN(double n0);
 	void setIsreflect(bool isref);
 	void setIstransmit(bool istrans);
+	std::vector<double> getDiffuse();
 };
 #endif 

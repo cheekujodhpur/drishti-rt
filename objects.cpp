@@ -2,12 +2,16 @@
 #include <limits> //infinity()
 #include <math.h>
 
-double INF = std::numeric_limits<double>::infinity();
+const double INF = std::numeric_limits<double>::infinity();
 
 //object class
 void object::setMaterial(std::shared_ptr<material> m)
 {
 	mat = m;
+}
+std::shared_ptr<material> object::getMaterial()
+{
+	return mat;
 }
 
 //sphere class
@@ -26,10 +30,6 @@ void sphere::setRadius(double r)
 void sphere::setCenter(std::vector<double> center0)
 {
 	center = center0;
-}
-std::shared_ptr<material> object::getMaterial()
-{
-	return mat;
 }
 
 double sphere::intersect(ray Ray)
