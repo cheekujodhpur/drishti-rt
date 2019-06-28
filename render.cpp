@@ -1,9 +1,10 @@
+#include <math.h>
 void render()
 {
     double Wres = scene_obj.getImage().getWidth();
     double Hres = scene_obj.getImage().getHeight();
-    double fov = scene_obj.getImage().getFov();
-    double H_phy = 2*tan(fov/2);
+    double fov = scene_obj.getCamera().getFov();
+    double H_phy = 2.0*tan(M_PI/180*fov/2);
     double delta_H = H_phy/Hres;
     double delta_W = delta_H;
     double W_phy = delta_W*Wres;

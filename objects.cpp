@@ -5,7 +5,7 @@
 double INF = std::numeric_limits<double>::infinity();
 
 //object class
-void object::setMaterial(material m)
+void object::setMaterial(std::shared_ptr<material> m)
 {
 	mat = m;
 }

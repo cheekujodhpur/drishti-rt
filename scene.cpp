@@ -73,7 +73,7 @@ void scene::setIntegrator(integrator intg0)
 {
 	intg = intg0;
 }
-void scene::setMaterials(std::vector<material> materials)
+void scene::setMaterials(std::vector<std::shared_ptr<material>> materials)
 {
 	materialslist = materials;
 }
@@ -98,7 +98,7 @@ integrator scene::getIntegrator()
 {
 	return intg;
 }
-std::vector<material> scene::getMaterials()
+std::vector<std::shared_ptr<material>> scene::getMaterials()
 {
 	return materialslist;
 }
@@ -212,4 +212,9 @@ std::vector<double> scene::camera_to_world(std::vector<double> camera_c)
     world_c=mat_mult(mat_mult(inv_translation_mat,inv_rotation_mat),camera_c);
 
     return world_c;
+}
+
+std::shared_ptr<object> scene::intersect(ray Ray)
+{
+	
 }

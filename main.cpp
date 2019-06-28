@@ -149,10 +149,8 @@ image nodeToImage(TiXmlElement* Image)
 	return result;
 }
 
-material* nodeToMaterial(TiXmlElement* Material)
+std::shared_ptr<material> nodeToMaterial(TiXmlElement* Material)
 {
-	material *result;
-
     const char *id;
     if((id = Material->Attribute("id")) && strcmp(Material->Value(),"simplemat")==0) //simplemat material
     {
@@ -191,12 +189,10 @@ material* nodeToMaterial(TiXmlElement* Material)
         if(element && strcmp(element->Value(),"istransmit")==0)
             sim_mat.setIstransmit(strcmp(element->Attribute("istransmit"),"true"));
 
-        result = &sim_mat;
+        return std::shared_ptr<material>(sim_mat);
     }
     else
         throw std::runtime_error(std::string("bad ") + " element");
-
-	return result;
 }
 
 std::shared_ptr<object> nodeToObject(TiXmlElement* Object, scene scene_obj) //INCOMPLETE!
@@ -204,11 +200,11 @@ std::shared_ptr<object> nodeToObject(TiXmlElement* Object, scene scene_obj) //IN
     const char* mat_name;
     if((mat_name = Object->Attribute("material")) && strcmp(Object->Value(),"sphere")==0) //sphere object
     {
-        std::vector<material> materialslist = scene_obj.getMaterials();
+        std::vector<std::shared_ptr<material>> materialslist = scene_obj.getMaterials();
         std::vector<std::string> mat_names;//to store the ID of the materials in materialslist
-        for (std::vector<material>::iterator it = materialslist.begin() ; it != materialslist.end(); ++it)
+        for (std::vector<std::shared_ptr<material>>::iterator it = materialslist.begin() ; it != materialslist.end(); ++it)
         {
-            mat_names.push_back((*it).getID());//extracting material IDs
+            mat_names.push_back((*it)->getID());//extracting material IDs from shared_ptr<material> element
         }
         std::string search_mat(mat_name);//material ID to be searched (from scene file)
         std::vector<std::string>::iterator it_str;
@@ -218,10 +214,10 @@ std::shared_ptr<object> nodeToObject(TiXmlElement* Object, scene scene_obj) //IN
 
         if(it_str!=mat_names.end())
         {
-            sph_obj->setMaterial(*it_str);//calls the superclass function
+            sph_obj->setMaterial(materialslist[it_str-mat_names.begin()]);//calls the superclass function
         }
         else
-            throw std::runtime_error(std::string("material ") + " for sphere object not found");
+            throw std::runtime_error(std::string("material ") + std::string(mat_name) + " for sphere object not found");
 
         TiXmlElement* element = Object->FirstChildElement();
 
@@ -294,9 +290,9 @@ int main(){
     TiXmlDocument doc("./scenes/sample-scene.xml");
     
     scene scene_obj;
-    /*vector<material> materialslist;
-    vector<shared_ptr<object>> objectslist;
-    vector<light> lightslist;*/
+    vector<std::shared_ptr<material>> materialslist;
+    vector<std::shared_ptr<object>> objectslist;
+    vector<light> lightslist;
 
     if(!doc.LoadFile())
         throw std::runtime_error("bad parse");
@@ -321,11 +317,11 @@ int main(){
             std::cout<<"**Parsing Image**"<<std::endl;
             scene_obj.setImage(nodeToImage(a));
         }
-        /*else if(strcmp(a->Value(),"materials")==0)
+        else if(strcmp(a->Value(),"materials")==0)
         {
             for(TiXmlElement* b=a->FirstChildElement();b;b->NextSiblingElement())
             {
-                materialslist.push_back(*(nodeToMaterial(b)));
+                materialslist.push_back(nodeToMaterial(b));
             }
             scene_obj.setMaterials(materialslist);
         }
@@ -347,13 +343,13 @@ int main(){
         }	
         else if(strcmp(a->Value(),"integrator")==0)
             scene_obj.setIntegrator(*(nodeToIntegrator(a)));
-*/
+
     }
 
-    /*scene_obj.rotation_matrix_formation();
+    scene_obj.rotation_matrix_formation();
     scene_obj.translation_matrix_formation();
     scene_obj.inv_translation_matrix_formation();
-    scene_obj.inv_rotation_matrix_formation();*/
+    scene_obj.inv_rotation_matrix_formation();
 
     int w = scene_obj.getImage().getWidth();
     int h = scene_obj.getImage().getHeight();
