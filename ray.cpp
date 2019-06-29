@@ -17,7 +17,7 @@ ray::ray(std::vector<double> origin,std::vector<double> direction)
     {//std::cout<<"Inside 2nd loop"<< sqrt(a)<<std::endl;
 		//double m = direction[i]/sqrt(a);
 		//std::cout<<m<<std::endl;
-        _direction[i] = -1*direction[i]/sqrt(a);  //this line is creating error;
+        _direction[i] = direction[i]/sqrt(a);  //this line is creating error;
        // std::cout<<_direction[i]<<std::endl;
     }
  //   std::cout<<"returning"<<std::endl;

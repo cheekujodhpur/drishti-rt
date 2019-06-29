@@ -320,7 +320,7 @@ void scene::render()
     double Wres = this->getImage().getWidth();
     double Hres = this->getImage().getHeight();
     double fov = this->getCamera().getFov();
-    double H_phy = 2.0*tan(M_PI*fov/360);
+    double H_phy = 2.0*tan((M_PI/180)*fov/2); // (fov/2) is the half angle height-wise
     double delta_H = H_phy/Hres;
     double delta_W = delta_H;
     double W_phy = delta_W*Wres;
