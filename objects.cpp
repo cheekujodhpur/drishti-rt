@@ -5,11 +5,11 @@
 const double INF = std::numeric_limits<double>::infinity();
 
 //object class
-void object::setMaterial(std::shared_ptr<material> m)
+void object::setMaterial(material* m)
 {
 	mat = m;
 }
-std::shared_ptr<material> object::getMaterial()
+material* object::getMaterial()
 {
 	return mat;
 }

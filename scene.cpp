@@ -90,7 +90,7 @@ void scene::setIntegrator(std::shared_ptr<integrator> intg0)
 {
 	intg = intg0;
 }
-void scene::setMaterials(std::vector<std::shared_ptr<material> > materials)
+void scene::setMaterials(std::vector<material* > materials)
 {
 	materialslist = materials;
 }
@@ -140,7 +140,7 @@ std::shared_ptr<integrator> scene::getIntegrator()
 {
 	return intg;
 }
-std::vector<std::shared_ptr<material> > scene::getMaterials()
+std::vector<material* > scene::getMaterials()
 {
 	return materialslist;
 }
@@ -335,7 +335,12 @@ void scene::render()
             if(nearest_obj!=NULL)
             {
             	//extract colour out of that material and fill into arr[i][j][]
-                std::vector<double> diff_color = nearest_obj->getMaterial()->getDiffuse(); //assuming simplemat
+            	//assuming simplemat
+            	std::cout<<"Performing static cast"<<std::endl;
+            	simplemat* sim_mat = static_cast<simplemat*>(nearest_obj->getMaterial());
+            	std::cout<<"static cast successful"<<std::endl;
+            	
+                std::vector<double> diff_color = sim_mat->getDiffuse(); 
                 for(int k=0;k<3;k++)
                     img_arr[i][j][k] = diff_color[k];
             }            

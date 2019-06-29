@@ -8,12 +8,12 @@
 class object{
 
 protected:
-	std::shared_ptr<material> mat;
+	material* mat;
 public:
 	object(){}
 	// object(material m):mat(m){}
-	void setMaterial(std::shared_ptr<material> m);
-	std::shared_ptr<material> getMaterial();
+	void setMaterial(material* m);
+	material* getMaterial();
 	virtual double intersect(ray Ray) = 0; //abstract intersect function
 };
 
