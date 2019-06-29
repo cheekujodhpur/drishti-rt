@@ -7,8 +7,8 @@
 
 class ray{
 
-	std::vector<double> _origin;
- 	std::vector<double> _direction;
+	std::vector<double> _origin = std::vector<double>(3);
+ 	std::vector<double> _direction = std::vector<double>(3);
 
 public:   
     ray(std::vector<double> origin,std::vector<double> direction);

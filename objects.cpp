@@ -47,12 +47,14 @@ double sphere::intersect(ray Ray)
 	double yc = this->center[1];
 	double zc = this->center[2];
 	double r = this->radius;
+	//std::cout<<xc<<" "<<yc<<" "<<r<<std::endl;
 
 	double a = 1;
 	double b = 2*(xd*(x0-xc) + yd*(y0-yc) + zd*(z0-zc));
 	double c = (x0-xc)*(x0-xc) + (y0-yc)*(y0-yc) + (z0-zc)*(z0-zc) - r*r;
 
 	double d = b*b - 4*c;
+	//std::cout<<d<<std::endl;
 	if(d<0)
 		return INF;
 	else

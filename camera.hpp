@@ -9,7 +9,7 @@ class camera
 	std::vector<double> lookat = std::vector<double>(3);
 	std::vector<double> eye = std::vector<double>(3);
 	std::vector<double> up = std::vector<double>(3);
-	std::vector<double> third = std::vector<double>(3);
+	std::vector<double> third ;
 	double fov;	//angle fov;
 	double far;
 	double near;

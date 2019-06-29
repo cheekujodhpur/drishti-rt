@@ -337,6 +337,8 @@ int main(){
     std::cout<<"*Inv Rotation matrix formed*"<<std::endl;
     scene_obj.init_img_arr();
     std::cout<<"*Image array formed*"<<std::endl;
+     //scene_obj.getCamera().setThird();
     scene_obj.render();
+
     std::cout<<"******Rendering complete******"<<std::endl;
 }

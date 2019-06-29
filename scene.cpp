@@ -242,8 +242,15 @@ void scene::translation_matrix_formation()
 std::vector<double> scene::world_to_camera(std::vector<double> world_c)
 {
     std::vector<double> camera_c(world_c.size(),0);
-    camera_c=mat_mult(mat_mult(rotation_mat,translation_mat),world_c);
+    std::vector<double> temp = world_c;
+    temp.push_back(1);
+    std::vector<double> temp2(temp.size(),0);
+    temp2=mat_mult(mat_mult(rotation_mat,translation_mat),temp);
 
+    for(int i=0;i<3;i++)
+    {
+    	camera_c[i]=temp2[i];
+    }
     return camera_c;
 }
 
@@ -251,7 +258,15 @@ std::vector<double> scene::world_to_camera(std::vector<double> world_c)
 std::vector<double> scene::camera_to_world(std::vector<double> camera_c)
 {
     std::vector<double> world_c(camera_c.size(),0);
-    world_c=mat_mult(mat_mult(inv_translation_mat,inv_rotation_mat),camera_c);
+      std::vector<double> temp = camera_c;
+    temp.push_back(1);
+    std::vector<double> temp2(temp.size(),0);
+    temp2=mat_mult(mat_mult(inv_translation_mat,inv_rotation_mat),temp);
+
+    for(int i=0;i<3;i++)
+    {
+    	world_c[i] = temp2[i];
+    }
 
     return world_c;
 }
@@ -280,7 +295,7 @@ void scene::write_to_ppm()
 {
 	int w = this->getImage().getWidth();
 	int h = this->getImage().getHeight();
-    std::ofstream img ("image.ppm");
+    std::ofstream img ("image5.ppm");
     img << "P3" <<std::endl;
     img << w <<" "<< h <<std::endl;
     img << "255" <<std::endl;
@@ -305,40 +320,64 @@ void scene::render()
     double Wres = this->getImage().getWidth();
     double Hres = this->getImage().getHeight();
     double fov = this->getCamera().getFov();
-    double H_phy = 2.0*tan(M_PI/180*fov/2);
+    double H_phy = 2.0*tan(M_PI*fov/360);
     double delta_H = H_phy/Hres;
     double delta_W = delta_H;
     double W_phy = delta_W*Wres;
+  //  std::cout<<Wres<<" "<<Hres<<" "<<fov<<" "<<H_phy<<" "<<delta_H<<" "<<delta_W<<" "<<W_phy<<std::endl;
 
     std::vector<double> y = normalise(this->getCamera().getThird());
     std::vector<double> z = normalise(this->getCamera().getUp());
     std::vector<double> x = normalise(this->getCamera().getLookat());
-
+  //  std::cout<<"Entering loop"<<std::endl;
     for(int i=0;i<Wres;i++)
     {
         for(int j=0;j<Hres;j++)
-        {
+        {	//std::cout<<"Yo"<<std::endl;
             std::vector<double> r(3,0);
             std::vector<double> R_in_cam(3,0);
             for(int k=0;k<3;k++)
-            {
+            {//	std::cout<<y[k]<<std::endl;
 				r[k]= (i-Wres/2)*delta_W*y[k] + (Hres/2-j)*delta_H*z[k];
+		//		std::cout<<r[k]<<" "<<x[k]<<std::endl;
 				R_in_cam[k]= r[k] + x[k];
             }
 
             std::vector<double> origin = this->getCamera().getEye();
-            std::vector<double> R_in_world = camera_to_world(R_in_cam);
-            ray Ray(origin,R_in_world); //ray generated, originating from camera 
 
+        //    std::cout<<"About to transform"<<std::endl;
+
+            std::vector<double> R_in_world = camera_to_world(R_in_cam);
+            if((i==512) && (j==384))
+            {
+
+
+            	for(int k=0;k<3;k++)
+            	{
+            		std::cout<<R_in_cam[k]<<" ";
+            	}
+            	for(int k=0;k<3;k++)
+            	{
+            		std::cout<<R_in_world[k]<<" ";
+            	}
+            }
+
+          /* for(int i=0;i<3;i++)
+            {
+            	std::cout<<origin[i]<<" "<<R_in_world[i]<<" "<<R_in_cam[i]<<std::endl;
+            }*/
+         //   std::cout<<"After transformation"<<std::endl;
+            ray Ray(origin,R_in_world); //ray generated, originating from camera 
+           // std::cout<<"Ray generated"<<std::endl;
         	//call intersect function on all objects and find the nearest one which intersects
             std::shared_ptr<object> nearest_obj = this->intersect(Ray);
             if(nearest_obj!=NULL)
             {
             	//extract colour out of that material and fill into arr[i][j][]
             	//assuming simplemat
-            	std::cout<<"Performing static cast"<<std::endl;
+            //	std::cout<<"Performing static cast"<<std::endl;
             	simplemat* sim_mat = static_cast<simplemat*>(nearest_obj->getMaterial());
-            	std::cout<<"static cast successful"<<std::endl;
+            //	std::cout<<"static cast successful"<<std::endl;
             	
                 std::vector<double> diff_color = sim_mat->getDiffuse(); 
                 for(int k=0;k<3;k++)
@@ -346,6 +385,7 @@ void scene::render()
             }            
         }
     }
+    std::cout<<"Out of loops"<<std::endl;
     write_to_ppm();
 }
 
