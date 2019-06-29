@@ -335,27 +335,27 @@ void scene::render()
         for(int j=0;j<Hres;j++)
         {	//std::cout<<"Yo"<<std::endl;
             std::vector<double> r(3,0);
-            std::vector<double> R_in_cam(3,0);
+            std::vector<double> R_in_world(3,0);
             for(int k=0;k<3;k++)
             {//	std::cout<<y[k]<<std::endl;
 				r[k]= (i-Wres/2)*delta_W*y[k] + (Hres/2-j)*delta_H*z[k];
 		//		std::cout<<r[k]<<" "<<x[k]<<std::endl;
-				R_in_cam[k]= r[k] + x[k];
+				R_in_world[k]= r[k] + x[k];
             }
 
             std::vector<double> origin = this->getCamera().getEye();
 
         //    std::cout<<"About to transform"<<std::endl;
 
-            std::vector<double> R_in_world = camera_to_world(R_in_cam);
+          //  std::vector<double> R_in_world = camera_to_world(R_in_cam);
             if((i==512) && (j==384))
             {
 
 
-            	for(int k=0;k<3;k++)
+            /*	for(int k=0;k<3;k++)
             	{
             		std::cout<<R_in_cam[k]<<" ";
-            	}
+            	}*/
             	for(int k=0;k<3;k++)
             	{
             		std::cout<<R_in_world[k]<<" ";
