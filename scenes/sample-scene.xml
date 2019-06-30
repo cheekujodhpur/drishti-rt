@@ -70,15 +70,15 @@
 
 <objects>
 	<sphere material="diffuse_red">
-		<center vector3="15.0 25 80.0" />
+		<center vector3="15.0 25 200" />
 		<radius double="20" />
 	</sphere>
 	<sphere material="diffuse_green">
-		<center vector3="-15 -5 80.5" />
+		<center vector3="-15 -5 205" />
 		<radius double="15" />
 	</sphere>
 	<sphere material="diffuse_blue">
-		<center vector3="15 -25 80.5" />
+		<center vector3="15 -25 205" />
 		<radius double="15" />
 	</sphere>
 </objects>

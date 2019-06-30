@@ -379,7 +379,7 @@ void scene::render()
                 for(int k=0;k<3;k++)
                     img_arr[i][j][k] = diff_color[k];
 
-                /*for(int k=0;k<lightslist.size();k++)
+                for(int k=0;k<lightslist.size();k++)
 		        {
 		        	if(typeid(*lightslist[k])==typeid(pointlight))
 		    		{
@@ -405,7 +405,7 @@ void scene::render()
                 				img_arr[i][j][l] = img_arr[i][j][l] + lightcolor[l]*diff_color[l]*cosine;
 		    			}
 		    		}
-		        }*/
+		        }
             }
 
         }
