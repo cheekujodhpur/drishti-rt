@@ -19,7 +19,7 @@ class scene{
     std::shared_ptr<integrator> intg;
     std::vector<material* > materialslist;
     std::vector<std::shared_ptr<object> > objectslist;
-    std::vector<std::shared_ptr<light> > lightslist;
+    std::vector<light* > lightslist;
     std::vector<std::vector<double> > rotation_mat;
     std::vector<std::vector<double> > translation_mat;
     std::vector<std::vector<double> > inv_rotation_mat;
@@ -32,14 +32,14 @@ public:
 	void setIntegrator(std::shared_ptr<integrator> intg0);
 	void setMaterials(std::vector<material* > materials);
 	void setObjects(std::vector<std::shared_ptr<object> > objects);
-	void setLights(std::vector<std::shared_ptr<light> > lights);
+	void setLights(std::vector<light* > lights);
 	void init_img_arr();
 	camera getCamera();
 	image getImage();
 	std::shared_ptr<integrator> getIntegrator();
 	std::vector<material* > getMaterials();
 	std::vector<std::shared_ptr<object> > getObjects();
-	std::vector<std::shared_ptr<light> > getLights();
+	std::vector<light* > getLights();
 	void rotation_matrix_formation();
 	void translation_matrix_formation();
 	void inv_translation_matrix_formation();

@@ -16,5 +16,7 @@ public:
 	void setPos(std::vector<double> pos);
 	void setKa(double ka0);
 	void setColor(std::vector<double> color0);
+	std::vector<double> getPos();
+	std::vector<double> getColor();
 };
 #endif

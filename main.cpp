@@ -211,7 +211,7 @@ std::shared_ptr<object> nodeToObject(TiXmlElement* Object, scene scene_obj)
 
 }
 
-std::shared_ptr<light> nodeToLight(TiXmlElement* Light)
+light* nodeToLight(TiXmlElement* Light)
 {
 	if(strcmp(Light->Value(),"pointlight")==0) //point light source
 	{
@@ -231,7 +231,7 @@ std::shared_ptr<light> nodeToLight(TiXmlElement* Light)
         if(element && strcmp(element->Value(),"ka")==0)
             plight->setKa(doubleVal(element,"double"));
         
-        return std::shared_ptr<light>(plight);
+        return plight;
 	}
 	else
 		throw std::runtime_error(std::string("bad ") + "light element: " + Light->Value());
@@ -265,7 +265,7 @@ int main(){
     scene scene_obj;
     std::vector<material* > materialslist;
     std::vector<std::shared_ptr<object> > objectslist;
-    std::vector<std::shared_ptr<light> > lightslist;
+    std::vector<light* > lightslist;
 
     if(!doc.LoadFile())
         throw std::runtime_error("bad parse");

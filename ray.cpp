@@ -3,23 +3,7 @@
 ray::ray(std::vector<double> origin,std::vector<double> direction)
 {
     _origin = origin;
-  //  _direction = direction;
-     double a = 0;
-    // std::cout<<"Origin done"<<std::endl;
-    for(int i=0;i<3;i++)
-    {
-        a = a + direction[i]*direction[i];
-    }
-  //  std::cout<<"a calculated"<<" "<<a<<std::endl;
-
-
-    for(int i=0;i<3;i++)
-    {//std::cout<<"Inside 2nd loop"<< sqrt(a)<<std::endl;
-		//double m = direction[i]/sqrt(a);
-		//std::cout<<m<<std::endl;
-        _direction[i] = direction[i]/sqrt(a);  //this line is creating error;
-       // std::cout<<_direction[i]<<std::endl;
-    }
+    _direction = direction;
  //   std::cout<<"returning"<<std::endl;
 }
 
