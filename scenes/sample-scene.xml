@@ -85,13 +85,8 @@
 
 <lights>
 	<pointlight>
-		<position vector3="200 1000.0 7000.0" />
-		<color color="2.0 2.0 2.0" />
-		<ka double="0.05" />
-	</pointlight>
-	<pointlight>
-		<position vector3="-500 1000.0 9000.0" />
-		<color color="2.0 2.0 2.0" />
+		<position vector3="15 46 200" />
+		<color color="1.0 1.0 1.0" />
 		<ka double="0.05" />
 	</pointlight>
 </lights>

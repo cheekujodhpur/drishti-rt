@@ -351,7 +351,7 @@ void scene::render()
             std::vector<double> origin = cam.getEye();//in world coordinates
         //    std::cout<<"About to transform"<<std::endl;
 
-            if((i==512) && (j==384))
+            /*if((i==512) && (j==384))
             {
             	std::cout<<"R_in_world = ";
             	for(int k=0;k<3;k++)
@@ -363,7 +363,7 @@ void scene::render()
             	{
             		std::cout<<x[k]<<" ";
             	}
-            }
+            }*/
          //   std::cout<<"After transformation"<<std::endl;
             ray viewingRay(origin,normalise(R_in_world)); //ray generated, originating from camera 
            // std::cout<<"Ray generated"<<std::endl;
@@ -381,8 +381,9 @@ void scene::render()
 
                 for(int k=0;k<lightslist.size();k++)
 		        {
-		        	if(typeid(*lightslist[k])==typeid(pointlight))
+		        	if(typeid(*lightslist[k])==typeid(pointlight))//This is NOT WORKING
 		    		{
+		    			std::cout<<"Entering illumination mode"<<std::endl;
 		    			pointlight* plight = static_cast<pointlight*>(lightslist[k]);
 		    			std::vector<double> lightpos = plight->getPos();
 		    			double intersect_param = nearest_obj->intersect(viewingRay);
@@ -400,9 +401,9 @@ void scene::render()
 		    				std::vector<double> viewing_dirn = viewingRay.get_direction();
 		    				double cosine = 0;
 		    				for(int l=0;l<3;l++)
-		    					cosine = cosine + illumination_dirn[l]*viewing_dirn[l];
+		    					cosine += illumination_dirn[l]*viewing_dirn[l];
 		    				for(int l=0;l<3;l++)
-                				img_arr[i][j][l] = img_arr[i][j][l] + lightcolor[l]*diff_color[l]*cosine;
+                				img_arr[i][j][l] += lightcolor[l]*diff_color[l]*cosine;
 		    			}
 		    		}
 		        }
