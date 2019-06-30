@@ -398,7 +398,7 @@ void scene::render()
 		    			ray illuminationRay(intersectPoint,illumination_dirn);
 
 		    			std::shared_ptr<object> blocking_object = this->intersect(illuminationRay);
-		    			if(blocking_object != NULL)
+		    			if(blocking_object == NULL)
 		    			{
 		    				std::vector<double> lightcolor = plight->getColor();
 		    				std::vector<double> viewing_dirn = viewingRay.get_direction();
@@ -407,6 +407,27 @@ void scene::render()
 		    					cosine += illumination_dirn[l]*viewing_dirn[l];
 		    				for(int l=0;l<3;l++)
                 				img_arr[i][j][l] += lightcolor[l]*diff_color[l]*cosine;
+		    			}
+		    			else
+		    			{
+		    				double intersect_param_block = blocking_object->intersect(illuminationRay);
+		    				double intersect_param_lightsource = illuminationRay.get_param(lightpos);
+
+		    				if(intersect_param_lightsource < intersect_param_block)
+		    				{
+		    						std::vector<double> lightcolor = plight->getColor();
+		    						std::vector<double> viewing_dirn = viewingRay.get_direction();
+		    						double cosine = 0;
+		    						for(int l=0;l<3;l++)
+		    						cosine += illumination_dirn[l]*viewing_dirn[l];
+		    						for(int l=0;l<3;l++)
+                					img_arr[i][j][l] += lightcolor[l]*diff_color[l]*cosine;
+		    				}
+		    				else
+		    				{
+		    					//ray blocked by an object.
+		    				}
+
 		    			}
 		    		}
 		        }

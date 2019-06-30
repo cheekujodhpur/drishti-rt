@@ -17,7 +17,7 @@ std::vector<double> ray::get_direction()                                     //n
     return _direction;
 }
 
-std::vector<double> ray::get_point(int x) //returns point at parameter x
+std::vector<double> ray::get_point(double x) //returns point at parameter x
 {   std::vector<double> new1(3,0);
     std::vector<double> new2(3,0);
     for(int i=0;i<3;i++)
@@ -28,6 +28,11 @@ std::vector<double> ray::get_point(int x) //returns point at parameter x
 
     return new2;
 
+}
+
+double ray::get_param(std::vector<double> pos)
+{
+	double t = (pos[0]-_origin[0])/_direction[0];
 }
 
 

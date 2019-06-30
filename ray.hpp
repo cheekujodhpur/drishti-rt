@@ -14,7 +14,8 @@ public:
     ray(std::vector<double> origin,std::vector<double> direction);
     std::vector<double> get_direction();
     std::vector<double> get_origin();
-    std::vector<double> get_point(int x);
+    std::vector<double> get_point(double x);
+    double get_param(std::vector<double> pos)
 
 };
 
