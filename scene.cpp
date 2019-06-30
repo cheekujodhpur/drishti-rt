@@ -122,10 +122,12 @@ void scene::init_img_arr()
     {
         for(int j=0;j<h;j++)
         {
-            img_arr[i][j][0] = v[0];
+            /*img_arr[i][j][0] = v[0];
             img_arr[i][j][1] = v[1];
-            img_arr[i][j][2] = v[2];
-            // if(i==0 && j==0) std::cout<<"("<<v[0]<<","<<v[1]<<","<<v[2]<<")"<<std::endl;
+            img_arr[i][j][2] = v[2];*/
+            img_arr[i][j][0] = 0;
+            img_arr[i][j][1] = 0;
+            img_arr[i][j][2] = 0;
         }
     }
 }
@@ -299,7 +301,7 @@ void scene::write_to_ppm()
 {
 	int w = img.getWidth();
 	int h = img.getHeight();
-    std::ofstream imgstream ("image6.ppm");
+    std::ofstream imgstream ("image8.ppm");
     imgstream << "P3" <<std::endl;
     imgstream << w <<" "<< h <<std::endl;
     imgstream << "255" <<std::endl;
@@ -392,13 +394,31 @@ void scene::render()
 		    			double intersect_param = nearest_obj->intersect(viewingRay);
 		    			std::vector<double> intersectPoint = viewingRay.get_point(intersect_param);
 		    			std::vector<double> illumination_dirn(3,0);
-		    			for(int j=0;j<3;j++)
-		    				illumination_dirn[j] = lightpos[j] - intersectPoint[j];
+		    			for(int l=0;l<3;l++)
+		    				illumination_dirn[l] = lightpos[l] - intersectPoint[l];
 		    			illumination_dirn = normalise(illumination_dirn);
 		    			ray illuminationRay(intersectPoint,illumination_dirn);
 
 		    			std::shared_ptr<object> blocking_object = this->intersect(illuminationRay);
-		    			if(blocking_object == NULL)
+
+		    			double block_point_param = 0;//initialisation for block point
+		    			double light_source_param = 0;//initialisation for light source point
+		    			
+		    			if(blocking_object != NULL)
+		    			{
+		    				block_point_param = blocking_object->intersect(illuminationRay);
+			    			
+			    			for(int l=0;l<3;l++)
+			    			{
+			    				if(illumination_dirn[l]!=0)
+			    				{
+			    					light_source_param = (lightpos[l]-intersectPoint[l])/illumination_dirn[l];
+			    					break;
+			    				}
+			    			}
+		    			}
+		    			
+		    			if(blocking_object == NULL||light_source_param<block_point_param)
 		    			{
 		    				std::vector<double> lightcolor = plight->getColor();
 		    				std::vector<double> viewing_dirn = viewingRay.get_direction();
@@ -432,7 +452,6 @@ void scene::render()
 		    		}
 		        }
             }
-
         }
     }
     std::cout<<"Out of loops"<<std::endl;
