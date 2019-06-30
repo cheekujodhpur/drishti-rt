@@ -337,27 +337,22 @@ void scene::render()
         for(int j=0;j<Hres;j++)
         {	//std::cout<<"Yo"<<std::endl;
             std::vector<double> r(3,0);
-            std::vector<double> R_in_world(3,0);
-            for(int k=0;k<3;k++)
+            std::vector<double> R_in_cam(3,0);
+            R_in_cam[0] = 1; //these are ACTUALLY in camera coordinates
+            R_in_cam[1] = (0.5*Wres-i)*delta_W;
+            R_in_cam[2] = (0.5*Hres-j)*delta_H;
+            /*for(int k=0;k<3;k++)
             {//	std::cout<<y[k]<<std::endl;
 				r[k]= (0.5*Wres-i)*delta_W*y[k] + (0.5*Hres-j)*delta_H*z[k];
 		//		std::cout<<r[k]<<" "<<x[k]<<std::endl;
 				R_in_world[k]= r[k] + x[k];
-            }
-
+            }*/
+            std::vector<double> R_in_world = camera_to_world(R_in_cam); //transforming direcion vector to world
             std::vector<double> origin = cam.getEye();//in world coordinates
-
         //    std::cout<<"About to transform"<<std::endl;
 
-           	R_in_world = camera_to_world(R_in_world);//this is giving wrong result
             if((i==512) && (j==384))
             {
-
-
-            /*	for(int k=0;k<3;k++)
-            	{
-            		std::cout<<R_in_cam[k]<<" ";
-            	}*/
             	std::cout<<"R_in_world = ";
             	for(int k=0;k<3;k++)
             	{
@@ -369,13 +364,8 @@ void scene::render()
             		std::cout<<x[k]<<" ";
             	}
             }
-
-          /* for(int i=0;i<3;i++)
-            {
-            	std::cout<<origin[i]<<" "<<R_in_world[i]<<" "<<R_in_cam[i]<<std::endl;
-            }*/
          //   std::cout<<"After transformation"<<std::endl;
-            ray viewingRay(origin,R_in_world); //ray generated, originating from camera 
+            ray viewingRay(origin,normalise(R_in_world)); //ray generated, originating from camera 
            // std::cout<<"Ray generated"<<std::endl;
         	//call intersect function on all objects and find the nearest one which intersects
             std::shared_ptr<object> nearest_obj = this->intersect(viewingRay);
