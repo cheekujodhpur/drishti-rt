@@ -23,3 +23,7 @@ std::vector<double> pointlight::getColor()
 {
 	return color;
 }
+std::string pointlight::source_type()
+{
+	return "pointlight";
+}

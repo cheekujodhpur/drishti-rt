@@ -2,10 +2,12 @@
 #define __LIGHTS_HPP_INCLUDED__
 
 #include<vector>
+#include <string>
 //using namespace std;
 
 class light{
-
+public:
+	virtual std::string source_type()=0;
 };
 
 class pointlight: public light{
@@ -18,5 +20,6 @@ public:
 	void setColor(std::vector<double> color0);
 	std::vector<double> getPos();
 	std::vector<double> getColor();
+	std::string source_type();
 };
 #endif

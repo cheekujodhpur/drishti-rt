@@ -4,6 +4,8 @@
 #include <math.h>
 #include <fstream>
 #include <iostream>
+#include <typeinfo>
+#include <string.h>
 
 const double INF = std::numeric_limits<double>::infinity();
 
@@ -381,10 +383,11 @@ void scene::render()
 
                 for(int k=0;k<lightslist.size();k++)
 		        {
-		        	if(typeid(*lightslist[k])==typeid(pointlight))//This is NOT WORKING
+		        	light* lightsource = lightslist[k];
+		        	if(strcmp(lightsource->source_type().c_str(),"pointlight")==0)//problematic point
 		    		{
-		    			std::cout<<"Entering illumination mode"<<std::endl;
-		    			pointlight* plight = static_cast<pointlight*>(lightslist[k]);
+		    			// std::cout<<"Entering illumination mode"<<std::endl;
+		    			pointlight* plight = static_cast<pointlight*>(lightsource);
 		    			std::vector<double> lightpos = plight->getPos();
 		    			double intersect_param = nearest_obj->intersect(viewingRay);
 		    			std::vector<double> intersectPoint = viewingRay.get_point(intersect_param);
