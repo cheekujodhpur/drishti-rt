@@ -380,8 +380,8 @@ void scene::render()
             	simplemat* sim_mat = static_cast<simplemat*>(nearest_obj->getMaterial());
             	
                 std::vector<double> diff_color = sim_mat->getDiffuse(); 
-                for(int k=0;k<3;k++)
-                    img_arr[i][j][k] = diff_color[k];
+                /*for(int k=0;k<3;k++)
+                    img_arr[i][j][k] = diff_color[k];*/
 
                 for(int k=0;k<lightslist.size();k++)
 		        {
