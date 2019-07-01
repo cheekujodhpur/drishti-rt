@@ -61,10 +61,10 @@ double sphere::intersect(ray Ray)
 	{
 		double t0 = (-b - sqrt(d))/2;
 		double t1 = (-b + sqrt(d))/2;
-
-		if((t0 < 0) && (t1 < 0)) //t cant be negative by definition of ray.
+		double eff_zero = 1e-10;
+		if((t0 < eff_zero) && (t1 < eff_zero)) //t cant be negative by definition of ray.
 			return INF;
-		else if((t0 > 0) && (t1 > 0)) 
+		else if((t0 > eff_zero) && (t1 > eff_zero)) 
 			return std::min(t0,t1); //we need first positive root
 		else
 			return std::max(t0,t1); //take the positive one among the two

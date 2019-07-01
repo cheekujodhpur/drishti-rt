@@ -70,14 +70,14 @@
 
 <objects>
 	<sphere material="diffuse_red">
-		<center vector3="0 0 50"/>
+		<center vector3="0 0 100"/>
 		<radius double="20" />
 	</sphere>
 </objects>
 
 <lights>
 	<pointlight>
-		<position vector3="40 0 50" />
+		<position vector3="40 0 100" />
 		<color color="2.0 2.0 2.0" />
 		<ka double="0.05" />
 	</pointlight>

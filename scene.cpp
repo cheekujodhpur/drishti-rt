@@ -370,9 +370,10 @@ void scene::render()
             }*/
          //   std::cout<<"After transformation"<<std::endl;
             ray viewingRay(origin,normalise(R_in_world)); //ray generated, originating from camera 
-           // std::cout<<"Ray generated"<<std::endl;
+
         	//call intersect function on all objects and find the nearest one which intersects
             std::shared_ptr<object> nearest_obj = this->intersect(viewingRay);
+
             if(nearest_obj!=NULL)
             {
             	//extract colour out of that material and fill into arr[i][j][]
@@ -417,8 +418,8 @@ void scene::render()
 			    				}
 			    			}
 		    			}
-		    			
-		    			if(blocking_object == NULL||light_source_param<block_point_param)
+		    			double eff_zero = 1e-15;
+		    			if(blocking_object == NULL||light_source_param<block_point_param||block_point_param<eff_zero)
 		    			{
 		    				std::vector<double> lightcolor = plight->getColor();
 		    				std::vector<double> viewing_dirn = viewingRay.get_direction();
@@ -427,27 +428,6 @@ void scene::render()
 		    					cosine += illumination_dirn[l]*viewing_dirn[l];
 		    				for(int l=0;l<3;l++)
                 				img_arr[i][j][l] += lightcolor[l]*diff_color[l]*cosine;
-		    			}
-		    			else
-		    			{
-		    				double intersect_param_block = blocking_object->intersect(illuminationRay);
-		    				double intersect_param_lightsource = illuminationRay.get_param(lightpos);
-
-		    				if(intersect_param_lightsource < intersect_param_block)
-		    				{
-		    						std::vector<double> lightcolor = plight->getColor();
-		    						std::vector<double> viewing_dirn = viewingRay.get_direction();
-		    						double cosine = 0;
-		    						for(int l=0;l<3;l++)
-		    						cosine += illumination_dirn[l]*viewing_dirn[l];
-		    						for(int l=0;l<3;l++)
-                					img_arr[i][j][l] += lightcolor[l]*diff_color[l]*cosine;
-		    				}
-		    				else
-		    				{
-		    					//ray blocked by an object.
-		    				}
-
 		    			}
 		    		}
 		        }
