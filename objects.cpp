@@ -55,13 +55,14 @@ double sphere::intersect(ray Ray)
 
 	double d = b*b - 4*c;
 	//std::cout<<d<<std::endl;
-	if(d<0)
+	double eff_zero = 1e-8;
+	if(d<eff_zero)
 		return INF;
 	else
 	{
 		double t0 = (-b - sqrt(d))/2;
 		double t1 = (-b + sqrt(d))/2;
-		double eff_zero = 1e-10;
+		
 		if((t0 < eff_zero) && (t1 < eff_zero)) //t cant be negative by definition of ray.
 			return INF;
 		else if((t0 > eff_zero) && (t1 > eff_zero)) 

@@ -282,28 +282,28 @@ int main(){
         std::cout<<"Root->Child being parsed: "<<a->Value()<<std::endl;
         if(strcmp(a->Value(),"camera")==0)
         {   
-            std::cout<<"**Parsing Camera**"<<std::endl;
+            // std::cout<<"**Parsing Camera**"<<std::endl;
             scene_obj.setCamera(nodeToCamera(a));
         }
         else if(strcmp(a->Value(),"image")==0)
         {
-            std::cout<<"**Parsing Image**"<<std::endl;
+            // std::cout<<"**Parsing Image**"<<std::endl;
             scene_obj.setImage(nodeToImage(a));
         }
         else if(strcmp(a->Value(),"materials")==0)
         {
-            std::cout<<"**Parsing Materials**"<<std::endl;
+            // std::cout<<"**Parsing Materials**"<<std::endl;
             int i=0;
             for(TiXmlElement* b=a->FirstChildElement();b;b=b->NextSiblingElement())
             {
-                std::cout<<"**Parsing Material**"<<i++<<std::endl;
+                // std::cout<<"**Parsing Material**"<<i++<<std::endl;
                 materialslist.push_back(nodeToMaterial(b));
             }
             scene_obj.setMaterials(materialslist);
         }
         else if(strcmp(a->Value(),"objects")==0)
         {
-            std::cout<<"**Parsing Objects**"<<std::endl;
+            // std::cout<<"**Parsing Objects**"<<std::endl;
         	for(TiXmlElement* b=a->FirstChildElement();b;b=b->NextSiblingElement())
         	{
         		objectslist.push_back(nodeToObject(b,scene_obj));
@@ -312,7 +312,7 @@ int main(){
         }	
         else if(strcmp(a->Value(),"lights")==0)
         {
-            std::cout<<"**Parsing Lights**"<<std::endl;
+            // std::cout<<"**Parsing Lights**"<<std::endl;
             for(TiXmlElement* b=a->FirstChildElement();b;b=b->NextSiblingElement())
         	{
         		lightslist.push_back(nodeToLight(b));
@@ -321,7 +321,7 @@ int main(){
         }	
         else if(strcmp(a->Value(),"integrator")==0)
             {
-                std::cout<<"**Parsing Integrator**"<<std::endl;
+                // std::cout<<"**Parsing Integrator**"<<std::endl;
                 scene_obj.setIntegrator(nodeToIntegrator(a->FirstChildElement()));
             }
     }

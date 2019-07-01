@@ -122,12 +122,15 @@ void scene::init_img_arr()
     {
         for(int j=0;j<h;j++)
         {
-            /*img_arr[i][j][0] = v[0];
+        	//with ambient-->
+            img_arr[i][j][0] = v[0];
             img_arr[i][j][1] = v[1];
-            img_arr[i][j][2] = v[2];*/
-            img_arr[i][j][0] = 0;
+            img_arr[i][j][2] = v[2];
+            
+        	//without ambient-->
+            /*img_arr[i][j][0] = 0;
             img_arr[i][j][1] = 0;
-            img_arr[i][j][2] = 0;
+            img_arr[i][j][2] = 0;*/
         }
     }
 }
@@ -301,7 +304,7 @@ void scene::write_to_ppm()
 {
 	int w = img.getWidth();
 	int h = img.getHeight();
-    std::ofstream imgstream ("image8.ppm");
+    std::ofstream imgstream ("image9.ppm");
     imgstream << "P3" <<std::endl;
     imgstream << w <<" "<< h <<std::endl;
     imgstream << "255" <<std::endl;
@@ -330,6 +333,8 @@ void scene::render()
     double delta_H = H_phy/Hres;
     double delta_W = delta_H;
     double W_phy = delta_W*Wres;
+
+    double ambient_factor = 0.05;
   //  std::cout<<Wres<<" "<<Hres<<" "<<fov<<" "<<H_phy<<" "<<delta_H<<" "<<delta_W<<" "<<W_phy<<std::endl;
 
     std::vector<double> y = normalise(cam.getThird());
@@ -355,18 +360,9 @@ void scene::render()
             std::vector<double> origin = cam.getEye();//in world coordinates
         //    std::cout<<"About to transform"<<std::endl;
 
-            /*if((i==512) && (j==384))
+            /*if((i==520) && (j==384))
             {
-            	std::cout<<"R_in_world = ";
-            	for(int k=0;k<3;k++)
-            	{
-            		std::cout<<R_in_world[k]<<" ";//should be getting lookat
-            	}
-            	std::cout<<std::endl<<"lookat = "<<std::endl;
-            	for(int k=0;k<3;k++)
-            	{
-            		std::cout<<x[k]<<" ";
-            	}
+            	std::cout<<"testing slightly off-center (to the right) pixel"<<std::endl;
             }*/
          //   std::cout<<"After transformation"<<std::endl;
             ray viewingRay(origin,normalise(R_in_world)); //ray generated, originating from camera 
@@ -381,39 +377,40 @@ void scene::render()
             	simplemat* sim_mat = static_cast<simplemat*>(nearest_obj->getMaterial());
             	
                 std::vector<double> diff_color = sim_mat->getDiffuse(); 
-                /*for(int k=0;k<3;k++)
-                    img_arr[i][j][k] = diff_color[k];*/
+                for(int k=0;k<3;k++)
+                    img_arr[i][j][k] = diff_color[k]*ambient_factor;
 
                 for(int k=0;k<lightslist.size();k++)
 		        {
 		        	light* lightsource = lightslist[k];
 		        	if(strcmp(lightsource->source_type().c_str(),"pointlight")==0)//problematic point
 		    		{
-		    			// std::cout<<"Entering illumination mode"<<std::endl;
+		    			// std::cout<<"Entering shadow mode"<<std::endl;
+		    			std::vector<double> lightpos;
 		    			pointlight* plight = static_cast<pointlight*>(lightsource);
-		    			std::vector<double> lightpos = plight->getPos();
+		    			lightpos = plight->getPos();
 		    			double intersect_param = nearest_obj->intersect(viewingRay);
 		    			std::vector<double> intersectPoint = viewingRay.get_point(intersect_param);
-		    			std::vector<double> illumination_dirn(3,0);
+		    			std::vector<double> shadow_dirn(3,0);
 		    			for(int l=0;l<3;l++)
-		    				illumination_dirn[l] = lightpos[l] - intersectPoint[l];
-		    			illumination_dirn = normalise(illumination_dirn);
-		    			ray illuminationRay(intersectPoint,illumination_dirn);
+		    				shadow_dirn[l] = lightpos[l] - intersectPoint[l];
+		    			shadow_dirn = normalise(shadow_dirn);
+		    			ray shadowRay(intersectPoint,shadow_dirn);
 
-		    			std::shared_ptr<object> blocking_object = this->intersect(illuminationRay);
+		    			std::shared_ptr<object> blocking_object = this->intersect(shadowRay);
 
 		    			double block_point_param = 0;//initialisation for block point
 		    			double light_source_param = 0;//initialisation for light source point
 		    			
 		    			if(blocking_object != NULL)
 		    			{
-		    				block_point_param = blocking_object->intersect(illuminationRay);
+		    				block_point_param = blocking_object->intersect(shadowRay);
 			    			
 			    			for(int l=0;l<3;l++)
 			    			{
-			    				if(illumination_dirn[l]!=0)
+			    				if(shadow_dirn[l]!=0)
 			    				{
-			    					light_source_param = (lightpos[l]-intersectPoint[l])/illumination_dirn[l];
+			    					light_source_param = (lightpos[l]-intersectPoint[l])/shadow_dirn[l];
 			    					break;
 			    				}
 			    			}
@@ -425,7 +422,8 @@ void scene::render()
 		    				std::vector<double> viewing_dirn = viewingRay.get_direction();
 		    				double cosine = 0;
 		    				for(int l=0;l<3;l++)
-		    					cosine += illumination_dirn[l]*viewing_dirn[l];
+		    					cosine -= shadow_dirn[l]*viewing_dirn[l];
+		    				cosine = std::max(cosine,0.0);
 		    				for(int l=0;l<3;l++)
                 				img_arr[i][j][l] += lightcolor[l]*diff_color[l]*cosine;
 		    			}
