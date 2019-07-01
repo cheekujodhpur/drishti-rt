@@ -122,12 +122,12 @@ void scene::init_img_arr()
     {
         for(int j=0;j<h;j++)
         {
-            /*img_arr[i][j][0] = v[0];
+            img_arr[i][j][0] = v[0];
             img_arr[i][j][1] = v[1];
-            img_arr[i][j][2] = v[2];*/
-            img_arr[i][j][0] = 0;
+            img_arr[i][j][2] = v[2];
+           /* img_arr[i][j][0] = 0;
             img_arr[i][j][1] = 0;
-            img_arr[i][j][2] = 0;
+            img_arr[i][j][2] = 0;*/
         }
     }
 }
@@ -381,8 +381,8 @@ void scene::render()
             	simplemat* sim_mat = static_cast<simplemat*>(nearest_obj->getMaterial());
             	
                 std::vector<double> diff_color = sim_mat->getDiffuse(); 
-                /*for(int k=0;k<3;k++)
-                    img_arr[i][j][k] = diff_color[k];*/
+                for(int k=0;k<3;k++)
+                    img_arr[i][j][k] = 0.1*diff_color[k];
 
                 for(int k=0;k<lightslist.size();k++)
 		        {
