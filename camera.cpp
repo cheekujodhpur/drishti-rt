@@ -1,17 +1,6 @@
 #include "camera.hpp"
 
-//using namespace std;
 
-
-/*camera(vector<double> look, vector<double> eye0, vector<double> up0, double fov0, double far0, double near0)
-{
-	lookat = look;
-	eye = eye0;
-	up = up0;
-	fov = fov0;
-	near = near0;
-	far = far0;
-}*/
 void camera::setLookat(std::vector<double> look)
 {
 	lookat = look;

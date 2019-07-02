@@ -415,8 +415,8 @@ void scene::render()
 			    				}
 			    			}
 		    			}
-		    			double eff_zero = 1e-15;
-		    			if(blocking_object == NULL||light_source_param<block_point_param||block_point_param<eff_zero)
+		    			
+		    			if(blocking_object == NULL||light_source_param<block_point_param||block_point_param<eff_zero_shadow)
 		    			{
 		    				std::vector<double> lightcolor = plight->getColor();
 		    				std::vector<double> viewing_dirn = viewingRay.get_direction();

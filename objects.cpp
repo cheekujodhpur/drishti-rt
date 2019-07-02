@@ -55,17 +55,17 @@ double sphere::intersect(ray Ray)
 
 	double d = b*b - 4*c;
 	//std::cout<<d<<std::endl;
-	double eff_zero = 1e-8;
-	if(d<eff_zero)
+	
+	if(d<eff_zero_intersection)
 		return INF;
 	else
 	{
 		double t0 = (-b - sqrt(d))/2;
 		double t1 = (-b + sqrt(d))/2;
 		
-		if((t0 < eff_zero) && (t1 < eff_zero)) //t cant be negative by definition of ray.
+		if((t0 < eff_zero_intersection) && (t1 < eff_zero_intersection)) //t cant be negative by definition of ray.
 			return INF;
-		else if((t0 > eff_zero) && (t1 > eff_zero)) 
+		else if((t0 > eff_zero_intersection) && (t1 > eff_zero_intersection)) 
 			return std::min(t0,t1); //we need first positive root
 		else
 			return std::max(t0,t1); //take the positive one among the two

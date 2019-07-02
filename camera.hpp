@@ -10,12 +10,11 @@ class camera
 	std::vector<double> eye = std::vector<double>(3);
 	std::vector<double> up = std::vector<double>(3);
 	std::vector<double> third ;
-	double fov;	//angle fov;
+	double fov;	//angle fov (in degrees)
 	double far;
 	double near;
 
 public:
-	// camera(vector<double> look, vector<double> eye0, vector<double> up0, double fov0, double far0, double near0);
 	void setLookat(std::vector<double> look);
 	void setThird();
 	void setEye(std::vector<double> eye0);

@@ -70,19 +70,28 @@
 
 <objects>
 	<sphere material="diffuse_red">
-		<center vector3="0 0 150"/>
-		<radius double="25" />
+		<center vector3="15.0 25 200" />
+		<radius double="20" />
 	</sphere>
 	<sphere material="diffuse_green">
-		<center vector3="0 60 150" />
+		<center vector3="-15 -5 205" />
+		<radius double="15" />
+	</sphere>
+	<sphere material="diffuse_blue">
+		<center vector3="15 -25 205" />
 		<radius double="15" />
 	</sphere>
 </objects>
 
 <lights>
 	<pointlight>
-		<position vector3="0 35 100" />
-		<color color="2.5 2.5 2.5" />
+		<position vector3="200 100.0 100.0" />
+		<color color="2.0 2.0 2.0" />
+		<ka double="0.05" />
+	</pointlight>
+	<pointlight>
+		<position vector3="-500 100.0 100.0" />
+		<color color="2.0 2.0 2.0" />
 		<ka double="0.05" />
 	</pointlight>
 </lights>
