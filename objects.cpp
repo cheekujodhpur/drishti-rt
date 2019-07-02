@@ -61,8 +61,8 @@ double sphere::intersect(ray Ray)
 		return INF;
 	else
 	{
-		double t0 = (-b - sqrt(d))/2;
-		double t1 = (-b + sqrt(d))/2;
+		double t0 = 0.5*(-b - sqrt(d));
+		double t1 = 0.5*(-b + sqrt(d));
 		
 		if((t0 < eff_zero_intersection) && (t1 < eff_zero_intersection)) //t cant be negative by definition of ray.
 			return INF;

@@ -246,8 +246,7 @@ vec scene::world_to_camera(vec world_c)
     	temp[i] = temp2[i]/temp2[3];
     
     temp.pop_back();//removing the homogeneous coordinate
-    vec camera_c(temp);
-    return camera_c;
+    return vec(temp);
 }
 
 
@@ -262,8 +261,7 @@ vec scene::camera_to_world(vec camera_c)
     	temp[i] = temp2[i]/temp2[3];
 
     temp.pop_back();//removing the homogeneous coordinate
-    vec world_c(temp);
-    return world_c;
+    return vec(temp);
 }
 
 std::shared_ptr<object> scene::intersect(ray Ray)
@@ -317,7 +315,7 @@ void scene::render()
     double Wres = img.getWidth();
     double Hres = img.getHeight();
     double fov = cam.getFov();
-    double H_phy = 2.0*tan((M_PI/180)*fov/2); // (fov/2) is the half angle height-wise
+    double H_phy = 2.0*tan((M_PI/180)*(0.5*fov)); // (fov/2) is the half angle height-wise
     double delta_H = H_phy/Hres;
     double delta_W = delta_H;
     double W_phy = delta_W*Wres;
@@ -352,10 +350,10 @@ void scene::render()
             {
             	std::cout<<"testing slightly off-center (to the right) pixel"<<std::endl;
             }*/
-         //   std::cout<<"After transformation"<<std::endl;
+
             ray viewingRay(origin,normalise(R_in_world)); //ray generated, originating from camera 
 
-        	//call intersect function on all objects and find the nearest one which intersects
+        	//call intersect function on scene object "this": returns the nearest one which intersects
             std::shared_ptr<object> nearest_obj = this->intersect(viewingRay);
 
             if(nearest_obj!=NULL)
@@ -377,12 +375,11 @@ void scene::render()
 		    			vec lightpos;
 		    			pointlight* plight = static_cast<pointlight*>(lightsource);
 		    			lightpos = plight->getPos();
+		    			
 		    			double intersect_param = nearest_obj->intersect(viewingRay);
 		    			vec intersectPoint = viewingRay.get_point(intersect_param);
-		    			vec shadow_dirn(3,0);
-		    			for(int l=0;l<3;l++)
-		    				shadow_dirn[l] = lightpos[l] - intersectPoint[l];
-		    			shadow_dirn = normalise(shadow_dirn);
+		    			vec shadow_dirn = (lightpos - intersectPoint).normalise();
+		    			
 		    			ray shadowRay(intersectPoint,shadow_dirn);
 
 		    			std::shared_ptr<object> blocking_object = this->intersect(shadowRay);
@@ -408,10 +405,9 @@ void scene::render()
 		    			{
 		    				std::vector<double> lightcolor = plight->getColor();
 		    				vec viewing_dirn = viewingRay.get_direction();
-		    				double cosine = 0;
-		    				for(int l=0;l<3;l++)
-		    					cosine -= shadow_dirn[l]*viewing_dirn[l];
+		    				double cosine = -(shadow_dirn.dot(viewing_dirn));
 		    				cosine = std::max(cosine,0.0);
+
 		    				for(int l=0;l<3;l++)
                 				img_arr[i][j][l] += lightcolor[l]*diff_color[l]*cosine;
 		    			}

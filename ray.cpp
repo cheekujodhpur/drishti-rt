@@ -4,6 +4,9 @@ ray::ray(vec origin,vec direction)
 {
     _origin = origin;
     _direction = direction;
+    for(int i=0;i<3;i++)
+        if(direction[i]!=0)
+            reciprocal_dirn = 1.0/direction[i];
  //   std::cout<<"returning"<<std::endl;
 }
 
@@ -26,7 +29,7 @@ double ray::get_param(vec pos)
 {
     for(int l=0;l<3;l++)
         if(_direction[l]!=0)
-            return (pos[l]-_origin[l])/_direction[l];
+            return (pos[l]-_origin[l])*reciprocal_dirn[l];
 }
 
 

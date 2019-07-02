@@ -1,10 +1,5 @@
 #include "vector.hpp"
 #include<cmath>
-vec:: vec()
-{
-
-}
-
 
 std::vector<double> vec:: getVector()
 {
@@ -37,32 +32,27 @@ vec vec::operator-() {
 
 vec vec::operator-(const vec& v1){
 	std::vector<double> v2(3);
-
+	std::vector<double> v1_vec = v1.getVector();
 	for(int i=0;i<3;i++)
-	{
-		v2[i] = v[i] - v1.v[i];
-	}
+		v2[i] = v[i] - v1_vec[i];
 	return vec(v2);
 	
 }
 
-vec vec::operator+(const vec& v2)
+vec vec::operator+(const vec& v1)
 {
-	std::vector<double> v1(3);
-
+	std::vector<double> v2(3);
+	std::vector<double> v1_vec = v1.getVector();
 	for(int i=0;i<3;i++)
-	{
-		v1[i] = v[i] + v2.v[i];
-	}
+		v2[i] = v[i] + v1_vec[i];
 	return vec(v2);
 }
 
- vec::operator=(const vec& v2)
+vec::operator=(const vec& v1)
 {
+	std::vector<double> v1_vec = v1.getVector();
 	for(int i=0;i<3;i++)
-	{
-		v[i] = v2.v[i];
-	}
+		v[i] = v1_vec[i];
 }
 
 vec vec::operator*(double t)
@@ -77,17 +67,19 @@ vec vec::operator*(double t)
 
 double vec::dot(const vec& v1)
 {
-	double ans = v[0]*v1.v[0] + v[1]*v1.v[1] + v[2]*v1.v[2];
+	std::vector<double> v1_vec = v1.getVector();
+	double ans = v[0]*v1_vec[0] + v[1]*v1_vec[1] + v[2]*v1_vec[2];
 	return ans;
 }
 
 vec vec::cross(const vec& v1)
 {
 	std::vector<double> v2(3);
+	std::vector<double> v1_vec = v1.getVector();
 
-	v2[2] = v[0]*v1.v[1] - v1.v[0]*v[1];
-	v2[1] = v[2]*v1.v[0] - v1.v[2]*v[0];
-	v2[0] = v[1]*v1.v[2] - v1.v[1]*v[2];
+	v2[2] = v[0]*v1_vec[1] - v1_vec[0]*v[1];
+	v2[1] = v[2]*v1_vec[0] - v1_vec[2]*v[0];
+	v2[0] = v[1]*v1_vec[2] - v1_vec[1]*v[2];
 
 	return vec(v2);
 }

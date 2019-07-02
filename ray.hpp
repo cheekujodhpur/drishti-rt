@@ -3,12 +3,14 @@
 
 #include <iostream>
 #include "vector.hpp"
+#include <vector>
 #include <math.h>
 
 class ray{
 
 	vec _origin;
  	vec _direction;
+ 	std::vector<double> reciprocal_dirn(3);
 
 public:   
     ray(vec origin,vec direction);

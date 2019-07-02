@@ -5,9 +5,8 @@
 class vec{
 	std::vector<double> v(3);
 
-	public:
-		vec();
-
+public:
+	vec(){}
 	vec(std::vector<double> v1) : v(v1) {}		//constructor
 
 	double operator[](int a);    	
