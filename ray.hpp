@@ -10,7 +10,7 @@ class ray{
 
 	vec _origin;
  	vec _direction;
- 	std::vector<double> reciprocal_dirn(3);
+ 	std::vector<double> reciprocal_dirn = std::vector<double>(3);
 
 public:   
     ray(vec origin,vec direction);

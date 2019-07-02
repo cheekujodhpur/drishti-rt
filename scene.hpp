@@ -26,7 +26,7 @@ class scene{
     std::vector<std::vector<double> > inv_rotation_mat;
     std::vector<std::vector<double> > inv_translation_mat;
     double ***img_arr;
-    static const double eff_zero_shadow = 1e-15;
+    static constexpr double eff_zero_shadow = 1e-15;
 
 public:
 	void setCamera(camera cam0);

@@ -10,7 +10,7 @@ void whitted::setDepth(int dep)
 {
 	depth = dep;
 }
-std::string whitted::source_type()
+std::string whitted::integrator_type()
 {
 	return "whitted";
 }

@@ -323,19 +323,20 @@ void scene::render()
     double ambient_factor = 0.05;
   //  std::cout<<Wres<<" "<<Hres<<" "<<fov<<" "<<H_phy<<" "<<delta_H<<" "<<delta_W<<" "<<W_phy<<std::endl;
 
-    vec y = cam.getThird().normalise();
-    vec z = cam.getUp().normalise();
-    vec x = cam.getLookat().normalise();
+    vec y = cam.getThird();y.normalise();
+    vec z = cam.getUp();z.normalise();
+    vec x = cam.getLookat();x.normalise();
   //  std::cout<<"Entering loop"<<std::endl;
     for(int i=0;i<Wres;i++)
     {
         for(int j=0;j<Hres;j++)
         {	//std::cout<<"Yo"<<std::endl;
             vec r;
-            vec R_in_cam;
-            R_in_cam[0] = 1; //these are ACTUALLY in camera coordinates
-            R_in_cam[1] = (0.5*Wres-i)*delta_W;
-            R_in_cam[2] = (0.5*Hres-j)*delta_H;
+            std::vector<double> temp_R_in_cam(3,0);
+            temp_R_in_cam[0] = 1; //these are ACTUALLY in camera coordinates
+            temp_R_in_cam[1] = (0.5*Wres-i)*delta_W;
+            temp_R_in_cam[2] = (0.5*Hres-j)*delta_H;
+            vec R_in_cam(temp_R_in_cam);
             /*for(int k=0;k<3;k++)
             {//	std::cout<<y[k]<<std::endl;
 				r[k]= (0.5*Wres-i)*delta_W*y[k] + (0.5*Hres-j)*delta_H*z[k];
@@ -351,7 +352,8 @@ void scene::render()
             	std::cout<<"testing slightly off-center (to the right) pixel"<<std::endl;
             }*/
 
-            ray viewingRay(origin,normalise(R_in_world)); //ray generated, originating from camera 
+            R_in_world.normalise();
+            ray viewingRay(origin,R_in_world); //ray generated, originating from camera 
 
         	//call intersect function on scene object "this": returns the nearest one which intersects
             std::shared_ptr<object> nearest_obj = this->intersect(viewingRay);
@@ -378,7 +380,8 @@ void scene::render()
 		    			
 		    			double intersect_param = nearest_obj->intersect(viewingRay);
 		    			vec intersectPoint = viewingRay.get_point(intersect_param);
-		    			vec shadow_dirn = (lightpos - intersectPoint).normalise();
+		    			vec shadow_dirn = (lightpos - intersectPoint);
+		    			shadow_dirn.normalise();
 		    			
 		    			ray shadowRay(intersectPoint,shadow_dirn);
 

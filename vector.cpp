@@ -10,7 +10,7 @@ double vec::operator[](int a)
 	return v[a];
 }
 
-vec::normalise()
+void vec::normalise()
 {
 	
     double sqmod = v[0]*v[0] + v[1]*v[1] + v[2]*v[2];

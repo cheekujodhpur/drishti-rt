@@ -3,7 +3,7 @@
 #include<vector>
 
 class vec{
-	std::vector<double> v(3);
+	std::vector<double> v = std::vector<double>(3);
 
 public:
 	vec(){}
@@ -13,11 +13,11 @@ public:
 
 	std::vector<double> getVector();
 	    
-	normalise();
+	void normalise();
 	vec operator-() const;                 //returns negative of vector
 	vec operator-(const vec& v1);		//diff of 2 vectors
 	vec operator+(const vec& v2);
-	operator=(const vec& v2);
+	void operator=(const vec& v2);
 	vec operator*(double t);
 	//vec operator/(double t) const;
 	double dot(const vec& v1);

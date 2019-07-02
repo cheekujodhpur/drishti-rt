@@ -6,7 +6,9 @@ ray::ray(vec origin,vec direction)
     _direction = direction;
     for(int i=0;i<3;i++)
         if(direction[i]!=0)
-            reciprocal_dirn = 1.0/direction[i];
+            reciprocal_dirn[i] = 1.0/direction[i];
+        else
+            reciprocal_dirn[i] = 0;
  //   std::cout<<"returning"<<std::endl;
 }
 

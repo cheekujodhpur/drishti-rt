@@ -9,7 +9,7 @@ class object{
 
 protected:
 	material* mat;
-	static const double eff_zero_intersection = 1e-8;
+	static constexpr double eff_zero_intersection = 1e-8;
 public:
 	object(){}
 	// object(material m):mat(m){}
