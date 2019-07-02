@@ -14,7 +14,7 @@ class vec{
 
 	std::vector<double> getVector();
 	    
-	//normalise();
+	normalise();
 	vec operator-() const;                 //returns negative of vector
 	vec operator-(const vec& v1);		//diff of 2 vectors
 	vec operator+(const vec& v2);

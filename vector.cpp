@@ -1,5 +1,5 @@
 #include "vector.hpp"
-
+#include<cmath>
 vec:: vec()
 {
 
@@ -15,7 +15,16 @@ double vec::operator[](int a)
 	return v[a];
 }
 
-
+vec::normalise()
+{
+	
+    double sqmod = v[0]*v[0] + v[1]*v[1] + v[2]*v[2];
+    for(int i=0;i<3;i++)
+    {
+        v[i]=v[i]/sqrt(sqmod);
+    }
+    
+}
 vec vec::operator-() {
 	
 	std::vector<double> v2(3);
