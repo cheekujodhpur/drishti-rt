@@ -1,10 +1,7 @@
 #include "vector.hpp"
 #include<cmath>
 
-std::vector<double> vec:: getVector()
-{
-	return v;
-}
+
 double vec::operator[](int a)
 {
 	return v[a];
@@ -32,9 +29,9 @@ vec vec::operator-() {
 
 vec vec::operator-(const vec& v1){
 	std::vector<double> v2(3);
-	std::vector<double> v1_vec = v1.getVector();
+//	std::vector<double> v1_vec = v1.getVector();
 	for(int i=0;i<3;i++)
-		v2[i] = v[i] - v1_vec[i];
+		v2[i] = v[i] - v1.v[i];
 	return vec(v2);
 	
 }
@@ -42,17 +39,17 @@ vec vec::operator-(const vec& v1){
 vec vec::operator+(const vec& v1)
 {
 	std::vector<double> v2(3);
-	std::vector<double> v1_vec = v1.getVector();
+	//std::vector<double> v1_vec = v1.getVector();
 	for(int i=0;i<3;i++)
-		v2[i] = v[i] + v1_vec[i];
+		v2[i] = v[i] + v1.v[i];
 	return vec(v2);
 }
 
-vec::operator=(const vec& v1)
+void vec::operator=(const vec& v1)
 {
-	std::vector<double> v1_vec = v1.getVector();
+	//std::vector<double> v1_vec = v1.getVector();
 	for(int i=0;i<3;i++)
-		v[i] = v1_vec[i];
+		v[i] = v1.v[i];
 }
 
 vec vec::operator*(double t)
@@ -67,19 +64,19 @@ vec vec::operator*(double t)
 
 double vec::dot(const vec& v1)
 {
-	std::vector<double> v1_vec = v1.getVector();
-	double ans = v[0]*v1_vec[0] + v[1]*v1_vec[1] + v[2]*v1_vec[2];
+	//std::vector<double> v1_vec = v1.getVector();
+	double ans = v[0]*v1.v[0] + v[1]*v1.v[1] + v[2]*v1.v[2];
 	return ans;
 }
 
 vec vec::cross(const vec& v1)
 {
 	std::vector<double> v2(3);
-	std::vector<double> v1_vec = v1.getVector();
+	//std::vector<double> v1_vec = v1.getVector();
 
-	v2[2] = v[0]*v1_vec[1] - v1_vec[0]*v[1];
-	v2[1] = v[2]*v1_vec[0] - v1_vec[2]*v[0];
-	v2[0] = v[1]*v1_vec[2] - v1_vec[1]*v[2];
+	v2[2] = v[0]*v1.v[1] - v1.v[0]*v[1];
+	v2[1] = v[2]*v1.v[0] - v1.v[2]*v[0];
+	v2[0] = v[1]*v1.v[2] - v1.v[1]*v[2];
 
 	return vec(v2);
 }

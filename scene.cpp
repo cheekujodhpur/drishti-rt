@@ -151,9 +151,9 @@ std::vector<light* > scene::getLights()
 
 void scene::rotation_matrix_formation()
 {
-	std::vector<double> x = cam.getLookat().getVector();
-	std::vector<double> z = cam.getUp().getVector();
-	std::vector<double> y = cam.getThird().getVector();//need to define a getVector() in vec class
+	std::vector<double> x = cam.getLookat().v;
+	std::vector<double> z = cam.getUp().v;
+	std::vector<double> y = cam.getThird().v;//need to define a v in vec class
 	x.push_back(0);
 	y.push_back(0);
 	z.push_back(0);
@@ -174,7 +174,7 @@ void scene::inv_rotation_matrix_formation()
 
 void scene::inv_translation_matrix_formation()
 {
-	std::vector<double> fourth = cam.getEye().getVector();
+	std::vector<double> fourth = cam.getEye().v;
 	std::vector<double> x;
 	std::vector<double> y;
 	std::vector<double> z;
@@ -206,7 +206,7 @@ void scene::inv_translation_matrix_formation()
 }
 void scene::translation_matrix_formation()
 {
-	std::vector<double> fourth = cam.getEye().getVector();  //supposed to be fourth column of translation matrix
+	std::vector<double> fourth = cam.getEye().v;  //supposed to be fourth column of translation matrix
 	std::vector<double> x;
 	std::vector<double> y;
 	std::vector<double> z;
@@ -237,7 +237,7 @@ void scene::translation_matrix_formation()
 
 vec scene::world_to_camera(vec world_c)
 {
-    std::vector<double> temp = world_c.getVector();
+    std::vector<double> temp = world_c.v;
     temp.push_back(1);
     std::vector<double> temp2(4,0); //4-vector
     temp2 = mat_mult(mat_mult(rotation_mat,translation_mat),temp);
@@ -252,7 +252,7 @@ vec scene::world_to_camera(vec world_c)
 
 vec scene::camera_to_world(vec camera_c)
 {
-    std::vector<double> temp = camera_c.getVector();
+    std::vector<double> temp = camera_c.v;
     temp.push_back(1);
     std::vector<double> temp2(4,0); //4-vector
     temp2 = mat_mult(mat_mult(inv_translation_mat,inv_rotation_mat),temp);

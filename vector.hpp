@@ -3,9 +3,10 @@
 #include<vector>
 
 class vec{
-	std::vector<double> v = std::vector<double>(3);
+	
 
 public:
+	std::vector<double> v = std::vector<double>(3);
 	vec(){}
 	vec(std::vector<double> v1) : v(v1) {}		//constructor
 
@@ -14,7 +15,7 @@ public:
 	std::vector<double> getVector();
 	    
 	void normalise();
-	vec operator-() const;                 //returns negative of vector
+	vec operator-();                //returns negative of vector
 	vec operator-(const vec& v1);		//diff of 2 vectors
 	vec operator+(const vec& v2);
 	void operator=(const vec& v2);
