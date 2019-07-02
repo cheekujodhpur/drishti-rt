@@ -10,11 +10,11 @@ class vec{
 
 	vec(std::vector<double> v1) : v(v1) {}		//constructor
 
-	double first();     //returns v[0]
-	double second();    //returns v[1]
-	double third();		//returns v[2]
+	double operator[](int a);    	
+
+	std::vector<double> getVector();
 	    
-	normalise();
+	//normalise();
 	vec operator-() const;                 //returns negative of vector
 	vec operator-(const vec& v1);		//diff of 2 vectors
 	vec operator+(const vec& v2);

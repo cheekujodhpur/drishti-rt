@@ -2,28 +2,19 @@
 
 vec:: vec()
 {
-	
+
 }
 
-double vec :: first()
+
+std::vector<double> vec:: getVector()
 {
-	return v[0];
+	return v;
+}
+double vec::operator[](int a)
+{
+	return v[a];
 }
 
-double vec :: second()
-{
-	return v[1];
-}
-
-double vec :: third()
-{
-	return v[2];
-}
-
-vec :: normalise()
-{
-	
-}
 
 vec vec::operator-() {
 	
