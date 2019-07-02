@@ -17,7 +17,7 @@
 class scene{
 	camera cam;
     image img;
-    std::shared_ptr<integrator> intg;
+    integrator* intg;
     std::vector<material* > materialslist;
     std::vector<std::shared_ptr<object> > objectslist;
     std::vector<light* > lightslist;
@@ -31,14 +31,14 @@ class scene{
 public:
 	void setCamera(camera cam0);
 	void setImage(image img0);
-	void setIntegrator(std::shared_ptr<integrator> intg0);
+	void setIntegrator(integrator* intg0);
 	void setMaterials(std::vector<material* > materials);
 	void setObjects(std::vector<std::shared_ptr<object> > objects);
 	void setLights(std::vector<light* > lights);
 	void init_img_arr();
 	camera getCamera();
 	image getImage();
-	std::shared_ptr<integrator> getIntegrator();
+	integrator* getIntegrator();
 	std::vector<material* > getMaterials();
 	std::vector<std::shared_ptr<object> > getObjects();
 	std::vector<light* > getLights();
@@ -50,6 +50,7 @@ public:
 	vec camera_to_world(vec camera_c);
 	std::shared_ptr<object> intersect(ray Ray);
 	void write_to_ppm();
+	std::vector<double> radiance(ray viewingRay, int depth, int max_depth);
 	void render();
 };
 

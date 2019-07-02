@@ -157,12 +157,12 @@ material* nodeToMaterial(TiXmlElement* Material)
         // std::cout<<"*Parsing isreflect*"<<std::endl;
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"isreflect")==0)
-            sim_mat->setIsreflect(strcmp(element->Attribute("bool"),"true"));
+            sim_mat->setIsreflect(strcmp(element->Attribute("bool"),"true")==0);
         
         // std::cout<<"*Parsing istransmit*"<<std::endl;
         element=element->NextSiblingElement();
         if(element && strcmp(element->Value(),"istransmit")==0)
-            sim_mat->setIstransmit(strcmp(element->Attribute("bool"),"true"));
+            sim_mat->setIstransmit(strcmp(element->Attribute("bool"),"true")==0);
 
         // std::cout<<"*Material Created*"<<std::endl;
         return sim_mat;
@@ -237,7 +237,7 @@ light* nodeToLight(TiXmlElement* Light)
 		throw std::runtime_error(std::string("bad ") + "light element: " + Light->Value());
 }
 
-std::shared_ptr<integrator> nodeToIntegrator(TiXmlElement* Integrator)
+integrator* nodeToIntegrator(TiXmlElement* Integrator)
 {
     // std::cout<<"*nodeToIntegrator() called*"<<std::endl;
     if(strcmp(Integrator->Value(),"whitted")==0)//whitted integrator
@@ -252,7 +252,7 @@ std::shared_ptr<integrator> nodeToIntegrator(TiXmlElement* Integrator)
         }
 
         // std::cout<<"*Whitted integrator created*"<<std::endl;
-        return std::shared_ptr<integrator>(whit_intg);
+        return whit_intg;
     }
     else
         throw std::runtime_error(std::string("bad ") + "integrator element: " + Integrator->Value());

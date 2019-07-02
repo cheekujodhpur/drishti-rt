@@ -50,3 +50,23 @@ std::vector<double> simplemat::getDiffuse()
 {
 	return diffuse;
 }
+std::vector<double> simplemat::getSpecular()
+{
+	return specular;
+}
+std::vector<double> simplemat::getReflect()
+{
+	return reflect;
+}
+std::vector<double> simplemat::getTransmit()
+{
+	return transmit;
+}
+bool simplemat::getIsReflect()
+{
+	return isreflect;
+}
+bool simplemat::getIsTransmit()
+{
+	return istransmit;
+}

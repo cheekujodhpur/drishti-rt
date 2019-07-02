@@ -39,5 +39,10 @@ public:
 	void setIsreflect(bool isref);
 	void setIstransmit(bool istrans);
 	std::vector<double> getDiffuse();
+	std::vector<double> getSpecular();
+	std::vector<double> getReflect();
+	std::vector<double> getTransmit();
+	bool getIsReflect();
+	bool getIsTransmit();
 };
 #endif 

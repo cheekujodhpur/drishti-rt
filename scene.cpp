@@ -8,7 +8,7 @@
 #include <string.h>
 
 const double INF = std::numeric_limits<double>::infinity();
-
+const double ambient_factor = 0.05;//ka
 //array*array
 std::vector<std::vector<double> > mat_mult(std::vector<std::vector<double> > a,std::vector<std::vector<double> > b)
 {
@@ -77,7 +77,7 @@ void scene::setImage(image img0)
 {
 	img = img0;
 }
-void scene::setIntegrator(std::shared_ptr<integrator> intg0)
+void scene::setIntegrator(integrator* intg0)
 {
 	intg = intg0;
 }
@@ -96,8 +96,8 @@ void scene::setLights(std::vector<light* > lights)
 
 void scene::init_img_arr()
 {
-	int w = this->getImage().getWidth();
-    int h = this->getImage().getHeight();
+	int w = img.getWidth();
+    int h = img.getHeight();
 	this->img_arr = new double **[w];
     for(int i=0;i<w;i++)
     {
@@ -106,7 +106,7 @@ void scene::init_img_arr()
             img_arr[i][j] = new double[3];
     }
     
-    std::vector<double> v = this->getImage().getBgcolor();
+    std::vector<double> v = img.getBgcolor();
     for(int i=0;i<w;i++)
     {
         for(int j=0;j<h;j++)
@@ -132,7 +132,7 @@ image scene::getImage()
 {
 	return img;
 }
-std::shared_ptr<integrator> scene::getIntegrator()
+integrator* scene::getIntegrator()
 {
 	return intg;
 }
@@ -310,6 +310,89 @@ void scene::write_to_ppm()
 
 }
 
+std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
+{
+	if(depth > max_depth)
+		return img.getBgcolor();
+	//call intersect function on scene object "this": returns the nearest one which intersects
+    std::shared_ptr<object> nearest_obj = this->intersect(viewingRay);
+    std::vector<double> result_color(3,0);
+
+    if(nearest_obj!=NULL)
+    {
+    	simplemat* sim_mat = static_cast<simplemat*>(nearest_obj->getMaterial()); //assuming simplemat
+    	bool isReflect = sim_mat->getIsReflect();
+    	bool isTransmit = sim_mat->getIsTransmit();
+    	if(!isReflect && !isTransmit) //diffuse object
+    	{
+    		//diffuse reflection
+	        std::vector<double> diff_color = sim_mat->getDiffuse(); 
+	        for(int k=0;k<3;k++)
+	            result_color[k] = diff_color[k]*ambient_factor;
+
+	        //shadow ray
+	        for(int k=0;k<lightslist.size();k++)
+	        {
+	        	light* lightsource = lightslist[k];
+	        	if(strcmp(lightsource->source_type().c_str(),"pointlight")==0)
+	    		{
+	    			vec lightpos;
+	    			pointlight* plight = static_cast<pointlight*>(lightsource);
+	    			lightpos = plight->getPos();
+	    			
+	    			double intersect_param = nearest_obj->intersect(viewingRay);
+	    			vec intersectPoint = viewingRay.get_point(intersect_param);
+	    			vec shadow_dirn = (lightpos - intersectPoint);
+	    			shadow_dirn.normalise();
+	    			
+	    			ray shadowRay(intersectPoint,shadow_dirn);
+
+	    			std::shared_ptr<object> blocking_object = this->intersect(shadowRay);
+
+	    			double block_point_param = 0;//initialisation for block point
+	    			double light_source_param = 0;//initialisation for light source point
+	    			
+	    			if(blocking_object != NULL)
+	    			{
+	    				block_point_param = blocking_object->intersect(shadowRay);
+		    			light_source_param = shadowRay.get_param(lightpos);
+	    			}
+	    			
+	    			if(blocking_object == NULL||light_source_param<block_point_param||block_point_param<eff_zero_shadow)
+	    			{
+	    				std::vector<double> lightcolor = plight->getColor();
+	    				vec viewing_dirn = viewingRay.get_direction();
+	    				double cosine = -(shadow_dirn.dot(viewing_dirn));
+	    				cosine = std::max(cosine,0.0);
+
+	    				for(int l=0;l<3;l++)
+	        				result_color[l] += lightcolor[l]*diff_color[l]*cosine;
+	    			}
+	    		}
+	        }
+	        return result_color;
+    	}
+    	
+    	/*else
+    	{
+    		if(isReflect) //reflective object
+    		{
+    			//generate a reflected ray
+    			// ray reflectedRay(something);
+    			// std::vector<double> refl_col = this->radiance(reflectedRay,depth-1,max_depth);
+    		}
+    		if(isTransmit) //refractive object
+    		{
+    			//generate a refracted ray
+    			// ray refractedRay(something);
+    			// std::vector<double> refr_col = this->radiance(refractedRay,depth-1,max_depth);	
+    		}
+    	}*/
+    }
+    else
+    	return img.getBgcolor();
+}
+
 void scene::render()
 {
     double Wres = img.getWidth();
@@ -320,7 +403,6 @@ void scene::render()
     double delta_W = delta_H;
     double W_phy = delta_W*Wres;
 
-    double ambient_factor = 0.05;
   //  std::cout<<Wres<<" "<<Hres<<" "<<fov<<" "<<H_phy<<" "<<delta_H<<" "<<delta_W<<" "<<W_phy<<std::endl;
 
     vec y = cam.getThird();y.normalise();
@@ -337,86 +419,22 @@ void scene::render()
             temp_R_in_cam[1] = (0.5*Wres-i)*delta_W;
             temp_R_in_cam[2] = (0.5*Hres-j)*delta_H;
             vec R_in_cam(temp_R_in_cam);
-            /*for(int k=0;k<3;k++)
-            {//	std::cout<<y[k]<<std::endl;
-				r[k]= (0.5*Wres-i)*delta_W*y[k] + (0.5*Hres-j)*delta_H*z[k];
-		//		std::cout<<r[k]<<" "<<x[k]<<std::endl;
-				R_in_world[k]= r[k] + x[k];
-            }*/
+            
             vec R_in_world = camera_to_world(R_in_cam); //transforming direcion vector to world
-            vec origin = cam.getEye();//in world coordinates
-        //    std::cout<<"About to transform"<<std::endl;
-
             /*if((i==520) && (j==384))
             {
             	std::cout<<"testing slightly off-center (to the right) pixel"<<std::endl;
             }*/
 
             R_in_world.normalise();
-            ray viewingRay(origin,R_in_world); //ray generated, originating from camera 
-
-        	//call intersect function on scene object "this": returns the nearest one which intersects
-            std::shared_ptr<object> nearest_obj = this->intersect(viewingRay);
-
-            if(nearest_obj!=NULL)
-            {
-            	//extract colour out of that material and fill into arr[i][j][]
-            	//assuming simplemat
-            	simplemat* sim_mat = static_cast<simplemat*>(nearest_obj->getMaterial());
-            	
-                std::vector<double> diff_color = sim_mat->getDiffuse(); 
-                for(int k=0;k<3;k++)
-                    img_arr[i][j][k] = diff_color[k]*ambient_factor;
-
-                for(int k=0;k<lightslist.size();k++)
-		        {
-		        	light* lightsource = lightslist[k];
-		        	if(strcmp(lightsource->source_type().c_str(),"pointlight")==0)//problematic point
-		    		{
-		    			// std::cout<<"Entering shadow mode"<<std::endl;
-		    			vec lightpos;
-		    			pointlight* plight = static_cast<pointlight*>(lightsource);
-		    			lightpos = plight->getPos();
-		    			
-		    			double intersect_param = nearest_obj->intersect(viewingRay);
-		    			vec intersectPoint = viewingRay.get_point(intersect_param);
-		    			vec shadow_dirn = (lightpos - intersectPoint);
-		    			shadow_dirn.normalise();
-		    			
-		    			ray shadowRay(intersectPoint,shadow_dirn);
-
-		    			std::shared_ptr<object> blocking_object = this->intersect(shadowRay);
-
-		    			double block_point_param = 0;//initialisation for block point
-		    			double light_source_param = 0;//initialisation for light source point
-		    			
-		    			if(blocking_object != NULL)
-		    			{
-		    				block_point_param = blocking_object->intersect(shadowRay);
-			    			light_source_param = shadowRay.get_param(lightpos);
-			    			/*for(int l=0;l<3;l++)
-			    			{
-			    				if(shadow_dirn[l]!=0)
-			    				{
-			    					light_source_param = (lightpos[l]-intersectPoint[l])/shadow_dirn[l];
-			    					break;
-			    				}
-			    			}*/
-		    			}
-		    			
-		    			if(blocking_object == NULL||light_source_param<block_point_param||block_point_param<eff_zero_shadow)
-		    			{
-		    				std::vector<double> lightcolor = plight->getColor();
-		    				vec viewing_dirn = viewingRay.get_direction();
-		    				double cosine = -(shadow_dirn.dot(viewing_dirn));
-		    				cosine = std::max(cosine,0.0);
-
-		    				for(int l=0;l<3;l++)
-                				img_arr[i][j][l] += lightcolor[l]*diff_color[l]*cosine;
-		    			}
-		    		}
-		        }
-            }
+            vec origin = cam.getEye();//in world coordinates
+            ray viewingRay(origin,R_in_world-origin); //ray generated, originating from camera 
+            whitted* _intg = static_cast<whitted*>(intg);
+            int max_depth = _intg->getDepth(); //assuming whitted
+            std::vector<double> color = this->radiance(viewingRay,0,max_depth);//initial depth of recursion = 0
+            for(int k=0;k<3;k++)
+            	img_arr[i][j][k] = color[k];
+        	
         }
     }
     std::cout<<"Out of loops"<<std::endl;
