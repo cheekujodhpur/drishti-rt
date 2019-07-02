@@ -3,11 +3,11 @@
 
 #include <vector>
 #include <string>
-//using namespace std;
 
 class integrator
 {
-
+public:
+	virtual std::string integrator_type()=0;
 };
 
 class whitted: public integrator
@@ -17,6 +17,7 @@ protected:
 public:
 	int getDepth();
 	void setDepth(int dep);
+	std::string integrator_type();
 };
 
 #endif 

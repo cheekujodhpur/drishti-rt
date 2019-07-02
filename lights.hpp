@@ -2,8 +2,8 @@
 #define __LIGHTS_HPP_INCLUDED__
 
 #include<vector>
+#include "vector.hpp"
 #include <string>
-//using namespace std;
 
 class light{
 public:
@@ -11,14 +11,14 @@ public:
 };
 
 class pointlight: public light{
-	std::vector<double> position;
+	vec position;
 	std::vector<double> color = std::vector<double>(3);
 	double ka;
 public:
-	void setPos(std::vector<double> pos);
+	void setPos(vec pos);
 	void setKa(double ka0);
 	void setColor(std::vector<double> color0);
-	std::vector<double> getPos();
+	vec getPos();
 	std::vector<double> getColor();
 	std::string source_type();
 };

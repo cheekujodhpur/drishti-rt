@@ -1,8 +1,7 @@
 #include "lights.hpp"
 
-//using namespace std;
 
-void pointlight::setPos(std::vector<double> pos)
+void pointlight::setPos(vec pos)
 {
 	position=pos;
 }
@@ -15,7 +14,7 @@ void pointlight::setColor(std::vector<double> color0)
 	color = color0;
 	
 }
-std::vector<double> pointlight::getPos()
+vec pointlight::getPos()
 {
 	return position;
 }

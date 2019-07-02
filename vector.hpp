@@ -23,9 +23,5 @@ class vec{
 	//vec operator/(double t) const;
 	double dot(const vec& v1);
 	vec cross(const vec& v1);
-
-
-
-
 };
 #endif 

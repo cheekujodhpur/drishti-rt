@@ -9,17 +9,6 @@
 
 const double INF = std::numeric_limits<double>::infinity();
 
-std::vector<double> normalise(std::vector<double> v)
-{   
-	std::vector<double> a(3,0);
-    double sqmod = v[0]*v[0] + v[1]*v[1] + v[2]*v[2];
-    for(int i=0;i<3;i++)
-    {
-        a[i]=v[i]/sqrt(sqmod);
-    }
-    return a;
-}
-
 //array*array
 std::vector<std::vector<double> > mat_mult(std::vector<std::vector<double> > a,std::vector<std::vector<double> > b)
 {
@@ -162,9 +151,9 @@ std::vector<light* > scene::getLights()
 
 void scene::rotation_matrix_formation()
 {
-	std::vector<double> x = cam.getLookat();
-	std::vector<double> z = cam.getUp();
-	std::vector<double> y = cam.getThird();
+	std::vector<double> x = cam.getLookat().getVector();
+	std::vector<double> z = cam.getUp().getVector();
+	std::vector<double> y = cam.getThird().getVector();//need to define a getVector() in vec class
 	x.push_back(0);
 	y.push_back(0);
 	z.push_back(0);
@@ -185,7 +174,7 @@ void scene::inv_rotation_matrix_formation()
 
 void scene::inv_translation_matrix_formation()
 {
-	std::vector<double> fourth = cam.getEye();
+	std::vector<double> fourth = cam.getEye().getVector();
 	std::vector<double> x;
 	std::vector<double> y;
 	std::vector<double> z;
@@ -217,7 +206,7 @@ void scene::inv_translation_matrix_formation()
 }
 void scene::translation_matrix_formation()
 {
-	std::vector<double> fourth = cam.getEye();  //supposed to be fourth column of translation matrix
+	std::vector<double> fourth = cam.getEye().getVector();  //supposed to be fourth column of translation matrix
 	std::vector<double> x;
 	std::vector<double> y;
 	std::vector<double> z;
@@ -246,35 +235,34 @@ void scene::translation_matrix_formation()
 
 }
 
-std::vector<double> scene::world_to_camera(std::vector<double> world_c)
+vec scene::world_to_camera(vec world_c)
 {
-    std::vector<double> camera_c(world_c.size(),0);
-    std::vector<double> temp = world_c;
+    std::vector<double> temp = world_c.getVector();
     temp.push_back(1);
-    std::vector<double> temp2(temp.size(),0);
-    temp2=mat_mult(mat_mult(rotation_mat,translation_mat),temp);
+    std::vector<double> temp2(4,0); //4-vector
+    temp2 = mat_mult(mat_mult(rotation_mat,translation_mat),temp);
 
     for(int i=0;i<3;i++)
-    {
-    	camera_c[i]=temp2[i]/temp2[3];
-    }
+    	temp[i] = temp2[i]/temp2[3];
+    
+    temp.pop_back();//removing the homogeneous coordinate
+    vec camera_c(temp);
     return camera_c;
 }
 
 
-std::vector<double> scene::camera_to_world(std::vector<double> camera_c)
+vec scene::camera_to_world(vec camera_c)
 {
-    std::vector<double> world_c(camera_c.size(),0);
-      std::vector<double> temp = camera_c;
+    std::vector<double> temp = camera_c.getVector();
     temp.push_back(1);
-    std::vector<double> temp2(temp.size(),0);
-    temp2=mat_mult(mat_mult(inv_translation_mat,inv_rotation_mat),temp);
+    std::vector<double> temp2(4,0); //4-vector
+    temp2 = mat_mult(mat_mult(inv_translation_mat,inv_rotation_mat),temp);
 
     for(int i=0;i<3;i++)
-    {
-    	world_c[i] = temp2[i]/temp2[3];
-    }
+    	temp[i] = temp2[i]/temp2[3];
 
+    temp.pop_back();//removing the homogeneous coordinate
+    vec world_c(temp);
     return world_c;
 }
 
@@ -337,16 +325,16 @@ void scene::render()
     double ambient_factor = 0.05;
   //  std::cout<<Wres<<" "<<Hres<<" "<<fov<<" "<<H_phy<<" "<<delta_H<<" "<<delta_W<<" "<<W_phy<<std::endl;
 
-    std::vector<double> y = normalise(cam.getThird());
-    std::vector<double> z = normalise(cam.getUp());
-    std::vector<double> x = normalise(cam.getLookat());
+    vec y = cam.getThird().normalise();
+    vec z = cam.getUp().normalise();
+    vec x = cam.getLookat().normalise();
   //  std::cout<<"Entering loop"<<std::endl;
     for(int i=0;i<Wres;i++)
     {
         for(int j=0;j<Hres;j++)
         {	//std::cout<<"Yo"<<std::endl;
-            std::vector<double> r(3,0);
-            std::vector<double> R_in_cam(3,0);
+            vec r;
+            vec R_in_cam;
             R_in_cam[0] = 1; //these are ACTUALLY in camera coordinates
             R_in_cam[1] = (0.5*Wres-i)*delta_W;
             R_in_cam[2] = (0.5*Hres-j)*delta_H;
@@ -356,8 +344,8 @@ void scene::render()
 		//		std::cout<<r[k]<<" "<<x[k]<<std::endl;
 				R_in_world[k]= r[k] + x[k];
             }*/
-            std::vector<double> R_in_world = camera_to_world(R_in_cam); //transforming direcion vector to world
-            std::vector<double> origin = cam.getEye();//in world coordinates
+            vec R_in_world = camera_to_world(R_in_cam); //transforming direcion vector to world
+            vec origin = cam.getEye();//in world coordinates
         //    std::cout<<"About to transform"<<std::endl;
 
             /*if((i==520) && (j==384))
@@ -386,12 +374,12 @@ void scene::render()
 		        	if(strcmp(lightsource->source_type().c_str(),"pointlight")==0)//problematic point
 		    		{
 		    			// std::cout<<"Entering shadow mode"<<std::endl;
-		    			std::vector<double> lightpos;
+		    			vec lightpos;
 		    			pointlight* plight = static_cast<pointlight*>(lightsource);
 		    			lightpos = plight->getPos();
 		    			double intersect_param = nearest_obj->intersect(viewingRay);
-		    			std::vector<double> intersectPoint = viewingRay.get_point(intersect_param);
-		    			std::vector<double> shadow_dirn(3,0);
+		    			vec intersectPoint = viewingRay.get_point(intersect_param);
+		    			vec shadow_dirn(3,0);
 		    			for(int l=0;l<3;l++)
 		    				shadow_dirn[l] = lightpos[l] - intersectPoint[l];
 		    			shadow_dirn = normalise(shadow_dirn);
@@ -405,21 +393,21 @@ void scene::render()
 		    			if(blocking_object != NULL)
 		    			{
 		    				block_point_param = blocking_object->intersect(shadowRay);
-			    			
-			    			for(int l=0;l<3;l++)
+			    			light_source_param = shadowRay.get_param(lightpos);
+			    			/*for(int l=0;l<3;l++)
 			    			{
 			    				if(shadow_dirn[l]!=0)
 			    				{
 			    					light_source_param = (lightpos[l]-intersectPoint[l])/shadow_dirn[l];
 			    					break;
 			    				}
-			    			}
+			    			}*/
 		    			}
 		    			
 		    			if(blocking_object == NULL||light_source_param<block_point_param||block_point_param<eff_zero_shadow)
 		    			{
 		    				std::vector<double> lightcolor = plight->getColor();
-		    				std::vector<double> viewing_dirn = viewingRay.get_direction();
+		    				vec viewing_dirn = viewingRay.get_direction();
 		    				double cosine = 0;
 		    				for(int l=0;l<3;l++)
 		    					cosine -= shadow_dirn[l]*viewing_dirn[l];

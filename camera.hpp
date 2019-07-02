@@ -1,31 +1,31 @@
 #ifndef __CAMERA_HPP_INCLUDED__
 #define __CAMERA_HPP_INCLUDED__
 
-#include <vector>
+#include "vector.hpp"
 //using namespace std;
 
 class camera
 {
-	std::vector<double> lookat = std::vector<double>(3);
-	std::vector<double> eye = std::vector<double>(3);
-	std::vector<double> up = std::vector<double>(3);
-	std::vector<double> third ;
+	vec lookat;
+	vec eye;
+	vec up;
+	vec third;
 	double fov;	//angle fov (in degrees)
 	double far;
 	double near;
 
 public:
-	void setLookat(std::vector<double> look);
+	void setLookat(vec look);
 	void setThird();
-	void setEye(std::vector<double> eye0);
-	void setUp(std::vector<double> up0);
+	void setEye(vec eye0);
+	void setUp(vec up0);
 	void setFov(double fov0);
 	void setNear(double near0);
 	void setFar(double far0);
-	std::vector<double> getLookat();
-	std::vector<double> getUp();
-	std::vector<double> getThird();
-	std::vector<double> getEye();
+	vec getLookat();
+	vec getUp();
+	vec getThird();
+	vec getEye();
 	double getFov();
 };
 

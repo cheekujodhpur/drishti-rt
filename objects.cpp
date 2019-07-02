@@ -1,4 +1,5 @@
 #include "objects.hpp"
+#include "vector.hpp"
 #include <limits> //infinity()
 #include <math.h>
 
@@ -19,7 +20,7 @@ double sphere::getRadius()
 {
 	return radius;
 }
-std::vector<double> sphere::getCenter()
+vec sphere::getCenter()
 {
 	return center;
 }
@@ -27,16 +28,16 @@ void sphere::setRadius(double r)
 {
 	radius = r;
 }
-void sphere::setCenter(std::vector<double> center0)
+void sphere::setCenter(vec center0)
 {
 	center = center0;
 }
 
 double sphere::intersect(ray Ray)
 {
-	std::vector<double> point_of_int = std::vector<double>(3);
-	std::vector<double> dirn = Ray.get_direction();
-	std::vector<double> origin_ray = Ray.get_origin();
+	vec point_of_int;
+	vec dirn = Ray.get_direction();
+	vec origin_ray = Ray.get_origin();
 	double x0 = origin_ray[0];
 	double y0 = origin_ray[1];
 	double z0 = origin_ray[2];
@@ -55,7 +56,7 @@ double sphere::intersect(ray Ray)
 
 	double d = b*b - 4*c;
 	//std::cout<<d<<std::endl;
-	
+
 	if(d<eff_zero_intersection)
 		return INF;
 	else
@@ -81,12 +82,12 @@ double cylinder::get_height()
 {
 	return height;
 }
-std::vector<double> cylinder::get_axis()
+vec cylinder::get_axis()
 {
 	return axis;
 }
 
-std::vector<double> cylinder::get_center()
+vec cylinder::get_center()
 {
 	return top_center;
 }
@@ -101,12 +102,12 @@ void cylinder::setHeight(double h)
 	height = h;
 }
 
-void cylinder::set_axis(std::vector<double> x)
+void cylinder::set_axis(vec x)
 {
 	axis = x;
 }
 
-void cylinder::set_center(std::vector<double> v)
+void cylinder::set_center(vec v)
 {
 	top_center = v;
 }

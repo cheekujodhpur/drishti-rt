@@ -2,7 +2,7 @@
 #define __OBJECTS_HPP_INCLUDED__
 #include "materials.hpp"
 #include "ray.hpp"
-#include <vector>
+#include "vector.hpp"
 #include <memory>
 
 class object{
@@ -19,15 +19,15 @@ public:
 };
 
 class sphere: public object{
-	std::vector<double> center;
+	vec center;
 	double radius;
 public:
 	sphere(){}
 	// sphere(material m):object(m){}
 	double getRadius();
-	std::vector<double> getCenter();
+	vec getCenter();
 	void setRadius(double r);
-	void setCenter(std::vector<double> center0);
+	void setCenter(vec center0);
 	double intersect(ray Ray);
 	
 };
@@ -36,19 +36,19 @@ class cylinder: public object{
 	
 	double radius;
 	double height;
-	std::vector<double> axis;
-	std::vector<double> top_center;
+	vec axis;
+	vec top_center;
 
 	public:
 	cylinder(){}
 	double get_radius();
 	double get_height();
-	std::vector<double> get_axis();
-	std::vector<double> get_center();
+	vec get_axis();
+	vec get_center();
 	double intersect(ray Ray);
 	void setRadius(double r);
 	void setHeight(double h);
-	void set_center(std::vector<double> v);
-	void set_axis(std::vector<double> x);
+	void set_center(vec v);
+	void set_axis(vec x);
 };
 #endif

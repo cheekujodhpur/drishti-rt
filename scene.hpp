@@ -9,6 +9,7 @@
 #include "ray.hpp"
 #include "integrator.hpp"
 #include <vector>
+#include "vector.hpp"
 #include <memory>
 
 //using namespace std;
@@ -45,8 +46,8 @@ public:
 	void translation_matrix_formation();
 	void inv_translation_matrix_formation();
 	void inv_rotation_matrix_formation();
-	std::vector<double> world_to_camera(std::vector<double> world_c);
-	std::vector<double> camera_to_world(std::vector<double> camera_c);
+	vec world_to_camera(vec world_c);
+	vec camera_to_world(vec camera_c);
 	std::shared_ptr<object> intersect(ray Ray);
 	void write_to_ppm();
 	void render();

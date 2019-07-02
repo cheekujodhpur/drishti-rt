@@ -10,3 +10,7 @@ void whitted::setDepth(int dep)
 {
 	depth = dep;
 }
+std::string whitted::source_type()
+{
+	return "whitted";
+}
