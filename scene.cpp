@@ -414,26 +414,70 @@ void scene::render()
         for(int j=0;j<Hres;j++)
         {	//std::cout<<"Yo"<<std::endl;
             vec r;
-            std::vector<double> temp_R_in_cam(3,0);
-            temp_R_in_cam[0] = 1; //these are ACTUALLY in camera coordinates
-            temp_R_in_cam[1] = (0.5*Wres-i)*delta_W;
-            temp_R_in_cam[2] = (0.5*Hres-j)*delta_H;
-            vec R_in_cam(temp_R_in_cam);
+              std::vector<double> temp_R_in_cam1(3,0);
+              std::vector<double> temp_R_in_cam2(3,0);
+              std::vector<double> temp_R_in_cam3(3,0);
+              std::vector<double> temp_R_in_cam4(3,0);
+
+
+            temp_R_in_cam1[0] = 1; //these are ACTUALLY in camera coordinates
+            temp_R_in_cam1[1] = (0.5*Wres-i+0.5)*delta_W;
+            temp_R_in_cam1[2] = (0.5*Hres-j+0.5)*delta_H;
+            vec R_in_cam1(temp_R_in_cam1);
+
+             temp_R_in_cam2[0] = 1; //these are ACTUALLY in camera coordinates
+             temp_R_in_cam2[1] = (0.5*Wres-i+0.5)*delta_W;
+             temp_R_in_cam2[2] = (0.5*Hres-j-0.5)*delta_H;
+             vec R_in_cam2(temp_R_in_cam2);
+
+               temp_R_in_cam3[0] = 1; //these are ACTUALLY in camera coordinates
+            temp_R_in_cam3[1] = (0.5*Wres-i-0.5)*delta_W;
+            temp_R_in_cam3[2] = (0.5*Hres-j+0.5)*delta_H;
+             vec R_in_cam3(temp_R_in_cam3);
+
+               temp_R_in_cam4[0] = 1; //these are ACTUALLY in camera coordinates
+            temp_R_in_cam4[1] = (0.5*Wres-i-0.5)*delta_W;
+            temp_R_in_cam4[2] = (0.5*Hres-j-0.5)*delta_H;
+             vec R_in_cam4(temp_R_in_cam4);
+
+
+
             
-            vec R_in_world = camera_to_world(R_in_cam); //transforming direcion vector to world
+             vec R_in_world1 = camera_to_world(R_in_cam1);            //transforming direcion vector to world
+
+             vec R_in_world2 = camera_to_world(R_in_cam2);            //transforming direcion vector to world
+
+             vec R_in_world3 = camera_to_world(R_in_cam3);            //transforming direcion vector to world
+
+             vec R_in_world4 = camera_to_world(R_in_cam4);            //transforming direcion vector to world
             /*if((i==520) && (j==384))
             {
             	std::cout<<"testing slightly off-center (to the right) pixel"<<std::endl;
             }*/
 
-            R_in_world.normalise();
+            R_in_world1.normalise();
+            R_in_world2.normalise();
+            R_in_world3.normalise();
+            R_in_world4.normalise();
+
+
             vec origin = cam.getEye();//in world coordinates
-            ray viewingRay(origin,R_in_world-origin); //ray generated, originating from camera 
+
+
+            ray viewingRay1(origin,R_in_world1-origin); //ray generated, originating from camera 
+            ray viewingRay2(origin,R_in_world2-origin);
+            ray viewingRay3(origin,R_in_world3-origin);
+            ray viewingRay4(origin,R_in_world4-origin);
+
+
             whitted* _intg = static_cast<whitted*>(intg);
             int max_depth = _intg->getDepth(); //assuming whitted
-            std::vector<double> color = this->radiance(viewingRay,0,max_depth);//initial depth of recursion = 0
+            std::vector<double> color1 = this->radiance(viewingRay1,0,max_depth);     //initial depth of recursion = 0
+            std::vector<double> color2 = this->radiance(viewingRay2,0,max_depth);
+            std::vector<double> color3 = this->radiance(viewingRay3,0,max_depth);
+            std::vector<double> color4 = this->radiance(viewingRay4,0,max_depth);
             for(int k=0;k<3;k++)
-            	img_arr[i][j][k] = color[k];
+            	img_arr[i][j][k] = (color1[k] + color2[k] + color3[k] + color4[k])/4;
         	
         }
     }
