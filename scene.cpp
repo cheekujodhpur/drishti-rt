@@ -6,6 +6,12 @@
 #include <iostream>
 #include <typeinfo>
 #include <string.h>
+#include <stdlib.h>
+
+//double drand48(void);
+
+
+
 
 const double INF = std::numeric_limits<double>::infinity();
 const double ambient_factor = 0.05;//ka
@@ -424,80 +430,81 @@ void scene::render()
               for(int m=1;m<=n/2;m++)
               {
               		for(int l=1;l<=n/2;l++)
-              		{
-              			double f = (double)rand() / RAND_MAX;
+              		{	 unsigned short xsubi[3];
+              			double f = erand48(xsubi);
+              			//double f = (double)rand() / RAND_MAX;
     					double x =  0.0 + f * (m/n);
 
-    					f = (double)rand() / RAND_MAX;
-    					double y = 0.0 + f * (l/n);
-              			temp_R_in_cam1[0] = 1; //these are ACTUALLY in camera coordinates
-            			temp_R_in_cam1[1] = (0.5*Wres-i-x)*delta_W;
-            			temp_R_in_cam1[2] = (0.5*Hres-j-y)*delta_H;
-            			vec R_in_cam1(temp_R_in_cam1);
+    						f = erand48(xsubi);
+    						double y = 0.0 + f * (l/n);
+              				temp_R_in_cam1[0] = 1; //these are ACTUALLY in camera coordinates
+            				temp_R_in_cam1[1] = (0.5*Wres-i-x)*delta_W;
+            				temp_R_in_cam1[2] = (0.5*Hres-j-y)*delta_H;
+            				vec R_in_cam1(temp_R_in_cam1);
 
-             			vec R_in_world1 = camera_to_world(R_in_cam1);   
-                         R_in_world1.normalise();
-                         vec origin = cam.getEye();
-                          ray viewingRay1(origin,R_in_world1-origin); 
+             				vec R_in_world1 = camera_to_world(R_in_cam1);   
+                         	R_in_world1.normalise();
+                         	vec origin = cam.getEye();
+                          	ray viewingRay1(origin,R_in_world1-origin); 
 
-                          whitted* _intg = static_cast<whitted*>(intg);
+                          	whitted* _intg = static_cast<whitted*>(intg);
             				int max_depth = _intg->getDepth(); //assuming whitted
             				std::vector<double> color1 = this->radiance(viewingRay1,0,max_depth); 
             			//	color = color + color1;  
 
 
-            				f = (double)rand() / RAND_MAX;
+            				f = erand48(xsubi);
             				x =  0.0 + f * (m/n);
             				y = 0.0 + f * (l/n);
 
             				temp_R_in_cam1[0] = 1; //these are ACTUALLY in camera coordinates
-            		temp_R_in_cam1[1] = (0.5*Wres-i+x)*delta_W;
-            		temp_R_in_cam1[2] = (0.5*Hres-j+y)*delta_H;
-            		vec R_in_cam2(temp_R_in_cam1);
+            				temp_R_in_cam1[1] = (0.5*Wres-i+x)*delta_W;
+            				temp_R_in_cam1[2] = (0.5*Hres-j+y)*delta_H;
+            				vec R_in_cam2(temp_R_in_cam1);
 
-             			vec R_in_world2 = camera_to_world(R_in_cam2);   
-                         R_in_world2.normalise();
+             				vec R_in_world2 = camera_to_world(R_in_cam2);   
+                         	R_in_world2.normalise();
                          //vec origin = cam.getEye();
-                          ray viewingRay2(origin,R_in_world2-origin); 
+                          	ray viewingRay2(origin,R_in_world2-origin); 
 
-                          std::vector<double> color2 = this->radiance(viewingRay2,0,max_depth); 
+                          	std::vector<double> color2 = this->radiance(viewingRay2,0,max_depth); 
             			//	color = color + color2;  
 
 
-            					f = (double)rand() / RAND_MAX;
+            					f = erand48(xsubi);
             				x =  0.0 + f * (m/n);
             				y = 0.0 + f * (l/n);
 
             				temp_R_in_cam1[0] = 1; //these are ACTUALLY in camera coordinates
-            		temp_R_in_cam1[1] = (0.5*Wres-i+x)*delta_W;
-            		temp_R_in_cam1[2] = (0.5*Hres-j-y)*delta_H;
-            		vec R_in_cam3(temp_R_in_cam1);
+            				temp_R_in_cam1[1] = (0.5*Wres-i+x)*delta_W;
+            				temp_R_in_cam1[2] = (0.5*Hres-j-y)*delta_H;
+            				vec R_in_cam3(temp_R_in_cam1);
 
-             			vec R_in_world3 = camera_to_world(R_in_cam3);   
-                         R_in_world3.normalise();
+             				vec R_in_world3 = camera_to_world(R_in_cam3);   
+                         	R_in_world3.normalise();
                          //vec origin = cam.getEye();
-                          ray viewingRay3(origin,R_in_world3-origin); 
+                          	ray viewingRay3(origin,R_in_world3-origin); 
 
-                          std::vector<double> color3 = this->radiance(viewingRay3,0,max_depth); 
+                          	std::vector<double> color3 = this->radiance(viewingRay3,0,max_depth); 
             				//color = color + color3;  
 
 
 
-            					f = (double)rand() / RAND_MAX;
+            					f = erand48(xsubi);
             				x =  0.0 + f * (m/n);
             				y = 0.0 + f * (l/n);
 
             				temp_R_in_cam1[0] = 1; //these are ACTUALLY in camera coordinates
-            		temp_R_in_cam1[1] = (0.5*Wres-i-x)*delta_W;
-            		temp_R_in_cam1[2] = (0.5*Hres-j+y)*delta_H;
-            		vec R_in_cam4(temp_R_in_cam1);
+            				temp_R_in_cam1[1] = (0.5*Wres-i-x)*delta_W;
+            				temp_R_in_cam1[2] = (0.5*Hres-j+y)*delta_H;
+            				vec R_in_cam4(temp_R_in_cam1);
 
-             			vec R_in_world4 = camera_to_world(R_in_cam4);   
-                         R_in_world4.normalise();
+             				vec R_in_world4 = camera_to_world(R_in_cam4);   
+                         	R_in_world4.normalise();
                          //vec origin = cam.getEye();
-                          ray viewingRay4(origin,R_in_world4-origin); 
+                          	ray viewingRay4(origin,R_in_world4-origin); 
 
-                          std::vector<double> color4 = this->radiance(viewingRay4,0,max_depth); 
+                          	std::vector<double> color4 = this->radiance(viewingRay4,0,max_depth); 
             				//color = color + color4;  
 
 
