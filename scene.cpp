@@ -415,29 +415,117 @@ void scene::render()
         {	//std::cout<<"Yo"<<std::endl;
             vec r;
               std::vector<double> temp_R_in_cam1(3,0);
-              std::vector<double> temp_R_in_cam2(3,0);
-              std::vector<double> temp_R_in_cam3(3,0);
-              std::vector<double> temp_R_in_cam4(3,0);
+              int n = 2;
+              //std::vector<double> temp_R_in_cam2(3,0);
+              //std::vector<double> temp_R_in_cam3(3,0);
+              //std::vector<	double> temp_R_in_cam4(3,0);
+
+              std::vector<double> color(3,0);
+              for(int m=1;m<=n/2;m++)
+              {
+              		for(int l=1;l<=n/2;l++)
+              		{
+              			double f = (double)rand() / RAND_MAX;
+    					double x =  0.0 + f * (m/n);
+
+    					f = (double)rand() / RAND_MAX;
+    					double y = 0.0 + f * (l/n);
+              			temp_R_in_cam1[0] = 1; //these are ACTUALLY in camera coordinates
+            			temp_R_in_cam1[1] = (0.5*Wres-i-x)*delta_W;
+            			temp_R_in_cam1[2] = (0.5*Hres-j-y)*delta_H;
+            			vec R_in_cam1(temp_R_in_cam1);
+
+             			vec R_in_world1 = camera_to_world(R_in_cam1);   
+                         R_in_world1.normalise();
+                         vec origin = cam.getEye();
+                          ray viewingRay1(origin,R_in_world1-origin); 
+
+                          whitted* _intg = static_cast<whitted*>(intg);
+            				int max_depth = _intg->getDepth(); //assuming whitted
+            				std::vector<double> color1 = this->radiance(viewingRay1,0,max_depth); 
+            			//	color = color + color1;  
 
 
+            				f = (double)rand() / RAND_MAX;
+            				x =  0.0 + f * (m/n);
+            				y = 0.0 + f * (l/n);
+
+            				temp_R_in_cam1[0] = 1; //these are ACTUALLY in camera coordinates
+            		temp_R_in_cam1[1] = (0.5*Wres-i+x)*delta_W;
+            		temp_R_in_cam1[2] = (0.5*Hres-j+y)*delta_H;
+            		vec R_in_cam2(temp_R_in_cam1);
+
+             			vec R_in_world2 = camera_to_world(R_in_cam2);   
+                         R_in_world2.normalise();
+                         //vec origin = cam.getEye();
+                          ray viewingRay2(origin,R_in_world2-origin); 
+
+                          std::vector<double> color2 = this->radiance(viewingRay2,0,max_depth); 
+            			//	color = color + color2;  
+
+
+            					f = (double)rand() / RAND_MAX;
+            				x =  0.0 + f * (m/n);
+            				y = 0.0 + f * (l/n);
+
+            				temp_R_in_cam1[0] = 1; //these are ACTUALLY in camera coordinates
+            		temp_R_in_cam1[1] = (0.5*Wres-i+x)*delta_W;
+            		temp_R_in_cam1[2] = (0.5*Hres-j-y)*delta_H;
+            		vec R_in_cam3(temp_R_in_cam1);
+
+             			vec R_in_world3 = camera_to_world(R_in_cam3);   
+                         R_in_world3.normalise();
+                         //vec origin = cam.getEye();
+                          ray viewingRay3(origin,R_in_world3-origin); 
+
+                          std::vector<double> color3 = this->radiance(viewingRay3,0,max_depth); 
+            				//color = color + color3;  
+
+
+
+            					f = (double)rand() / RAND_MAX;
+            				x =  0.0 + f * (m/n);
+            				y = 0.0 + f * (l/n);
+
+            				temp_R_in_cam1[0] = 1; //these are ACTUALLY in camera coordinates
+            		temp_R_in_cam1[1] = (0.5*Wres-i-x)*delta_W;
+            		temp_R_in_cam1[2] = (0.5*Hres-j+y)*delta_H;
+            		vec R_in_cam4(temp_R_in_cam1);
+
+             			vec R_in_world4 = camera_to_world(R_in_cam4);   
+                         R_in_world4.normalise();
+                         //vec origin = cam.getEye();
+                          ray viewingRay4(origin,R_in_world4-origin); 
+
+                          std::vector<double> color4 = this->radiance(viewingRay4,0,max_depth); 
+            				//color = color + color4;  
+
+
+
+                          for(int b=0;b<3;b++)
+                          {
+                          	color[b]=color1[b]+color2[b]+color3[b]+color4[b];
+                          }
+            		  }
+			}            /*  double x = ((double) rand() / (RAND_MAX)) + 1;
             temp_R_in_cam1[0] = 1; //these are ACTUALLY in camera coordinates
-            temp_R_in_cam1[1] = (0.5*Wres-i+0.5)*delta_W;
-            temp_R_in_cam1[2] = (0.5*Hres-j+0.5)*delta_H;
+            temp_R_in_cam1[1] = (0.5*Wres-i+x)*delta_W;
+            temp_R_in_cam1[2] = (0.5*Hres-j+x)*delta_H;
             vec R_in_cam1(temp_R_in_cam1);
 
              temp_R_in_cam2[0] = 1; //these are ACTUALLY in camera coordinates
-             temp_R_in_cam2[1] = (0.5*Wres-i+0.5)*delta_W;
-             temp_R_in_cam2[2] = (0.5*Hres-j-0.5)*delta_H;
+             temp_R_in_cam2[1] = (0.5*Wres-i+x)*delta_W;
+             temp_R_in_cam2[2] = (0.5*Hres-j-x)*delta_H;
              vec R_in_cam2(temp_R_in_cam2);
 
                temp_R_in_cam3[0] = 1; //these are ACTUALLY in camera coordinates
-            temp_R_in_cam3[1] = (0.5*Wres-i-0.5)*delta_W;
-            temp_R_in_cam3[2] = (0.5*Hres-j+0.5)*delta_H;
+            temp_R_in_cam3[1] = (0.5*Wres-i-x)*delta_W;
+            temp_R_in_cam3[2] = (0.5*Hres-j+x)*delta_H;
              vec R_in_cam3(temp_R_in_cam3);
 
                temp_R_in_cam4[0] = 1; //these are ACTUALLY in camera coordinates
-            temp_R_in_cam4[1] = (0.5*Wres-i-0.5)*delta_W;
-            temp_R_in_cam4[2] = (0.5*Hres-j-0.5)*delta_H;
+            temp_R_in_cam4[1] = (0.5*Wres-i-x)*delta_W;
+            temp_R_in_cam4[2] = (0.5*Hres-j-x)*delta_H;
              vec R_in_cam4(temp_R_in_cam4);
 
 
@@ -453,7 +541,7 @@ void scene::render()
             /*if((i==520) && (j==384))
             {
             	std::cout<<"testing slightly off-center (to the right) pixel"<<std::endl;
-            }*/
+            }
 
             R_in_world1.normalise();
             R_in_world2.normalise();
@@ -475,9 +563,9 @@ void scene::render()
             std::vector<double> color1 = this->radiance(viewingRay1,0,max_depth);     //initial depth of recursion = 0
             std::vector<double> color2 = this->radiance(viewingRay2,0,max_depth);
             std::vector<double> color3 = this->radiance(viewingRay3,0,max_depth);
-            std::vector<double> color4 = this->radiance(viewingRay4,0,max_depth);
+            std::vector<double> color4 = this->radiance(viewingRay4,0,max_depth);  */
             for(int k=0;k<3;k++)
-            	img_arr[i][j][k] = (color1[k] + color2[k] + color3[k] + color4[k])/4;
+            	img_arr[i][j][k] = color[k]/(n*n);
         	
         }
     }

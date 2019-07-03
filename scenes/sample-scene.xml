@@ -4,7 +4,7 @@
 	<lookat vector3="0.0 0.0 1.0" />
 	<eye	vector3="0.0 0.0 0.0" />
 	<up		vector3="0.0 1.0 0.0" />
-	<fov	angle="60.0 deg" />
+	<fov	angle="20.0 deg" />
     <near	double="1e-4" />
 	<far	double="1e4" />
 </camera>
