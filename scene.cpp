@@ -433,13 +433,13 @@ void scene::render()
               		{	 unsigned short xsubi[3];
               			double f = erand48(xsubi);
               			//double f = (double)rand() / RAND_MAX;
-    					double x =  0.0 + f * (m/n);
+    					double x =  0.0 + f * (1/n);
 
     						f = erand48(xsubi);
-    						double y = 0.0 + f * (l/n);
+    						double y = 0.0 + f * (1/n);
               				temp_R_in_cam1[0] = 1; //these are ACTUALLY in camera coordinates
-            				temp_R_in_cam1[1] = (0.5*Wres-i-x)*delta_W;
-            				temp_R_in_cam1[2] = (0.5*Hres-j-y)*delta_H;
+            				temp_R_in_cam1[1] = (0.5*Wres-i-m/n-x+1/n)*delta_W;
+            				temp_R_in_cam1[2] = (0.5*Hres-j-l/n-y+1/n)*delta_H;
             				vec R_in_cam1(temp_R_in_cam1);
 
              				vec R_in_world1 = camera_to_world(R_in_cam1);   
@@ -454,12 +454,12 @@ void scene::render()
 
 
             				f = erand48(xsubi);
-            				x =  0.0 + f * (m/n);
-            				y = 0.0 + f * (l/n);
+            				x =  0.0 + f * (1/n);
+            				y =  0.0 + f * (1/n);
 
             				temp_R_in_cam1[0] = 1; //these are ACTUALLY in camera coordinates
-            				temp_R_in_cam1[1] = (0.5*Wres-i+x)*delta_W;
-            				temp_R_in_cam1[2] = (0.5*Hres-j+y)*delta_H;
+            				temp_R_in_cam1[1] = (0.5*Wres-i+x+(m-1)/n)*delta_W;
+            				temp_R_in_cam1[2] = (0.5*Hres-j+y+(l-1)/n)*delta_H;
             				vec R_in_cam2(temp_R_in_cam1);
 
              				vec R_in_world2 = camera_to_world(R_in_cam2);   
@@ -472,12 +472,12 @@ void scene::render()
 
 
             					f = erand48(xsubi);
-            				x =  0.0 + f * (m/n);
-            				y = 0.0 + f * (l/n);
+            				x =  0.0 + f * (1/n);
+            				y = 0.0 + f * (1/n);
 
             				temp_R_in_cam1[0] = 1; //these are ACTUALLY in camera coordinates
-            				temp_R_in_cam1[1] = (0.5*Wres-i+x)*delta_W;
-            				temp_R_in_cam1[2] = (0.5*Hres-j-y)*delta_H;
+            				temp_R_in_cam1[1] = (0.5*Wres-i+x+(m-1)/n)*delta_W;
+            				temp_R_in_cam1[2] = (0.5*Hres-j-y-(l-1)/n)*delta_H;
             				vec R_in_cam3(temp_R_in_cam1);
 
              				vec R_in_world3 = camera_to_world(R_in_cam3);   
@@ -491,12 +491,12 @@ void scene::render()
 
 
             					f = erand48(xsubi);
-            				x =  0.0 + f * (m/n);
-            				y = 0.0 + f * (l/n);
+            				x =  0.0 + f * (1/n);
+            				y = 0.0 + f * (1/n);
 
             				temp_R_in_cam1[0] = 1; //these are ACTUALLY in camera coordinates
-            				temp_R_in_cam1[1] = (0.5*Wres-i-x)*delta_W;
-            				temp_R_in_cam1[2] = (0.5*Hres-j+y)*delta_H;
+            				temp_R_in_cam1[1] = (0.5*Wres-i-x-(m-1)/n)*delta_W;
+            				temp_R_in_cam1[2] = (0.5*Hres-j+y+(l-1)/n)*delta_H;
             				vec R_in_cam4(temp_R_in_cam1);
 
              				vec R_in_world4 = camera_to_world(R_in_cam4);   
