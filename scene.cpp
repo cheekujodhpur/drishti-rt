@@ -426,7 +426,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 
     		if(isTransmit) //refractions
     		{	
-    			std::vector<double> result_color(3,0);
+    			//std::vector<double> result_color(3,0);
 
 
     			if(depth>max_depth)
