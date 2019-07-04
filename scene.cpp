@@ -437,7 +437,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     			double intersect_param = nearest_obj->intersect(viewingRay);
 	    		vec intersectPoint = viewingRay.get_point(intersect_param);
 
-    			vec normal = *nearest_obj.getNormal(intersectPoint);            //getNormal returns normalised direction.
+    			vec normal = nearest_obj->getNormal(intersectPoint);            //getNormal returns normalised direction.
 
     			ray refractedRay = generate_refract(viewingRay,normal,intersectPoint,refract_index);
 
