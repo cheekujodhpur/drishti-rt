@@ -70,3 +70,8 @@ bool simplemat::getIsTransmit()
 {
 	return istransmit;
 }
+
+double simplemat::getEta()
+{
+	return eta;
+}
