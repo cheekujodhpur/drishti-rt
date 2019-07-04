@@ -344,8 +344,6 @@ ray scene::generate_refract(ray Ray1,vec N, vec origin,double refract_index)
 
 std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 {
-	if(depth > max_depth)
-		return img.getBgcolor();
 	//call intersect function on scene object "this": returns the nearest one which intersects
     std::shared_ptr<object> nearest_obj = this->intersect(viewingRay);
     std::vector<double> result_color(3,0);
@@ -406,14 +404,27 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     	}
     	
     	else
-    	{	
-    	/*	if(isReflect) //reflective object
+    	{
+    		if(depth == max_depth)
+    			return std::vector<double>(3,0);//blank colour
+
+    		if(isReflect) //reflections
     		{
-    			//generate a reflected ray
-    			// ray reflectedRay(something);
-    			// std::vector<double> refl_col = this->radiance(reflectedRay,depth+1,max_depth);
-    		}  */
-    		if(isTransmit) //refractive object
+    			double intersect_param = nearest_obj->intersect(viewingRay);
+    			vec intersectPoint = viewingRay.get_point(intersect_param);
+    			vec normal = nearest_obj->getNormal(intersectPoint); //outward normal at point of intersection
+    			vec incident = viewingRay.get_direction();
+    			vec refl_dirn = incident - normal*(incident.dot(normal)*2);
+    			ray reflectedRay(intersectPoint,refl_dirn);//generate a reflected ray
+
+    			std::vector<double> refl_col = this->radiance(reflectedRay,depth+1,max_depth);
+    			std::vector<double> reflectcolor(3,0);
+    			reflectcolor = sim_mat->getReflect();
+    			for(int k=0;k<3;k++)
+    			    result_color[k] = refl_col[k]*reflectcolor[k];
+    		}
+
+    		if(isTransmit) //refractions
     		{	
     			std::vector<double> result_color(3,0);
 
@@ -435,18 +446,12 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     			std::vector<double> refractcolor(3,0);
     			refractcolor = sim_mat->getTransmit();					//color of the material	
 
-
     			for(int k=0;k<3;k++)
     			{
     				result_color[k] = refr_col[k]*refractcolor[k];								//component wise multiplication
     			}
-
-    			return result_color;
-
-    			//generate a refracted ray
-    			// ray refractedRay(something);
-    			// std::vector<double> refr_col = this->radiance(refractedRay,depth+1,max_depth);	
     		}
+    		return result_color;
     	}
     }
     else

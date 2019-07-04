@@ -73,7 +73,7 @@
 		<center vector3="15.0 25 200" />
 		<radius double="20" />
 	</sphere>
-	<sphere material="diffuse_green">
+	<sphere material="mirror">
 		<center vector3="-15 -5 205" />
 		<radius double="15" />
 	</sphere>
