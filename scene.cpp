@@ -335,15 +335,15 @@ ray* scene::generate_refract(ray Ray1,vec N, vec origin,double refract_index)
 	if(1 + n_i_t*n_i_t*(cosine*cosine - 1)<0)
 		return NULL;
 
-	double beta = n_i_t*cosine - sqrt(1 + n_i_t*n_i_t*(cosine*cosine - 1));
-	double alpha = n_i_t;
+	double beta = n_i_t*abs(cosine) - sqrt(1 + n_i_t*n_i_t*(cosine*cosine - 1));
+	// double alpha = n_i_t;
 
-	vec first_term;
+	/*vec first_term;
 	first_term = Incident*alpha;
 	vec Second_term;
-	Second_term = N*beta;
+	Second_term = N*beta;*/
 
-	vec RefractedRaydirn = first_term + Second_term;
+	vec RefractedRaydirn = Incident*n_i_t + N*beta;
 	RefractedRaydirn.normalise();
 
 	return new ray(origin,RefractedRaydirn);
@@ -362,6 +362,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     	bool isTransmit = sim_mat->getIsTransmit();
     	if(!isReflect && !isTransmit) //diffuse object
     	{
+
     		//diffuse reflection
 	        std::vector<double> diff_color = sim_mat->getDiffuse(); 
 	        for(int k=0;k<3;k++)
@@ -485,7 +486,10 @@ void scene::render()
 			//std::vector<double> temp_R_in_cam2(3,0);
 			//std::vector<double> temp_R_in_cam3(3,0);
 			//std::vector<	double> temp_R_in_cam4(3,0);
-
+			if(i==(int)Wres/2&&j==(int)Hres/2)
+			{
+				std::cout<<"Testing center pixel"<<std::endl;
+			}
 			std::vector<double> color(3,0);
 			for(int m=0;m<n;m++)
 			{
