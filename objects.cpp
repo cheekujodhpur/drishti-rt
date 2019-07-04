@@ -73,8 +73,15 @@ double sphere::intersect(ray Ray)
 	}
 }
 
+vec sphere::getNormal(vec point)
+{
+	vec normal = point - center; //outward normal
+	normal.normalise();
+	return normal;
+}
+
 //cylinder class
-double cylinder::get_radius()
+/*double cylinder::get_radius()
 {
 	return radius;
 }
@@ -115,5 +122,5 @@ void cylinder::set_center(vec v)
 double cylinder::intersect(ray Ray)
 {
 	
-}
+}*/
 //set functions and intersect remaining for cylinder 

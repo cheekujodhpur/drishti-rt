@@ -16,6 +16,7 @@ public:
 	void setMaterial(material* m);
 	material* getMaterial();
 	virtual double intersect(ray Ray) = 0; //abstract intersect function
+	virtual vec getNormal(vec point) = 0;
 };
 
 class sphere: public object{
@@ -29,10 +30,11 @@ public:
 	void setRadius(double r);
 	void setCenter(vec center0);
 	double intersect(ray Ray);
+	vec getNormal(vec point);
 	
 };
 
-class cylinder: public object{
+/*class cylinder: public object{
 	
 	double radius;
 	double height;
@@ -50,5 +52,6 @@ class cylinder: public object{
 	void setHeight(double h);
 	void set_center(vec v);
 	void set_axis(vec x);
-};
+	vec getNormal(vec point);
+};*/
 #endif

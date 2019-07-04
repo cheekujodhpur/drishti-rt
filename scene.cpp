@@ -320,8 +320,6 @@ void scene::write_to_ppm()
 
 std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 {
-	if(depth > max_depth)
-		return img.getBgcolor();
 	//call intersect function on scene object "this": returns the nearest one which intersects
     std::shared_ptr<object> nearest_obj = this->intersect(viewingRay);
     std::vector<double> result_color(3,0);
@@ -381,13 +379,25 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 	        return result_color;
     	}
     	
-    	/*else
+    	else
     	{
+    		if(depth == max_depth)
+    			return std::vector<double>(3,0);//blank colour
+
     		if(isReflect) //reflective object
     		{
-    			//generate a reflected ray
-    			// ray reflectedRay(something);
-    			// std::vector<double> refl_col = this->radiance(reflectedRay,depth+1,max_depth);
+    			double intersect_param = nearest_obj->intersect(viewingRay);
+    			vec intersectPoint = viewingRay.get_point(intersect_param);
+    			vec normal = nearest_obj->getNormal(intersectPoint); //outward normal at point of intersection
+    			vec incident = viewingRay.get_direction();
+    			vec refl_dirn = incident - normal*(incident.dot(normal)*2);
+    			ray reflectedRay(intersectPoint,refl_dirn);//generate a reflected ray
+
+    			std::vector<double> refl_col = this->radiance(reflectedRay,depth+1,max_depth);
+    			std::vector<double> reflectcolor(3,0);
+    			reflectcolor = sim_mat->getReflect();
+    			for(int k=0;k<3;k++)
+    			    result_color[k] = refl_col[k]*reflectcolor[k];
     		}
     		if(isTransmit) //refractive object
     		{
@@ -395,7 +405,8 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     			// ray refractedRay(something);
     			// std::vector<double> refr_col = this->radiance(refractedRay,depth+1,max_depth);	
     		}
-    	}*/
+    		return result_color;
+    	}
     }
     else
     	return img.getBgcolor();
