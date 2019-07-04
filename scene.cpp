@@ -102,6 +102,8 @@ void scene::setLights(std::vector<light* > lights)
 	lightslist = lights;
 }
 
+
+
 void scene::init_img_arr()
 {
 	int w = img.getWidth();
@@ -318,6 +320,28 @@ void scene::write_to_ppm()
 
 }
 
+ray scene::generate_refract(ray Ray1,vec N, vec origin,double refract_index)
+{
+	std::vector<double> I = Ray1.get_direction().v;
+	vec Incident(I);
+	double n_i_t = 1/refract_index;
+	double cosine = (-Incident).dot(N);
+	
+	double beta = n_i_t*cosine - sqrt(1 + n_i_t*n_i_t*(cosine*cosine - 1));
+	double alpha = n_i_t;
+
+	vec first_term;
+	first_term = Incident*alpha;
+	vec Second_term;
+	Second_term = N*beta;
+
+	vec RefractedRaydirn = first_term + Second_term;
+	RefractedRaydirn.normalise();
+	ray Ans(origin,RefractedRaydirn);
+
+	return Ans;
+}
+
 std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 {
 	if(depth > max_depth)
@@ -381,21 +405,49 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 	        return result_color;
     	}
     	
-    	/*else
-    	{
-    		if(isReflect) //reflective object
+    	else
+    	{	
+    	/*	if(isReflect) //reflective object
     		{
     			//generate a reflected ray
     			// ray reflectedRay(something);
     			// std::vector<double> refl_col = this->radiance(reflectedRay,depth+1,max_depth);
-    		}
+    		}  */
     		if(isTransmit) //refractive object
-    		{
+    		{	
+    			std::vector<double> result_color(3,0);
+
+
+    			if(depth>max_depth)
+    				return result_color;                                      //if recursion limit reached return blank color.
+
+    			double refract_index = sim_mat->getEta();
+
+    			double intersect_param = nearest_obj->intersect(viewingRay);
+	    		vec intersectPoint = viewingRay.get_point(intersect_param);
+
+    			vec normal = *nearest_obj.getNormal(intersectPoint);            //getNormal returns normalised direction.
+
+    			ray refractedRay = generate_refract(viewingRay,normal,intersectPoint,refract_index);
+
+    			std::vector<double> refr_col = this->radiance(refractedRay,depth+1,max_depth)	;	//recursive step
+
+    			std::vector<double> refractcolor(3,0);
+    			refractcolor = sim_mat->getTransmit();					//color of the material	
+
+
+    			for(int k=0;k<3;k++)
+    			{
+    				result_color[k] = refr_col[k]*refractcolor[k];								//component wise multiplication
+    			}
+
+    			return result_color;
+
     			//generate a refracted ray
     			// ray refractedRay(something);
     			// std::vector<double> refr_col = this->radiance(refractedRay,depth+1,max_depth);	
     		}
-    	}*/
+    	}
     }
     else
     	return img.getBgcolor();

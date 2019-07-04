@@ -44,5 +44,6 @@ public:
 	std::vector<double> getTransmit();
 	bool getIsReflect();
 	bool getIsTransmit();
+	double getEta();
 };
 #endif 
