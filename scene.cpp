@@ -421,7 +421,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     			std::vector<double> reflectcolor(3,0);
     			reflectcolor = sim_mat->getReflect();
     			for(int k=0;k<3;k++)
-    			    result_color[k] = refl_col[k]*reflectcolor[k];
+    			    result_color[k] += refl_col[k]*reflectcolor[k];
     		}
 
     		if(isTransmit) //refractions
@@ -429,8 +429,8 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     			//std::vector<double> result_color(3,0);
 
 
-    			if(depth>max_depth)
-    				return result_color;                                      //if recursion limit reached return blank color.
+//    			if(depth>max_depth)
+  //  				return result_color;                                      //if recursion limit reached return blank color.
 
     			double refract_index = sim_mat->getEta();
 
@@ -448,7 +448,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 
     			for(int k=0;k<3;k++)
     			{
-    				result_color[k] = refr_col[k]*refractcolor[k];								//component wise multiplication
+    				result_color[k] += refr_col[k]*refractcolor[k];								//component wise multiplication
     			}
     		}
     		return result_color;

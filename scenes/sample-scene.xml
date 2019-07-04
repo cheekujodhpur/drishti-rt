@@ -53,7 +53,7 @@
 		<transmit color="0.999 0.999 0.999" />
 		<eta double="1.5"/>
 		<n double="100" />
-		<isreflect bool="true"/>
+		<isreflect bool="false"/>
 		<istransmit bool="true"/>
 	</simplemat>	
 	<simplemat id="mirror">
@@ -73,7 +73,7 @@
 		<center vector3="15.0 25 200" />
 		<radius double="20" />
 	</sphere>
-	<sphere material="mirror">
+	<sphere material="glass">
 		<center vector3="-15 -5 205" />
 		<radius double="15" />
 	</sphere>
