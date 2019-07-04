@@ -52,7 +52,7 @@ public:
 	void write_to_ppm();
 	std::vector<double> radiance(ray viewingRay, int depth, int max_depth);
 	void render();
-	ray generate_refract(ray Ray1,vec N, vec origin,double refract_index);
+	ray* generate_refract(ray Ray1,vec N, vec origin,double refract_index);
 };
 
 #endif

@@ -53,7 +53,7 @@
 		<transmit color="0.999 0.999 0.999" />
 		<eta double="1.5"/>
 		<n double="100" />
-		<isreflect bool="false"/>
+		<isreflect bool="true"/>
 		<istransmit bool="true"/>
 	</simplemat>	
 	<simplemat id="mirror">
@@ -70,15 +70,11 @@
 
 <objects>
 	<sphere material="diffuse_red">
-		<center vector3="15.0 25 200" />
+		<center vector3="10 0 200" />
 		<radius double="20" />
 	</sphere>
 	<sphere material="glass">
-		<center vector3="-15 -5 205" />
-		<radius double="15" />
-	</sphere>
-	<sphere material="diffuse_blue">
-		<center vector3="15 -25 205" />
+		<center vector3="0 0 160" />
 		<radius double="15" />
 	</sphere>
 </objects>
@@ -98,7 +94,7 @@
 
 <integrator>
 	<whitted>
-		<depth-of-recursion int="1" />
+		<depth-of-recursion int="4" />
 	</whitted>
 </integrator>
 

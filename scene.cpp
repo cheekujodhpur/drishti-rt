@@ -320,13 +320,21 @@ void scene::write_to_ppm()
 
 }
 
-ray scene::generate_refract(ray Ray1,vec N, vec origin,double refract_index)
+ray* scene::generate_refract(ray Ray1,vec N, vec origin,double refract_index)
 {
-	std::vector<double> I = Ray1.get_direction().v;
-	vec Incident(I);
-	double n_i_t = 1/refract_index;
+	vec Incident = Ray1.get_direction();
+	double n_i_t;
 	double cosine = (-Incident).dot(N);
+	if(cosine>0) //going into the object
+		n_i_t = 1/refract_index;
+	else if(cosine<0) //going out of the object
+		n_i_t = refract_index;
+	else
+		return NULL;
 	
+	if(1 + n_i_t*n_i_t*(cosine*cosine - 1)<0)
+		return NULL;
+
 	double beta = n_i_t*cosine - sqrt(1 + n_i_t*n_i_t*(cosine*cosine - 1));
 	double alpha = n_i_t;
 
@@ -337,9 +345,8 @@ ray scene::generate_refract(ray Ray1,vec N, vec origin,double refract_index)
 
 	vec RefractedRaydirn = first_term + Second_term;
 	RefractedRaydirn.normalise();
-	ray Ans(origin,RefractedRaydirn);
 
-	return Ans;
+	return new ray(origin,RefractedRaydirn);
 }
 
 std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
@@ -408,7 +415,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     		if(depth == max_depth)
     			return std::vector<double>(3,0);//blank colour
 
-    		if(isReflect) //reflections
+    		/*if(isReflect) //reflections
     		{
     			double intersect_param = nearest_obj->intersect(viewingRay);
     			vec intersectPoint = viewingRay.get_point(intersect_param);
@@ -422,16 +429,10 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     			reflectcolor = sim_mat->getReflect();
     			for(int k=0;k<3;k++)
     			    result_color[k] += refl_col[k]*reflectcolor[k];
-    		}
+    		}*/
 
     		if(isTransmit) //refractions
-    		{	
-    			//std::vector<double> result_color(3,0);
-
-
-//    			if(depth>max_depth)
-  //  				return result_color;                                      //if recursion limit reached return blank color.
-
+    		{
     			double refract_index = sim_mat->getEta();
 
     			double intersect_param = nearest_obj->intersect(viewingRay);
@@ -439,17 +440,17 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 
     			vec normal = nearest_obj->getNormal(intersectPoint);            //getNormal returns normalised direction.
 
-    			ray refractedRay = generate_refract(viewingRay,normal,intersectPoint,refract_index);
-
-    			std::vector<double> refr_col = this->radiance(refractedRay,depth+1,max_depth)	;	//recursive step
+    			ray* refractedRay_ptr = generate_refract(viewingRay,normal,intersectPoint,refract_index);
+    			if(refractedRay_ptr==NULL)
+    				return std::vector<double>(3,0);//blank colour
+    			// ray refractedRay = *refractedRay_ptr;
+    			std::vector<double> refr_col = this->radiance(*refractedRay_ptr,depth+1,max_depth)	;	//recursive step
 
     			std::vector<double> refractcolor(3,0);
     			refractcolor = sim_mat->getTransmit();					//color of the material	
 
     			for(int k=0;k<3;k++)
-    			{
-    				result_color[k] += refr_col[k]*refractcolor[k];								//component wise multiplication
-    			}
+    				result_color[k] += refr_col[k]*refractcolor[k];	//component wise multiplication
     		}
     		return result_color;
     	}
