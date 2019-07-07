@@ -5,10 +5,6 @@ void pointlight::setPos(vec pos)
 {
 	position=pos;
 }
-void pointlight::setKa(double ka0)
-{
-	ka=ka0;
-}
 void pointlight::setColor(std::vector<double> color0)
 {
 	color = color0;

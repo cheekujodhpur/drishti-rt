@@ -10,13 +10,11 @@
 
 //double drand48(void);
 
-
-
-
 const double INF = std::numeric_limits<double>::infinity();
-const double ambient_factor = 0.05;//ka
+
 const int n = 2;
 const double n_inv = 1.0/n;
+
 //array*array
 std::vector<std::vector<double> > mat_mult(std::vector<std::vector<double> > a,std::vector<std::vector<double> > b)
 {
@@ -77,6 +75,10 @@ std::vector<std::vector<double> > transpose(std::vector<std::vector<double> > a)
 		return v;
 }
 
+void scene::setAmbient(double ka0)
+{
+	ka = ka0;
+}
 void scene::setCamera(camera cam0)
 {
 	cam = cam0;
@@ -134,6 +136,10 @@ void scene::init_img_arr()
     }
 }
 
+double scene::getAmbient()
+{
+	return ka;
+}
 camera scene::getCamera()
 {
 	return cam;
@@ -336,13 +342,7 @@ ray* scene::generate_refract(ray Ray1,vec N, vec origin,double refract_index)
 		return NULL;
 
 	double beta = n_i_t*abs(cosine) - sqrt(1 + n_i_t*n_i_t*(cosine*cosine - 1));
-	// double alpha = n_i_t;
-
-	/*vec first_term;
-	first_term = Incident*alpha;
-	vec Second_term;
-	Second_term = N*beta;*/
-
+	
 	vec RefractedRaydirn = Incident*n_i_t + N*beta;
 	RefractedRaydirn.normalise();
 
@@ -366,7 +366,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     		//diffuse reflection
 	        std::vector<double> diff_color = sim_mat->getDiffuse(); 
 	        for(int k=0;k<3;k++)
-	            result_color[k] = diff_color[k]*ambient_factor;
+	            result_color[k] = diff_color[k]*(this->getAmbient());
 
 	        //shadow ray
 	        for(int k=0;k<lightslist.size();k++)
@@ -411,12 +411,12 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 	        return result_color;
     	}
     	
-    	else
+    	/*else
     	{
     		if(depth == max_depth)
     			return std::vector<double>(3,0);//blank colour
 
-    		/*if(isReflect) //reflections
+    		if(isReflect) //reflections
     		{
     			double intersect_param = nearest_obj->intersect(viewingRay);
     			vec intersectPoint = viewingRay.get_point(intersect_param);
@@ -430,7 +430,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     			reflectcolor = sim_mat->getReflect();
     			for(int k=0;k<3;k++)
     			    result_color[k] += refl_col[k]*reflectcolor[k];
-    		}*/
+    		}
 
     		if(isTransmit) //refractions
     		{
@@ -454,7 +454,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     				result_color[k] += refr_col[k]*refractcolor[k];	//component wise multiplication
     		}
     		return result_color;
-    	}
+    	}*/
     }
     else
     	return img.getBgcolor();

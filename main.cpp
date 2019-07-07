@@ -226,10 +226,10 @@ light* nodeToLight(TiXmlElement* Light)
         if(element && strcmp(element->Value(),"color")==0)
             plight->setColor(nodeToVector(element,"color"));
         
-        element=element->NextSiblingElement();
+        /*element=element->NextSiblingElement();
 
         if(element && strcmp(element->Value(),"ka")==0)
-            plight->setKa(doubleVal(element,"double"));
+            plight->setKa(doubleVal(element,"double"));*/
         
         return plight;
 	}
@@ -280,7 +280,12 @@ int main(){
     for(TiXmlElement* a=root->FirstChildElement();a;a=a->NextSiblingElement())
     {
         std::cout<<"Root->Child being parsed: "<<a->Value()<<std::endl;
-        if(strcmp(a->Value(),"camera")==0)
+
+        if(strcmp(a->Value(),"ka")==0)
+        {
+            scene_obj.setAmbient(doubleVal(a,"double"));
+        }
+        else if(strcmp(a->Value(),"camera")==0)
         {   
             // std::cout<<"**Parsing Camera**"<<std::endl;
             scene_obj.setCamera(nodeToCamera(a));

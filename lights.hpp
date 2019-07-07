@@ -13,10 +13,9 @@ public:
 class pointlight: public light{
 	vec position;
 	std::vector<double> color = std::vector<double>(3);
-	double ka;
+	
 public:
 	void setPos(vec pos);
-	void setKa(double ka0);
 	void setColor(std::vector<double> color0);
 	vec getPos();
 	std::vector<double> getColor();

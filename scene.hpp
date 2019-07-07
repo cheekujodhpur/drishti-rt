@@ -15,6 +15,7 @@
 //using namespace std;
 
 class scene{
+	double ka;
 	camera cam;
     image img;
     integrator* intg;
@@ -29,6 +30,7 @@ class scene{
     static constexpr double eff_zero_shadow = 1e-15;
 
 public:
+	void setAmbient(double ka0);
 	void setCamera(camera cam0);
 	void setImage(image img0);
 	void setIntegrator(integrator* intg0);
@@ -36,6 +38,7 @@ public:
 	void setObjects(std::vector<std::shared_ptr<object> > objects);
 	void setLights(std::vector<light* > lights);
 	void init_img_arr();
+	double getAmbient();
 	camera getCamera();
 	image getImage();
 	integrator* getIntegrator();

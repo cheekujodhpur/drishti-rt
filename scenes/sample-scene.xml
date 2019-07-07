@@ -1,5 +1,7 @@
 <rt-scene>
 
+<ka double="0" />
+
 <camera>
 	<lookat vector3="0.0 0.0 1.0" />
 	<eye	vector3="0.0 0.0 0.0" />
@@ -56,7 +58,7 @@
 		<isreflect bool="false"/>
 		<istransmit bool="false"/>
 	</simplemat>
-	<simplemat id="diffuse_left_wall">
+	<simplemat id="diffuse_soft_red">
 		<diffuse color="0.75 0.25 0.25" />
 		<specular color="1.0 1.0 1.0" />	
 		<reflect color="0.0 0.0 0.0" />
@@ -110,10 +112,10 @@
 
 <objects>
 	<sphere material="diffuse_violet">
-		<center vector3="+22000 0 75" />
+		<center vector3="22000 0 75" />
 		<radius double="22033" />
 	</sphere>
-	<sphere material="diffuse_left_wall">
+	<sphere material="diffuse_soft_red">
 		<center vector3="-22000 0 75" />
 		<radius double="22033" />
 	</sphere>
@@ -126,16 +128,15 @@
 		<radius double="20027" />
 	</sphere>
 	<sphere material="diffuse_white">
-		<center vector3="0 0 800" />
-		<radius double="150" />
+		<center vector3="0 0 -20000" />
+		<radius double="20525" />
 	</sphere>
 </objects>
 
 <lights>
 	<pointlight>
-		<position vector3="0 -25 75" />
+		<position vector3="0 26 270" />
 		<color color="1.0 1.0 1.0" />
-		<ka double="0.05" />
 	</pointlight>
 </lights>
 
