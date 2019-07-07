@@ -112,12 +112,12 @@
 
 <objects>
 	<sphere material="diffuse_violet">
-		<center vector3="22000 0 75" />
-		<radius double="22033" />
+		<center vector3="-26000 0 260" />
+		<radius double="25970" />
 	</sphere>
 	<sphere material="diffuse_soft_red">
-		<center vector3="-22000 0 75" />
-		<radius double="22033" />
+		<center vector3="26000 0 260" />
+		<radius double="25970" />
 	</sphere>
 	<sphere material="diffuse_white">
 		<center vector3="0 20000 75" />
@@ -131,11 +131,15 @@
 		<center vector3="0 0 -20000" />
 		<radius double="20525" />
 	</sphere>
+	<sphere material="mirror">
+		<center vector3="5 -10 400" />
+		<radius double="12.5" />
+	</sphere>
 </objects>
 
 <lights>
 	<pointlight>
-		<position vector3="0 26 270" />
+		<position vector3="0 26 250" />
 		<color color="1.0 1.0 1.0" />
 	</pointlight>
 </lights>
@@ -143,7 +147,7 @@
 
 <integrator>
 	<whitted>
-		<depth-of-recursion int="1" />
+		<depth-of-recursion int="4" />
 	</whitted>
 </integrator>
 

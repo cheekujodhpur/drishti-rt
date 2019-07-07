@@ -411,7 +411,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 	        return result_color;
     	}
     	
-    	/*else
+    	else
     	{
     		if(depth == max_depth)
     			return std::vector<double>(3,0);//blank colour
@@ -454,7 +454,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     				result_color[k] += refr_col[k]*refractcolor[k];	//component wise multiplication
     		}
     		return result_color;
-    	}*/
+    	}
     }
     else
     	return img.getBgcolor();
