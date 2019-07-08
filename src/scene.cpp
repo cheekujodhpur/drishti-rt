@@ -463,8 +463,8 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 
 void scene::render(char fname[])
 {
-    double Wres = img.getWidth();
-    double Hres = img.getHeight();
+    int Wres = img.getWidth();
+    int Hres = img.getHeight();
     double fov = cam.getFov();
     double H_phy = 2.0*tan((M_PI/180)*(0.5*fov)); // (fov/2) is the half angle height-wise
     double delta_H = H_phy/Hres;
@@ -477,8 +477,10 @@ void scene::render(char fname[])
     vec z = cam.getUp();z.normalise();
     vec x = cam.getLookat();x.normalise();
   //  std::cout<<"Entering loop"<<std::endl;
+#pragma omp parallel for schedule(dynamic, 1) // OpenMP
     for(int i=0;i<Wres;i++)
     {
+        std::cerr << "\rRendering " << i*100./Wres << "%";
         for(int j=0;j<Hres;j++)
         {	//std::cout<<"Yo"<<std::endl;
             vec r;
