@@ -489,10 +489,6 @@ void scene::render(char fname[])
 			//std::vector<double> temp_R_in_cam2(3,0);
 			//std::vector<double> temp_R_in_cam3(3,0);
 			//std::vector<	double> temp_R_in_cam4(3,0);
-			if(i==(int)Wres/2&&j==(int)Hres/2)
-			{
-				std::cout<<"Testing center pixel"<<std::endl;
-			}
 			std::vector<double> color(3,0);
 			for(int m=0;m<n;m++)
 			{
