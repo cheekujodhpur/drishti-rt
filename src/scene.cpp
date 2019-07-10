@@ -15,6 +15,8 @@ const double INF = std::numeric_limits<double>::infinity();
 const int n = 2;
 const double n_inv = 1.0/n;
 
+const int no_of_rays = 100;
+
 //array*array
 std::vector<std::vector<double> > mat_mult(std::vector<std::vector<double> > a,std::vector<std::vector<double> > b)
 {
@@ -417,7 +419,48 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     		if(depth == max_depth)
     			return std::vector<double>(3,0);//blank colour
 
-    		if(isReflect) //reflections
+    		if(isReflect && isTransmit)
+    		{
+    			 unsigned short xsubi[3];
+				double rand_gen = erand48(xsubi);                    //generate random number between 0 and 1
+    			if(rand_gen > 0.5)
+    			{
+    				double intersect_param = nearest_obj->intersect(viewingRay);
+	    			vec intersectPoint = viewingRay.get_point(intersect_param);
+	    			vec normal = nearest_obj->getNormal(intersectPoint); //outward normal at point of intersection
+	    			vec incident = viewingRay.get_direction();
+	    			vec refl_dirn = incident - normal*(incident.dot(normal)*2);
+	    			ray reflectedRay(intersectPoint,refl_dirn);//generate a reflected ray
+
+	    			std::vector<double> refl_col = this->radiance(reflectedRay,depth+1,max_depth);
+	    			std::vector<double> reflectcolor(3,0);
+	    			reflectcolor = sim_mat->getReflect();
+	    			for(int k=0;k<3;k++)
+    			    result_color[k] += refl_col[k]*reflectcolor[k];
+    			}
+    			else
+    			{
+    				double refract_index = sim_mat->getEta();
+
+	    			double intersect_param = nearest_obj->intersect(viewingRay);
+		    		vec intersectPoint = viewingRay.get_point(intersect_param);
+
+	    			vec normal = nearest_obj->getNormal(intersectPoint);            //getNormal returns normalised direction.
+
+	    			ray* refractedRay_ptr = generate_refract(viewingRay,normal,intersectPoint,refract_index);
+	    			if(refractedRay_ptr==NULL)
+	    				return std::vector<double>(3,0);//blank colour
+	    			// ray refractedRay = *refractedRay_ptr;
+	    			std::vector<double> refr_col = this->radiance(*refractedRay_ptr,depth+1,max_depth)	;	//recursive step
+
+	    			std::vector<double> refractcolor(3,0);
+	    			refractcolor = sim_mat->getTransmit();					//color of the material	
+
+	    			for(int k=0;k<3;k++)
+    				result_color[k] += refr_col[k]*refractcolor[k];	/
+    			}
+    		}
+    		else if(isReflect) //reflections
     		{
     			double intersect_param = nearest_obj->intersect(viewingRay);
     			vec intersectPoint = viewingRay.get_point(intersect_param);
@@ -432,8 +475,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     			for(int k=0;k<3;k++)
     			    result_color[k] += refl_col[k]*reflectcolor[k];
     		}
-
-    		if(isTransmit) //refractions
+    		else if(isTransmit) //refractions
     		{
     			double refract_index = sim_mat->getEta();
 
@@ -494,28 +536,41 @@ void scene::render(char fname[])
 			{
 				for(int l=0;l<n;l++)
 				{	
-					unsigned short xsubi[3] = {(unsigned short)i,(unsigned short)j,0};
-					double f = erand48(xsubi);
-					double x =  0.0 + f * n_inv; //number between 0 and 1/n
-					f = erand48(xsubi);
-					double y = 0.0 + f * n_inv; //another number between 0 and 1/n
-					
-					temp_R_in_cam1[0] = 1; //these are ACTUALLY in camera coordinates
-					temp_R_in_cam1[1] = (0.5*Wres-(i+m*n_inv+x))*delta_W;
-					temp_R_in_cam1[2] = (0.5*Hres-(j+l*n_inv+y))*delta_H;
-					vec R_in_cam1(temp_R_in_cam1);
+					std::vector<double> coloravg(3,0);
 
-					vec R_in_world1 = camera_to_world(R_in_cam1);   
-				 	R_in_world1.normalise();
-				 	vec origin = cam.getEye();
-				  	ray viewingRay1(origin,R_in_world1-origin); 
+					for(int g = 0; g < no_of_rays; g++)
+					{
+						unsigned short xsubi[3] = {(unsigned short)i,(unsigned short)j,0};
+						double f = erand48(xsubi);
+						double x =  0.0 + f * n_inv; //number between 0 and 1/n
+						f = erand48(xsubi);
+						double y = 0.0 + f * n_inv; //another number between 0 and 1/n
+						
+						temp_R_in_cam1[0] = 1; //these are ACTUALLY in camera coordinates
+						temp_R_in_cam1[1] = (0.5*Wres-(i+m*n_inv+x))*delta_W;
+						temp_R_in_cam1[2] = (0.5*Hres-(j+l*n_inv+y))*delta_H;
+						vec R_in_cam1(temp_R_in_cam1);
 
-				  	whitted* _intg = static_cast<whitted*>(intg);
-					int max_depth = _intg->getDepth(); //assuming whitted
-					std::vector<double> color1 = this->radiance(viewingRay1,0,max_depth); 
+						vec R_in_world1 = camera_to_world(R_in_cam1);   
+					 	R_in_world1.normalise();
+					 	vec origin = cam.getEye();
+					  	ray viewingRay1(origin,R_in_world1-origin); 
+
+					  	whitted* _intg = static_cast<whitted*>(intg);
+						int max_depth = _intg->getDepth(); //assuming whitted
+						std::vector<double> color1 = this->radiance(viewingRay1,0,max_depth); 
+
+						for(int b=0;b<3;b++)
+							coloravg[b] += color1[b];
+					}
 
 					for(int b=0;b<3;b++)
-						color[b] += color1[b];
+					{
+						coloravg[b] = coloravg[b]/no_of_rays;
+						color[b] += coloravg[b];
+					}
+
+
 				}
 			}
             
