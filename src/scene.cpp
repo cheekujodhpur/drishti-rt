@@ -357,6 +357,8 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 	//call intersect function on scene object "this": returns the nearest one which intersects
     std::shared_ptr<object> nearest_obj = this->intersect(viewingRay);
     std::vector<double> result_color(3,0);
+    double fresnel_refract;
+    double fresnel_reflect;
 
     if(nearest_obj!=NULL)
     {
@@ -423,8 +425,12 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     		{
     			 unsigned short xsubi[3];
 				double rand_gen = erand48(xsubi);                    //generate random number between 0 and 1
-    			if(rand_gen > 0.5)
+    			if(rand_gen > 0.5)										//reflection
     			{
+    				double refract_index = sim_mat->getEta();
+
+    				fresnel_reflect = (refract_index-1)*(refract_index-1)/((refract_index+1)*(refract_index+1));
+
     				double intersect_param = nearest_obj->intersect(viewingRay);
 	    			vec intersectPoint = viewingRay.get_point(intersect_param);
 	    			vec normal = nearest_obj->getNormal(intersectPoint); //outward normal at point of intersection
@@ -436,11 +442,13 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 	    			std::vector<double> reflectcolor(3,0);
 	    			reflectcolor = sim_mat->getReflect();
 	    			for(int k=0;k<3;k++)
-    			    result_color[k] += refl_col[k]*reflectcolor[k];
+    			    result_color[k] += refl_col[k]*reflectcolor[k]*fresnel_reflect;
     			}
-    			else
+    			else													//refraction
     			{
     				double refract_index = sim_mat->getEta();
+    				fresnel_reflect = (refract_index-1)*(refract_index-1)/((refract_index+1)*(refract_index+1));
+    				fresnel_refract = 1 - fresnel_reflect;
 
 	    			double intersect_param = nearest_obj->intersect(viewingRay);
 		    		vec intersectPoint = viewingRay.get_point(intersect_param);
@@ -457,7 +465,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 	    			refractcolor = sim_mat->getTransmit();					//color of the material	
 
 	    			for(int k=0;k<3;k++)
-    				result_color[k] += refr_col[k]*refractcolor[k];	/
+    				result_color[k] += refr_col[k]*refractcolor[k]*fresnel_refract;	
     			}
     		}
     		else if(isReflect) //reflections
