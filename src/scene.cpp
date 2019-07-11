@@ -413,8 +413,19 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 			vec incident = viewingRay.get_direction();
     		if(isReflect && isTransmit)
     		{
-    			
-    			if(rand() > 0.5) //reflection
+    			long long int seed;
+  				unsigned short int seedvec[3];
+  				int modulus = 65536;
+  				seed = 123456789LL;
+				seedvec[0] = seed % modulus;
+				seed = seed / modulus;
+				seedvec[1] = seed % modulus;
+				seed = seed / modulus;
+				seedvec[2] = seed % modulus;
+				seed = seed / modulus;
+				double rand_num = erand48(seedvec);
+    			// double rand_num = (double) rand() / (RAND_MAX);
+    			if(rand_num> 0.5) //reflection
     			{
 	    			vec refl_dirn = incident - normal*(incident.dot(normal)*2);
 	    			ray reflectedRay(intersectPoint,refl_dirn);//generate a reflected ray
