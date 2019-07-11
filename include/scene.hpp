@@ -54,7 +54,7 @@ public:
 	std::shared_ptr<object> intersect(ray Ray);
 	void write_to_ppm(char[]);
 	std::vector<double> radiance(ray viewingRay, int depth, int max_depth);
-	void render(char[]);
+	void render(char[],const int);
 	ray* generate_refract(ray Ray1,vec N, vec origin,double refract_index);
 };
 

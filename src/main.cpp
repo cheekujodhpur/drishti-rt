@@ -260,11 +260,12 @@ integrator* nodeToIntegrator(TiXmlElement* Integrator)
 }
 
 int main(int argc, char *argv[]){
-    if(argc < 2) {
-        std::cout << "No scene provided" << std::endl;
+    if(argc < 4) {
+        std::cout << "Usage: " <<argv[0]<<" <scene_file> <output_file> <no. of rays>"<< std::endl;
         return -1;
     };
     TiXmlDocument doc(argv[1]);
+    const int no_of_rays = atoi(argv[3]);
     
     scene scene_obj;
     std::vector<material* > materialslist;
@@ -302,7 +303,7 @@ int main(int argc, char *argv[]){
         else if(strcmp(a->Value(),"materials")==0)
         {
             // std::cout<<"**Parsing Materials**"<<std::endl;
-            int i=0;
+            // int i=0;
             for(TiXmlElement* b=a->FirstChildElement();b;b=b->NextSiblingElement())
             {
                 // std::cout<<"**Parsing Material**"<<i++<<std::endl;
@@ -347,7 +348,7 @@ int main(int argc, char *argv[]){
     scene_obj.init_img_arr();
     std::cout<<"*Image array formed*"<<std::endl;
      //scene_obj.getCamera().setThird();
-    scene_obj.render(argv[2]);
+    scene_obj.render(argv[2],no_of_rays);
 
     std::cout<<"******Rendering complete******"<<std::endl;
 }

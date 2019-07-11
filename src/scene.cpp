@@ -15,18 +15,11 @@ const double INF = std::numeric_limits<double>::infinity();
 const int n = 2;
 const double n_inv = 1.0/n;
 
-const int no_of_rays = 100;
+// const int no_of_rays = 100;
 
 //array*array
 std::vector<std::vector<double> > mat_mult(std::vector<std::vector<double> > a,std::vector<std::vector<double> > b)
 {
-	int num_row1 = a.size();
-	int num_column1 = a[0].size();
-
-	int num_row2 = b.size();
-	int num_column2 = b[0].size();
-
-
 	std::vector<double> x(4,0);
 
 	std::vector<std::vector<double> > c(4,x);
@@ -129,11 +122,6 @@ void scene::init_img_arr()
             img_arr[i][j][0] = v[0];
             img_arr[i][j][1] = v[1];
             img_arr[i][j][2] = v[2];
-            
-        	//without ambient-->
-            /*img_arr[i][j][0] = 0;
-            img_arr[i][j][1] = 0;
-            img_arr[i][j][2] = 0;*/
         }
     }
 }
@@ -329,23 +317,20 @@ void scene::write_to_ppm(char fname[])
 
 }
 
-ray* scene::generate_refract(ray Ray1,vec N, vec origin,double refract_index)
+ray* scene::generate_refract(ray incidentRay,vec N, vec origin,double refract_index)
 {
-	vec Incident = Ray1.get_direction();
+	vec Incident = incidentRay.get_direction();
 	double n_i_t;
 	double cosine = (-Incident).dot(N);
-	if(cosine>0) //going into the object
+	if(cosine>=0) //going into the object
 		n_i_t = 1/refract_index;
 	else if(cosine<0) //going out of the object
 		n_i_t = refract_index;
-	else
-		return NULL;
 	
 	if(1 + n_i_t*n_i_t*(cosine*cosine - 1)<0)
 		return NULL;
 
 	double beta = n_i_t*abs(cosine) - sqrt(1 + n_i_t*n_i_t*(cosine*cosine - 1));
-	
 	vec RefractedRaydirn = Incident*n_i_t + N*beta;
 	RefractedRaydirn.normalise();
 
@@ -423,17 +408,12 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 
     		if(isReflect && isTransmit)
     		{
-    			 unsigned short xsubi[3];
-				double rand_gen = erand48(xsubi);                    //generate random number between 0 and 1
-    			if(rand_gen > 0.5)										//reflection
+    			double refract_index = sim_mat->getEta();
+				double intersect_param = nearest_obj->intersect(viewingRay);
+    			vec intersectPoint = viewingRay.get_point(intersect_param);
+    			vec normal = nearest_obj->getNormal(intersectPoint); //outward normal at point of intersection
+    			if(rand() > 0.5) //reflection
     			{
-    				double refract_index = sim_mat->getEta();
-
-    				fresnel_reflect = (refract_index-1)*(refract_index-1)/((refract_index+1)*(refract_index+1));
-
-    				double intersect_param = nearest_obj->intersect(viewingRay);
-	    			vec intersectPoint = viewingRay.get_point(intersect_param);
-	    			vec normal = nearest_obj->getNormal(intersectPoint); //outward normal at point of intersection
 	    			vec incident = viewingRay.get_direction();
 	    			vec refl_dirn = incident - normal*(incident.dot(normal)*2);
 	    			ray reflectedRay(intersectPoint,refl_dirn);//generate a reflected ray
@@ -441,34 +421,51 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 	    			std::vector<double> refl_col = this->radiance(reflectedRay,depth+1,max_depth);
 	    			std::vector<double> reflectcolor(3,0);
 	    			reflectcolor = sim_mat->getReflect();
+
+	    			double cosine = (-incident).dot(normal);
+	    			double R_0 = (refract_index-1)*(refract_index-1)/((refract_index+1)*(refract_index+1));
+    				fresnel_reflect = R_0 + (1 - R_0)*pow(1 - abs(cosine),5);
+
 	    			for(int k=0;k<3;k++)
-    			    result_color[k] += refl_col[k]*reflectcolor[k]*fresnel_reflect;
+    			    	result_color[k] += refl_col[k]*reflectcolor[k]*fresnel_reflect;
     			}
-    			else													//refraction
+    			else //refraction
     			{
-    				double refract_index = sim_mat->getEta();
-    				fresnel_reflect = (refract_index-1)*(refract_index-1)/((refract_index+1)*(refract_index+1));
-    				fresnel_refract = 1 - fresnel_reflect;
-
-	    			double intersect_param = nearest_obj->intersect(viewingRay);
-		    		vec intersectPoint = viewingRay.get_point(intersect_param);
-
-	    			vec normal = nearest_obj->getNormal(intersectPoint);            //getNormal returns normalised direction.
-
 	    			ray* refractedRay_ptr = generate_refract(viewingRay,normal,intersectPoint,refract_index);
-	    			if(refractedRay_ptr==NULL)
-	    				return std::vector<double>(3,0);//blank colour
-	    			// ray refractedRay = *refractedRay_ptr;
-	    			std::vector<double> refr_col = this->radiance(*refractedRay_ptr,depth+1,max_depth)	;	//recursive step
+	    			if(refractedRay_ptr==NULL) // Total Internal Reflection
+	    			{
+	    				vec incident = viewingRay.get_direction();
+		    			vec refl_dirn = incident - normal*(incident.dot(normal)*2);
+		    			ray reflectedRay(intersectPoint,refl_dirn);//generate a reflected ray
 
-	    			std::vector<double> refractcolor(3,0);
-	    			refractcolor = sim_mat->getTransmit();					//color of the material	
+		    			std::vector<double> refl_col = this->radiance(reflectedRay,depth+1,max_depth);
+		    			std::vector<double> reflectcolor(3,0);
+		    			reflectcolor = sim_mat->getReflect();
 
-	    			for(int k=0;k<3;k++)
-    				result_color[k] += refr_col[k]*refractcolor[k]*fresnel_refract;	
+		    			double cosine = (-incident).dot(normal);
+		    			double R_0 = (refract_index-1)*(refract_index-1)/((refract_index+1)*(refract_index+1));
+	    				fresnel_reflect = R_0 + (1 - R_0)*pow(1 - abs(cosine),5);
+
+		    			for(int k=0;k<3;k++)
+	    			    	result_color[k] += refl_col[k]*reflectcolor[k]*fresnel_reflect;
+	    			}
+	    			else
+	    			{
+	    				std::vector<double> refr_col = this->radiance(*refractedRay_ptr,depth+1,max_depth)	;	//recursive step
+		    			std::vector<double> refractcolor(3,0);
+		    			refractcolor = sim_mat->getTransmit();	//color of the material	
+
+		    			vec incident = viewingRay.get_direction();
+		    			double cosine = (-incident).dot(normal);
+		    			double R_0 = (refract_index-1)*(refract_index-1)/((refract_index+1)*(refract_index+1));
+	    				fresnel_reflect = R_0 + (1 - R_0)*pow(1 - abs(cosine),5);
+	    				fresnel_refract = 1 - fresnel_reflect;
+		    			for(int k=0;k<3;k++)
+	    					result_color[k] += refr_col[k]*refractcolor[k]*fresnel_refract;	
+	    			}
     			}
     		}
-    		else if(isReflect) //reflections
+    		else if(isReflect) //only reflections
     		{
     			double intersect_param = nearest_obj->intersect(viewingRay);
     			vec intersectPoint = viewingRay.get_point(intersect_param);
@@ -483,7 +480,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     			for(int k=0;k<3;k++)
     			    result_color[k] += refl_col[k]*reflectcolor[k];
     		}
-    		else if(isTransmit) //refractions
+    		else if(isTransmit) //only refractions
     		{
     			double refract_index = sim_mat->getEta();
 
@@ -493,9 +490,9 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     			vec normal = nearest_obj->getNormal(intersectPoint);            //getNormal returns normalised direction.
 
     			ray* refractedRay_ptr = generate_refract(viewingRay,normal,intersectPoint,refract_index);
-    			if(refractedRay_ptr==NULL)
+    			if(refractedRay_ptr==NULL) //total internal reflection
     				return std::vector<double>(3,0);//blank colour
-    			// ray refractedRay = *refractedRay_ptr;
+
     			std::vector<double> refr_col = this->radiance(*refractedRay_ptr,depth+1,max_depth)	;	//recursive step
 
     			std::vector<double> refractcolor(3,0);
@@ -511,7 +508,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     	return img.getBgcolor();
 }
 
-void scene::render(char fname[])
+void scene::render(char fname[], const int no_of_rays)
 {
     int Wres = img.getWidth();
     int Hres = img.getHeight();
@@ -526,6 +523,8 @@ void scene::render(char fname[])
     vec y = cam.getThird();y.normalise();
     vec z = cam.getUp();z.normalise();
     vec x = cam.getLookat();x.normalise();
+
+    double inv_sample_size = 1./n*n*no_of_rays;
   //  std::cout<<"Entering loop"<<std::endl;
 #pragma omp parallel for schedule(dynamic, 1) // OpenMP
     for(int i=0;i<Wres;i++)
@@ -534,56 +533,43 @@ void scene::render(char fname[])
         for(int j=0;j<Hres;j++)
         {	//std::cout<<"Yo"<<std::endl;
             vec r;
-			std::vector<double> temp_R_in_cam1(3,0);
-			
-			//std::vector<double> temp_R_in_cam2(3,0);
-			//std::vector<double> temp_R_in_cam3(3,0);
-			//std::vector<	double> temp_R_in_cam4(3,0);
+			std::vector<double> temp_R_in_cam(3,0);
 			std::vector<double> color(3,0);
+			unsigned short xsubi[3] = {(unsigned short)i,(unsigned short)j,0};//seed for erand48
+			
 			for(int m=0;m<n;m++)
 			{
 				for(int l=0;l<n;l++)
-				{	
-					std::vector<double> coloravg(3,0);
-
+				{
 					for(int g = 0; g < no_of_rays; g++)
 					{
-						unsigned short xsubi[3] = {(unsigned short)i,(unsigned short)j,0};
 						double f = erand48(xsubi);
-						double x =  0.0 + f * n_inv; //number between 0 and 1/n
+						double x = f*n_inv; //number between 0 and 1/n
 						f = erand48(xsubi);
-						double y = 0.0 + f * n_inv; //another number between 0 and 1/n
+						double y = f*n_inv; //another number between 0 and 1/n
 						
-						temp_R_in_cam1[0] = 1; //these are ACTUALLY in camera coordinates
-						temp_R_in_cam1[1] = (0.5*Wres-(i+m*n_inv+x))*delta_W;
-						temp_R_in_cam1[2] = (0.5*Hres-(j+l*n_inv+y))*delta_H;
-						vec R_in_cam1(temp_R_in_cam1);
-
-						vec R_in_world1 = camera_to_world(R_in_cam1);   
-					 	R_in_world1.normalise();
+						temp_R_in_cam[0] = 1; //direction in camera coordinates
+						temp_R_in_cam[1] = (0.5*Wres - (i + m*n_inv + x))*delta_W;
+						temp_R_in_cam[2] = (0.5*Hres - (j + l*n_inv + y))*delta_H;
+						vec R_in_cam(temp_R_in_cam);
+						vec R_in_world = camera_to_world(R_in_cam);   
+					 	R_in_world.normalise();
 					 	vec origin = cam.getEye();
-					  	ray viewingRay1(origin,R_in_world1-origin); 
+					  	ray viewingRay(origin,R_in_world-origin); 
 
 					  	whitted* _intg = static_cast<whitted*>(intg);
 						int max_depth = _intg->getDepth(); //assuming whitted
-						std::vector<double> color1 = this->radiance(viewingRay1,0,max_depth); 
+						
+						std::vector<double> color1 = this->radiance(viewingRay,0,max_depth); 
 
 						for(int b=0;b<3;b++)
-							coloravg[b] += color1[b];
+							color[b] += inv_sample_size*color1[b];
 					}
-
-					for(int b=0;b<3;b++)
-					{
-						coloravg[b] = coloravg[b]/no_of_rays;
-						color[b] += coloravg[b];
-					}
-
-
 				}
 			}
             
             for(int k=0;k<3;k++)
-            	img_arr[i][j][k] = color[k]*(n_inv*n_inv);
+            	img_arr[i][j][k] = color[k];
         	
         }
     }
