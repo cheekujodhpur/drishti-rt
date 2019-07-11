@@ -322,11 +322,13 @@ ray* scene::generate_refract(ray incidentRay,vec N, vec origin,double refract_in
 	vec Incident = incidentRay.get_direction();
 	double n_i_t;
 	double cosine = (-Incident).dot(N);
-	if(cosine>=0) //going into the object
+	if(cosine>0) //going into the object
 		n_i_t = 1/refract_index;
 	else if(cosine<0) //going out of the object
 		n_i_t = refract_index;
-	
+	else
+		return NULL;
+
 	if(1 + n_i_t*n_i_t*(cosine*cosine - 1)<0)
 		return NULL;
 
@@ -352,7 +354,6 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     	bool isTransmit = sim_mat->getIsTransmit();
     	if(!isReflect && !isTransmit) //diffuse object
     	{
-
     		//diffuse reflection
 	        std::vector<double> diff_color = sim_mat->getDiffuse(); 
 	        for(int k=0;k<3;k++)
@@ -405,16 +406,16 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     	{
     		if(depth == max_depth)
     			return std::vector<double>(3,0);//blank colour
-
+    		double refract_index = sim_mat->getEta();
+			double intersect_param = nearest_obj->intersect(viewingRay);
+			vec intersectPoint = viewingRay.get_point(intersect_param);
+			vec normal = nearest_obj->getNormal(intersectPoint); //outward normal at point of intersection
+			vec incident = viewingRay.get_direction();
     		if(isReflect && isTransmit)
     		{
-    			double refract_index = sim_mat->getEta();
-				double intersect_param = nearest_obj->intersect(viewingRay);
-    			vec intersectPoint = viewingRay.get_point(intersect_param);
-    			vec normal = nearest_obj->getNormal(intersectPoint); //outward normal at point of intersection
+    			
     			if(rand() > 0.5) //reflection
     			{
-	    			vec incident = viewingRay.get_direction();
 	    			vec refl_dirn = incident - normal*(incident.dot(normal)*2);
 	    			ray reflectedRay(intersectPoint,refl_dirn);//generate a reflected ray
 
@@ -434,7 +435,6 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 	    			ray* refractedRay_ptr = generate_refract(viewingRay,normal,intersectPoint,refract_index);
 	    			if(refractedRay_ptr==NULL) // Total Internal Reflection
 	    			{
-	    				vec incident = viewingRay.get_direction();
 		    			vec refl_dirn = incident - normal*(incident.dot(normal)*2);
 		    			ray reflectedRay(intersectPoint,refl_dirn);//generate a reflected ray
 
@@ -455,7 +455,6 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 		    			std::vector<double> refractcolor(3,0);
 		    			refractcolor = sim_mat->getTransmit();	//color of the material	
 
-		    			vec incident = viewingRay.get_direction();
 		    			double cosine = (-incident).dot(normal);
 		    			double R_0 = (refract_index-1)*(refract_index-1)/((refract_index+1)*(refract_index+1));
 	    				fresnel_reflect = R_0 + (1 - R_0)*pow(1 - abs(cosine),5);
@@ -465,12 +464,32 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 	    			}
     			}
     		}
+    		else if(isTransmit) //only refractions
+    		{
+    			ray* refractedRay_ptr = generate_refract(viewingRay,normal,intersectPoint,refract_index);
+    			if(refractedRay_ptr==NULL) //total internal reflection
+    				{
+    					vec refl_dirn = incident - normal*(incident.dot(normal)*2);
+		    			ray reflectedRay(intersectPoint,refl_dirn);//generate a reflected ray
+
+		    			std::vector<double> refl_col = this->radiance(reflectedRay,depth+1,max_depth);
+		    			std::vector<double> reflectcolor(3,0);
+		    			reflectcolor = sim_mat->getReflect();
+		    			for(int k=0;k<3;k++)
+		    			    result_color[k] += refl_col[k]*reflectcolor[k];
+    				}
+    			else
+    			{
+    				std::vector<double> refr_col = this->radiance(*refractedRay_ptr,depth+1,max_depth);	//recursive step
+	    			std::vector<double> refractcolor(3,0);
+	    			refractcolor = sim_mat->getTransmit(); //color of the material	
+
+	    			for(int k=0;k<3;k++)
+	    				result_color[k] += refr_col[k]*refractcolor[k];	//component wise multiplication
+    			}
+    		}
     		else if(isReflect) //only reflections
     		{
-    			double intersect_param = nearest_obj->intersect(viewingRay);
-    			vec intersectPoint = viewingRay.get_point(intersect_param);
-    			vec normal = nearest_obj->getNormal(intersectPoint); //outward normal at point of intersection
-    			vec incident = viewingRay.get_direction();
     			vec refl_dirn = incident - normal*(incident.dot(normal)*2);
     			ray reflectedRay(intersectPoint,refl_dirn);//generate a reflected ray
 
@@ -480,27 +499,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     			for(int k=0;k<3;k++)
     			    result_color[k] += refl_col[k]*reflectcolor[k];
     		}
-    		else if(isTransmit) //only refractions
-    		{
-    			double refract_index = sim_mat->getEta();
-
-    			double intersect_param = nearest_obj->intersect(viewingRay);
-	    		vec intersectPoint = viewingRay.get_point(intersect_param);
-
-    			vec normal = nearest_obj->getNormal(intersectPoint);            //getNormal returns normalised direction.
-
-    			ray* refractedRay_ptr = generate_refract(viewingRay,normal,intersectPoint,refract_index);
-    			if(refractedRay_ptr==NULL) //total internal reflection
-    				return std::vector<double>(3,0);//blank colour
-
-    			std::vector<double> refr_col = this->radiance(*refractedRay_ptr,depth+1,max_depth)	;	//recursive step
-
-    			std::vector<double> refractcolor(3,0);
-    			refractcolor = sim_mat->getTransmit();					//color of the material	
-
-    			for(int k=0;k<3;k++)
-    				result_color[k] += refr_col[k]*refractcolor[k];	//component wise multiplication
-    		}
+    		
     		return result_color;
     	}
     }
@@ -524,7 +523,7 @@ void scene::render(char fname[], const int no_of_rays)
     vec z = cam.getUp();z.normalise();
     vec x = cam.getLookat();x.normalise();
 
-    double inv_sample_size = 1./n*n*no_of_rays;
+    double inv_sample_size = 1.0/(n*n*no_of_rays);
   //  std::cout<<"Entering loop"<<std::endl;
 #pragma omp parallel for schedule(dynamic, 1) // OpenMP
     for(int i=0;i<Wres;i++)
