@@ -1,7 +1,7 @@
 #include "scene.hpp"
 #include <stddef.h> //NULL
 #include <limits>
-#include <math.h>
+#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <typeinfo>
@@ -359,8 +359,8 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 	        for(int k=0;k<3;k++)
 	            result_color[k] = diff_color[k]*(this->getAmbient());
 
-	        //shadow ray
-	        for(int k=0;k<lightslist.size();k++)
+	        //shadow ray : ditch this
+	        /*for(int k=0;k<lightslist.size();k++)
 	        {
 	        	light* lightsource = lightslist[k];
 	        	if(strcmp(lightsource->source_type().c_str(),"pointlight")==0)
@@ -398,7 +398,47 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 	        				result_color[l] += lightcolor[l]*diff_color[l]*cosine;
 	    			}
 	    		}
-	        }
+	        }*/
+
+	        //generate ray in random direction
+
+	        	double intersect_param = nearest_obj->intersect(viewingRay);
+	    		vec intersectPoint = viewingRay.get_point(intersect_param);
+	        	long long int seed;
+  				unsigned short int seedvec[3];
+  				int modulus = 65536;
+  				seed = 123456789LL;
+				seedvec[0] = seed % modulus;
+				seed = seed / modulus;
+				seedvec[1] = seed % modulus;
+				seed = seed / modulus;
+				seedvec[2] = seed % modulus;
+				seed = seed / modulus;
+
+				double sq_cos_theta = erand48(seedvec);
+
+				double cos_theta = sqrt(sq_cos_theta);
+				double sin_theta = sqrt(1-sq_cos_theta);
+
+				double phi = 2*3.14*erand48(seedvec);
+
+				std::vector<double> v;
+				v.push_back(sin_theta*cos(phi));
+				v.push_back(sin_theta*sin(phi));
+				v.push_back(cos(phi));
+
+				vec diffuse_reflect_dirn(v);
+
+				ray diffuse_ray(intersectPoint,diffuse_reflect_dirn);
+
+				std::vector<double> diff_refl_col = this->radiance(diffuse_ray,depth+1,max_depth);
+
+				for(int k=0;k<3;k++)
+	    		result_color[k] += diff_refl_col[k]*diff_color[k];
+
+
+
+
 	        return result_color;
     	}
     	

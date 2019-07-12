@@ -165,7 +165,7 @@
 
 <integrator>
 	<whitted>
-		<depth-of-recursion int="4" />
+		<depth-of-recursion int="3" />
 	</whitted>
 </integrator>
 
