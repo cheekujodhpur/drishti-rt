@@ -274,7 +274,7 @@ std::shared_ptr<object> scene::intersect(ray Ray)
 {	
 	double mini = INF;
 	int index = -1;
-	for(int i=0;i<objectslist.size();i++)
+	for(unsigned int i=0;i<objectslist.size();i++)
     {
     	double x = objectslist[i]->intersect(Ray);
     	if(x < mini)
@@ -339,7 +339,7 @@ ray* scene::generate_refract(ray incidentRay,vec N, vec origin,double refract_in
 	return new ray(origin,RefractedRaydirn);
 }
 
-std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
+std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, unsigned short xsubi[])
 {
     if(depth == max_depth)
         return std::vector<double>(3,0);//blank colour
@@ -372,39 +372,31 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 
 	        	double intersect_param = nearest_obj->intersect(viewingRay);
 	    		vec intersectPoint = viewingRay.get_point(intersect_param);
-	        	long long int seed;
-  				unsigned short int seedvec[3];
-  				int modulus = 65536;
-  				seed = 123456789LL;
-				seedvec[0] = seed % modulus;
-				seed = seed / modulus;
-				seedvec[1] = seed % modulus;
-				seed = seed / modulus;
-				seedvec[2] = seed % modulus;
-				seed = seed / modulus;
 
-				double sq_cos_theta = erand48(seedvec);
-
+				double sq_cos_theta = erand48(xsubi);
 				double cos_theta = sqrt(sq_cos_theta);
 				double sin_theta = sqrt(1-sq_cos_theta);
+				double phi = 2*3.14*erand48(xsubi);
 
-				double phi = 2*3.14*erand48(seedvec);
-
-			    vec normal = nearest_obj->getNormal(intersectPoint); //outward normal at point of intersection
+			    vec normal = nearest_obj->getNormal(intersectPoint); //inward normal for reflection
+			    vec incident = viewingRay.get_direction();
+                vec nl = (normal.dot(incident) < 0) ? normal : -normal;
                 std::vector <double> blank_y;
-                blank_y.push_back(0);blank_y.push_back(1);blank_y.push_back(0);
-                vec planar_one = vec(blank_y).cross(normal); 
+                blank_y.push_back(0);blank_y.push_back(0);blank_y.push_back(1);
+                vec planar_one = vec(blank_y).cross(nl); 
                 planar_one.normalise();
                 vec planar_two = normal.cross(planar_one); 
 
                 vec diffuse_reflect_dirn = 
 				planar_two*sin_theta*cos(phi) + 
 				planar_one*sin_theta*sin(phi) + 
-				normal*cos_theta;
+				nl*cos_theta;
+
+                diffuse_reflect_dirn.normalise();
 
 				ray diffuse_ray(intersectPoint,diffuse_reflect_dirn);
 
-				std::vector<double> diff_refl_col = this->radiance(diffuse_ray,depth+1,max_depth);
+				std::vector<double> diff_refl_col = this->radiance(diffuse_ray,depth+1,max_depth,xsubi);
 
 				for(int k=0;k<3;k++)
 	    		result_color[k] += diff_refl_col[k]*diff_color[k];
@@ -424,24 +416,14 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 			vec incident = viewingRay.get_direction();
     		if(isReflect && isTransmit)
     		{
-    			long long int seed;
-  				unsigned short int seedvec[3];
-  				int modulus = 65536;
-  				seed = 123456789LL;
-				seedvec[0] = seed % modulus;
-				seed = seed / modulus;
-				seedvec[1] = seed % modulus;
-				seed = seed / modulus;
-				seedvec[2] = seed % modulus;
-				seed = seed / modulus;
-				double rand_num = erand48(seedvec);
+				double rand_num = erand48(xsubi);
     			// double rand_num = (double) rand() / (RAND_MAX);
     			if(rand_num> 0.5) //reflection
     			{
 	    			vec refl_dirn = incident - normal*(incident.dot(normal)*2);
 	    			ray reflectedRay(intersectPoint,refl_dirn);//generate a reflected ray
 
-	    			std::vector<double> refl_col = this->radiance(reflectedRay,depth+1,max_depth);
+	    			std::vector<double> refl_col = this->radiance(reflectedRay,depth+1,max_depth,xsubi);
 	    			std::vector<double> reflectcolor(3,0);
 	    			reflectcolor = sim_mat->getReflect();
 
@@ -460,7 +442,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 		    			vec refl_dirn = incident - normal*(incident.dot(normal)*2);
 		    			ray reflectedRay(intersectPoint,refl_dirn);//generate a reflected ray
 
-		    			std::vector<double> refl_col = this->radiance(reflectedRay,depth+1,max_depth);
+		    			std::vector<double> refl_col = this->radiance(reflectedRay,depth+1,max_depth,xsubi);
 		    			std::vector<double> reflectcolor(3,0);
 		    			reflectcolor = sim_mat->getReflect();
 
@@ -473,7 +455,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 	    			}
 	    			else
 	    			{
-	    				std::vector<double> refr_col = this->radiance(*refractedRay_ptr,depth+1,max_depth)	;	//recursive step
+	    				std::vector<double> refr_col = this->radiance(*refractedRay_ptr,depth+1,max_depth,xsubi)	;	//recursive step
 		    			std::vector<double> refractcolor(3,0);
 		    			refractcolor = sim_mat->getTransmit();	//color of the material	
 
@@ -494,7 +476,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     					vec refl_dirn = incident - normal*(incident.dot(normal)*2);
 		    			ray reflectedRay(intersectPoint,refl_dirn);//generate a reflected ray
 
-		    			std::vector<double> refl_col = this->radiance(reflectedRay,depth+1,max_depth);
+		    			std::vector<double> refl_col = this->radiance(reflectedRay,depth+1,max_depth,xsubi);
 		    			std::vector<double> reflectcolor(3,0);
 		    			reflectcolor = sim_mat->getReflect();
 		    			for(int k=0;k<3;k++)
@@ -502,7 +484,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     				}
     			else
     			{
-    				std::vector<double> refr_col = this->radiance(*refractedRay_ptr,depth+1,max_depth);	//recursive step
+    				std::vector<double> refr_col = this->radiance(*refractedRay_ptr,depth+1,max_depth,xsubi);	//recursive step
 	    			std::vector<double> refractcolor(3,0);
 	    			refractcolor = sim_mat->getTransmit(); //color of the material	
 
@@ -515,7 +497,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     			vec refl_dirn = incident - normal*(incident.dot(normal)*2);
     			ray reflectedRay(intersectPoint,refl_dirn);//generate a reflected ray
 
-    			std::vector<double> refl_col = this->radiance(reflectedRay,depth+1,max_depth);
+    			std::vector<double> refl_col = this->radiance(reflectedRay,depth+1,max_depth,xsubi);
     			std::vector<double> reflectcolor(3,0);
     			reflectcolor = sim_mat->getReflect();
     			for(int k=0;k<3;k++)
@@ -537,7 +519,7 @@ void scene::render(char fname[], const int no_of_rays)
     double H_phy = 2.0*tan((M_PI/180)*(0.5*fov)); // (fov/2) is the half angle height-wise
     double delta_H = H_phy/Hres;
     double delta_W = delta_H;
-    double W_phy = delta_W*Wres;
+    // double W_phy = delta_W*Wres;
 
   //  std::cout<<Wres<<" "<<Hres<<" "<<fov<<" "<<H_phy<<" "<<delta_H<<" "<<delta_W<<" "<<W_phy<<std::endl;
 
@@ -556,7 +538,7 @@ void scene::render(char fname[], const int no_of_rays)
             vec r;
 			std::vector<double> temp_R_in_cam(3,0);
 			std::vector<double> color(3,0);
-			unsigned short xsubi[3] = {(unsigned short)i,(unsigned short)j,0};//seed for erand48
+			unsigned short xsubi[3] = {(unsigned short)(i*i),(unsigned short)(j*j),(unsigned short)(i*j)};//seed for erand48
 			
 			for(int m=0;m<n;m++)
 			{
@@ -581,7 +563,7 @@ void scene::render(char fname[], const int no_of_rays)
 					  	whitted* _intg = static_cast<whitted*>(intg);
 						int max_depth = _intg->getDepth(); //assuming whitted
 						
-						std::vector<double> color1 = this->radiance(viewingRay,0,max_depth); 
+						std::vector<double> color1 = this->radiance(viewingRay,0,max_depth, xsubi); 
 
 						for(int b=0;b<3;b++)
 							color[b] += inv_sample_size*color1[b];

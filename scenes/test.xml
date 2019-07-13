@@ -101,11 +101,11 @@
 	<simplemat id="glass">
 		<diffuse color="0.0 0.0 0.0" />
 		<specular color="0.0 0.0 0.0" />
-		<reflect color="0.000 0.000 0.999" />
+		<reflect color="0.999 0.999 0.999" />
 		<transmit color="0.999 0.999 0.999" />
 		<eta double="1.5"/>
 		<n double="100" />
-		<isreflect bool="true"/>
+		<isreflect bool="false"/>
 		<istransmit bool="true"/>
 	</simplemat>	
 	<simplemat id="mirror">
@@ -119,7 +119,7 @@
 		<istransmit bool="false"/>
 	</simplemat>	
 	<simplemat id="light">
-		<diffuse color="2.0 2.0 2.0" />
+		<diffuse color="8.0 8.0 8.0" />
 		<specular color="0.0 0.0 0.0" />
 		<reflect color="0 0 0" />
 		<transmit color="0 0 0" />
@@ -131,6 +131,10 @@
 </materials>
 
 <objects>
+	<sphere material="diffuse_violet">
+		<center vector3="-99950 0 100" />
+		<radius double="100000" />
+	</sphere>
 	<sphere material="diffuse_soft_red">
 		<center vector3="99950 0 100" />
 		<radius double="100000" />

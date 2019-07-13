@@ -53,7 +53,7 @@ public:
 	vec camera_to_world(vec camera_c);
 	std::shared_ptr<object> intersect(ray Ray);
 	void write_to_ppm(char[]);
-	std::vector<double> radiance(ray viewingRay, int depth, int max_depth);
+	std::vector<double> radiance(ray viewingRay, int depth, int max_depth, unsigned short xsubi[]);
 	void render(char[],const int);
 	ray* generate_refract(ray Ray1,vec N, vec origin,double refract_index);
 };
