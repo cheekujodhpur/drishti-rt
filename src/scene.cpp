@@ -341,6 +341,8 @@ ray* scene::generate_refract(ray incidentRay,vec N, vec origin,double refract_in
 
 std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 {
+    if(depth == max_depth)
+        return std::vector<double>(3,0);//blank colour
 	//call intersect function on scene object "this": returns the nearest one which intersects
     std::shared_ptr<object> nearest_obj = this->intersect(viewingRay);
     std::vector<double> result_color(3,0);
@@ -356,54 +358,15 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     	{
     		//diffuse reflection
 	        std::vector<double> diff_color = sim_mat->getDiffuse(); 
+
             if (sim_mat->getID() == "light") {
                 for(int k=0;k<3;k++)
                     result_color[k] = diff_color[k];
                 return result_color;
             };
+
 	        for(int k=0;k<3;k++)
 	            result_color[k] = diff_color[k]*(this->getAmbient());
-
-	        //shadow ray : ditch this
-	        /*for(int k=0;k<lightslist.size();k++)
-	        {
-	        	light* lightsource = lightslist[k];
-	        	if(strcmp(lightsource->source_type().c_str(),"pointlight")==0)
-	    		{
-	    			vec lightpos;
-	    			pointlight* plight = static_cast<pointlight*>(lightsource);
-	    			lightpos = plight->getPos();
-	    			
-	    			double intersect_param = nearest_obj->intersect(viewingRay);
-	    			vec intersectPoint = viewingRay.get_point(intersect_param);
-	    			vec shadow_dirn = (lightpos - intersectPoint);
-	    			shadow_dirn.normalise();
-	    			
-	    			ray shadowRay(intersectPoint,shadow_dirn);
-
-	    			std::shared_ptr<object> blocking_object = this->intersect(shadowRay);
-
-	    			double block_point_param = 0;//initialisation for block point
-	    			double light_source_param = 0;//initialisation for light source point
-	    			
-	    			if(blocking_object != NULL)
-	    			{
-	    				block_point_param = blocking_object->intersect(shadowRay);
-		    			light_source_param = shadowRay.get_param(lightpos);
-	    			}
-	    			
-	    			if(blocking_object == NULL||light_source_param<block_point_param||block_point_param<eff_zero_shadow)
-	    			{
-	    				std::vector<double> lightcolor = plight->getColor();
-	    				vec viewing_dirn = viewingRay.get_direction();
-	    				double cosine = -(shadow_dirn.dot(viewing_dirn));
-	    				cosine = std::max(cosine,0.0);
-
-	    				for(int l=0;l<3;l++)
-	        				result_color[l] += lightcolor[l]*diff_color[l]*cosine;
-	    			}
-	    		}
-	        }*/
 
 	        //generate ray in random direction
 
@@ -427,12 +390,17 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
 
 				double phi = 2*3.14*erand48(seedvec);
 
-				std::vector<double> v;
-				v.push_back(sin_theta*cos(phi));
-				v.push_back(sin_theta*sin(phi));
-				v.push_back(cos(phi));
+			    vec normal = nearest_obj->getNormal(intersectPoint); //outward normal at point of intersection
+                std::vector <double> blank_y;
+                blank_y.push_back(0);blank_y.push_back(1);blank_y.push_back(0);
+                vec planar_one = vec(blank_y).cross(normal); 
+                planar_one.normalise();
+                vec planar_two = normal.cross(planar_one); 
 
-				vec diffuse_reflect_dirn(v);
+                vec diffuse_reflect_dirn = 
+				planar_two*sin_theta*cos(phi) + 
+				planar_one*sin_theta*sin(phi) + 
+				normal*cos_theta;
 
 				ray diffuse_ray(intersectPoint,diffuse_reflect_dirn);
 
@@ -449,8 +417,6 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     	
     	else
     	{
-    		if(depth == max_depth)
-    			return std::vector<double>(3,0);//blank colour
     		double refract_index = sim_mat->getEta();
 			double intersect_param = nearest_obj->intersect(viewingRay);
 			vec intersectPoint = viewingRay.get_point(intersect_param);
