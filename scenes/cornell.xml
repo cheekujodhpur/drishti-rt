@@ -118,6 +118,16 @@
 		<isreflect bool="true"/>
 		<istransmit bool="false"/>
 	</simplemat>	
+	<simplemat id="light">
+		<diffuse color="2.0 2.0 2.0" />
+		<specular color="0.0 0.0 0.0" />
+		<reflect color="0 0 0" />
+		<transmit color="0 0 0" />
+		<eta double="1.5"/>
+		<n double="100" />
+		<isreflect bool="false"/>
+		<istransmit bool="false"/>
+	</simplemat>	
 </materials>
 
 <objects>
@@ -146,13 +156,17 @@
 		<radius double="100000" />
 	</sphere>
 	<sphere material="mirror">
-		<center vector3="20 -24 120" />
+		<center vector3="20 -24 130" />
 		<radius double="16" />
 	</sphere>
 	<sphere material="glass">
 		<center vector3="-20 -24 120" />
 		<radius double="16" />
 	</sphere>
+    <sphere material="light">
+		<center vector3="0 40 130" />
+		<radius double="5" />
+    </sphere>
 </objects>
 
 <lights>
@@ -165,7 +179,7 @@
 
 <integrator>
 	<whitted>
-		<depth-of-recursion int="3" />
+		<depth-of-recursion int="4" />
 	</whitted>
 </integrator>
 

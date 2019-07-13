@@ -356,6 +356,11 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth)
     	{
     		//diffuse reflection
 	        std::vector<double> diff_color = sim_mat->getDiffuse(); 
+            if (sim_mat->getID() == "light") {
+                for(int k=0;k<3;k++)
+                    result_color[k] = diff_color[k];
+                return result_color;
+            };
 	        for(int k=0;k<3;k++)
 	            result_color[k] = diff_color[k]*(this->getAmbient());
 
