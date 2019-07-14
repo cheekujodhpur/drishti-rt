@@ -354,6 +354,13 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
     	simplemat* sim_mat = static_cast<simplemat*>(nearest_obj->getMaterial()); //assuming simplemat
     	bool isReflect = sim_mat->getIsReflect();
     	bool isTransmit = sim_mat->getIsTransmit();
+
+    	double intersect_param = nearest_obj->intersect(viewingRay);
+	    vec intersectPoint = viewingRay.get_point(intersect_param);
+
+	     vec normal = nearest_obj->getNormal(intersectPoint); 
+	     vec incident = viewingRay.get_direction();
+
     	if(!isReflect && !isTransmit) //diffuse object
     	{
     		//diffuse reflection
@@ -370,16 +377,15 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
 
 	        //generate ray in random direction
 
-	        	double intersect_param = nearest_obj->intersect(viewingRay);
-	    		vec intersectPoint = viewingRay.get_point(intersect_param);
+	        	
 
 				double sq_cos_theta = erand48(xsubi);
 				double cos_theta = sqrt(sq_cos_theta);
 				double sin_theta = sqrt(1-sq_cos_theta);
 				double phi = 2*3.14*erand48(xsubi);
 
-			    vec normal = nearest_obj->getNormal(intersectPoint); //inward normal for reflection
-			    vec incident = viewingRay.get_direction();
+			   
+			    
                 vec nl = (normal.dot(incident) < 0) ? normal : -normal;
                 std::vector <double> blank_y;
                 blank_y.push_back(0);blank_y.push_back(0);blank_y.push_back(1);
@@ -410,10 +416,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
     	else
     	{
     		double refract_index = sim_mat->getEta();
-			double intersect_param = nearest_obj->intersect(viewingRay);
-			vec intersectPoint = viewingRay.get_point(intersect_param);
-			vec normal = nearest_obj->getNormal(intersectPoint); //outward normal at point of intersection
-			vec incident = viewingRay.get_direction();
+			
     		if(isReflect && isTransmit)
     		{
 				double rand_num = erand48(xsubi);
