@@ -333,7 +333,7 @@ ray* scene::generate_refract(ray incidentRay,vec N, vec origin,double refract_in
 		return NULL;
 
 	double beta = n_i_t*abs(cosine) - sqrt(1 + n_i_t*n_i_t*(cosine*cosine - 1));
-	vec RefractedRaydirn = Incident*n_i_t + N*beta;
+	vec RefractedRaydirn = Incident*n_i_t + N*beta*((cosine>0)?1:-1);
 	RefractedRaydirn.normalise();
 
 	return new ray(origin,RefractedRaydirn);
