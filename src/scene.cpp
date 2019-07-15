@@ -431,6 +431,8 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
     				isFresnel = true;
     				toReflect = true;
     				reflectcolor = sim_mat->getReflect();
+    				for(int k=0;k<3;k++)
+    					reflectcolor[k] = 2*reflectcolor[k];
     			}
     			else //refraction
     			{
@@ -441,6 +443,8 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
 	    				toReflect = true;
 	    				correct_normal = -normal;
 	    				reflectcolor = sim_mat->getReflect();
+	    				for(int k=0;k<3;k++)
+    						reflectcolor[k] = 2*reflectcolor[k];
 	    			}
 	    			else
 	    			{
@@ -450,6 +454,8 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
 						isFresnel = true;
 						toTransmit = true;
 						refractcolor = sim_mat->getTransmit();	//color of the material
+						for(int k=0;k<3;k++)
+    						refractcolor[k] = 2*refractcolor[k];
 	    			}
     			}
     		}
