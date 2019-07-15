@@ -425,7 +425,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
 	    			// double rand_num = (double) rand() / (RAND_MAX);
 	    			double R_0 = (refract_index-1)*(refract_index-1)/((refract_index+1)*(refract_index+1));
 					fresnel_reflect = R_0 + (1 - R_0)*pow(1 - abs(cosine),5);
-    			if(depth>2)
+    			if(depth>=2)
     			{	
     				double rand_num = erand48(xsubi);
 					
