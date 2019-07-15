@@ -187,17 +187,17 @@ void scene::inv_translation_matrix_formation()
 	x.push_back(1);
 	x.push_back(0);
 	x.push_back(0);
-	x.push_back(-1*fourth[0]);
+	x.push_back(fourth[0]);
 
 	y.push_back(0);
 	y.push_back(1);
 	y.push_back(0);
-	y.push_back(-1*fourth[1]);
+	y.push_back(fourth[1]);
 
 	z.push_back(0);
 	z.push_back(0);
 	z.push_back(1);
-	z.push_back(-1*fourth[2]);
+	z.push_back(fourth[2]);
 
 
 	std::vector<double> a(3,0);
@@ -219,17 +219,17 @@ void scene::translation_matrix_formation()
 	x.push_back(1);
 	x.push_back(0);
 	x.push_back(0);
-	x.push_back(fourth[0]);
+	x.push_back(-fourth[0]);
 
 	y.push_back(0);
 	y.push_back(1);
 	y.push_back(0);
-	y.push_back(fourth[1]);
+	y.push_back(-fourth[1]);
 
 	z.push_back(0);
 	z.push_back(0);
 	z.push_back(1);
-	z.push_back(fourth[2]);
+	z.push_back(-fourth[2]);
 
 	std::vector<double> a(3,0);
 	a.push_back(1);
@@ -326,7 +326,6 @@ ray* scene::generate_refract(ray incidentRay,vec N, vec origin,double refract_in
 		n_i_t = 1.0/refract_index;
 	else if(cosine<0) //going out of the object
 		n_i_t = refract_index;
-	
 	else
 		return NULL;
 
@@ -369,6 +368,10 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
 		bool toTransmit = false;
 		double fresnel_refract;
     	double fresnel_reflect;
+    	std::vector<double> refl_col(3,0);
+    	std::vector<double> refr_col(3,0);
+    	std::vector<double> reflectcolor(3,0);
+    	std::vector<double> refractcolor(3,0);
 
     	if(!isReflect && !isTransmit) //diffuse object
     	{
@@ -409,6 +412,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
             refl_dirn = diffuse_reflect_dirn;
             correct_normal = normal;
             toReflect = true;
+            reflectcolor = sim_mat->getDiffuse();
     	}
     	
     	else
@@ -418,15 +422,15 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
     		{
 				double rand_num = erand48(xsubi);
     			// double rand_num = (double) rand() / (RAND_MAX);
+    			double R_0 = (refract_index-1)*(refract_index-1)/((refract_index+1)*(refract_index+1));
+				fresnel_reflect = R_0 + (1 - R_0)*pow(1 - abs(cosine),5);
     			if(rand_num> 0.5) //reflection
     			{    				
 	    			refl_dirn = incident + ((cosine<0)? -normal : normal)*(2*abs(cosine));
 	    			correct_normal = (cosine<0)? -normal : normal; //cosine<0 if going out of object
-
-	    			double R_0 = (refract_index-1)*(refract_index-1)/((refract_index+1)*(refract_index+1));
-    				fresnel_reflect = R_0 + (1 - R_0)*pow(1 - abs(cosine),5);
     				isFresnel = true;
     				toReflect = true;
+    				reflectcolor = sim_mat->getReflect();
     			}
     			else //refraction
     			{
@@ -436,16 +440,16 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
 		    			refl_dirn = incident + (-normal)*(2*abs(incident.dot(normal)));
 	    				toReflect = true;
 	    				correct_normal = -normal;
+	    				reflectcolor = sim_mat->getReflect();
 	    			}
 	    			else
 	    			{
 	    				trans_dirn = (*refractedRay_ptr).get_direction();
 	    				correct_normal = (cosine<0)? normal : -normal; //cosine<0 if going out of object
-		    			double R_0 = (refract_index-1)*(refract_index-1)/((refract_index+1)*(refract_index+1));
-	    				fresnel_reflect = R_0 + (1 - R_0)*pow(1 - abs(cosine),5);
 	    				fresnel_refract = 1 - fresnel_reflect;
 						isFresnel = true;
 						toTransmit = true;
+						refractcolor = sim_mat->getTransmit();	//color of the material
 	    			}
     			}
     		}
@@ -457,11 +461,13 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
 					refl_dirn = incident + (-normal)*(2*abs(incident.dot(normal)));
 					toReflect = true;
 					correct_normal = -normal;
+					reflectcolor = sim_mat->getReflect();
 				}
     			else
     			{
     				trans_dirn = (*refractedRay_ptr).get_direction();
     				toTransmit = true;
+    				refractcolor = sim_mat->getTransmit();	//color of the material
     				correct_normal = (cosine<0)? normal : -normal; //cosine<0 if going out of object
     			}
     		}
@@ -470,14 +476,12 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
     			refl_dirn = incident + normal*(2*abs(incident.dot(normal)));
     			toReflect = true;
     			correct_normal = normal;
+    			reflectcolor = sim_mat->getReflect();
     		}
     	}
 
     	// intersectPoint = intersectPoint + correct_normal*bias;
-    	std::vector<double> refl_col(3,0);
-    	std::vector<double> refr_col(3,0);
-    	std::vector<double> reflectcolor(3,0);
-    	std::vector<double> refractcolor(3,0);
+    	
     	//checking the tags
 		if(isFresnel)
 		{
@@ -485,7 +489,6 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
 			{
 				ray reflectedRay(intersectPoint,refl_dirn);//generate a reflected ray
     			refl_col = this->radiance(reflectedRay,depth+1,max_depth,xsubi);
-    			reflectcolor = sim_mat->getReflect();
     			for(int k=0;k<3;k++)
 			    	result_color[k] += refl_col[k]*reflectcolor[k]*fresnel_reflect;
 			}
@@ -493,7 +496,6 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
 			{	
 				ray refractedRay(intersectPoint,trans_dirn);//generate a refracted ray
 				refr_col = this->radiance(refractedRay,depth+1,max_depth,xsubi);	//recursive step
-    			refractcolor = sim_mat->getTransmit();	//color of the material
     			for(int k=0;k<3;k++)
 					result_color[k] += refr_col[k]*refractcolor[k]*fresnel_refract;
 			}
@@ -502,7 +504,6 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
 		{
 			ray reflectedRay(intersectPoint,refl_dirn);//generate a reflected ray
 			refl_col = this->radiance(reflectedRay,depth+1,max_depth,xsubi);
-			reflectcolor = sim_mat->getReflect();
 			for(int k=0;k<3;k++)
 			    result_color[k] += refl_col[k]*reflectcolor[k];
 		}
@@ -510,7 +511,6 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
 		{
 			ray refractedRay(intersectPoint,trans_dirn);//generate a refracted ray	
 			refr_col = this->radiance(refractedRay,depth+1,max_depth,xsubi);	//recursive step
-			refractcolor = sim_mat->getTransmit(); //color of the material	
 			for(int k=0;k<3;k++)
 				result_color[k] += refr_col[k]*refractcolor[k];	//component wise multiplication	
 		}
@@ -566,9 +566,11 @@ void scene::render(char fname[], const int no_of_rays)
 						temp_R_in_cam[2] = (0.5*Hres - (j + l*n_inv + y))*delta_H;
 						vec R_in_cam(temp_R_in_cam);
 						vec R_in_world = camera_to_world(R_in_cam);   
-					 	R_in_world.normalise();
 					 	vec origin = cam.getEye();
-					  	ray viewingRay(origin,R_in_world-origin); 
+					 	vec viewing_dirn = R_in_world - origin;
+					 	viewing_dirn.normalise();
+					 	
+					  	ray viewingRay(origin,viewing_dirn); 
 
 					  	whitted* _intg = static_cast<whitted*>(intg);
 						int max_depth = _intg->getDepth(); //assuming whitted

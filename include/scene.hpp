@@ -28,7 +28,7 @@ class scene{
     std::vector<std::vector<double> > inv_translation_mat;
     double ***img_arr;
     static constexpr double eff_zero_shadow = 1e-15;
-    static constexpr double bias = 1e-4;
+    static constexpr double bias = 1e-10;
 
 public:
 	void setAmbient(double ka0);
