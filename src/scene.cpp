@@ -569,7 +569,8 @@ void scene::render(char fname[], const int no_of_rays)
 					 	vec origin = cam.getEye();
 					 	vec viewing_dirn = R_in_world - origin;
 					 	viewing_dirn.normalise();
-					 	
+
+					 	origin = origin + viewing_dirn*100;
 					  	ray viewingRay(origin,viewing_dirn); 
 
 					  	whitted* _intg = static_cast<whitted*>(intg);

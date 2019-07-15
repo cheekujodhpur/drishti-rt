@@ -4,7 +4,7 @@
 
 <camera>
 	<lookat vector3="0.0 0.0 1.0" />
-	<eye	vector3="0.0 0.0 -28.0" />
+	<eye	vector3="0.0 0.0 -10.0" />
 	<up		vector3="0.0 1.0 0.0" />
 	<fov	angle="45.0 deg" />
     <near	double="1e-4" />
@@ -152,7 +152,7 @@
 		<radius double="100000" />
 	</sphere>
 	<sphere material="diffuse_black">
-		<center vector3="0 0 99900" />
+		<center vector3="0 0 100040" />
 		<radius double="100000" />
 	</sphere>
 	<sphere material="mirror">
@@ -164,7 +164,7 @@
 		<radius double="16" />
 	</sphere>
     <sphere material="light">
-		<center vector3="0 739.78 150" />
+		<center vector3="0 739.78 145" />
 		<radius double="700" />
     </sphere>
 </objects>
