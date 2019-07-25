@@ -7,6 +7,8 @@
 
 class light{
 public:
+	light(){}
+	~light(){}
 	virtual std::string source_type()=0;
 };
 
@@ -15,6 +17,8 @@ class pointlight: public light{
 	std::vector<double> color = std::vector<double>(3);
 	
 public:
+	pointlight(){}
+	~pointlight(){}
 	void setPos(vec pos);
 	void setColor(std::vector<double> color0);
 	vec getPos();

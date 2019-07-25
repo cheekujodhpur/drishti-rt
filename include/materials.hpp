@@ -12,6 +12,7 @@ protected:
 
 public:
 	material(){}
+	~material(){}
 	material(std::string s):id(s){}
 	void setID(const char *ID);//don't actually need this as of now
 	std::string getID();
@@ -29,6 +30,7 @@ class simplemat : public material{
 
 public:
 	simplemat(){}
+	~simplemat(){}
 	simplemat(std::string s):material(s){}//parameterized constructor
 	void setDiffuse(std::vector<double> diff);
 	void setSpecular(std::vector<double> spec);

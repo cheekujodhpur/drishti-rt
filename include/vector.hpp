@@ -8,6 +8,8 @@ class vec{
 public:
 	std::vector<double> v = std::vector<double>(3);
 	vec(){}
+	~vec(){}
+	vec(const vec &v2) {v = v2.v;}
 	vec(std::vector<double> v1) : v(v1) {}		//constructor
 
 	double operator[](int a);    	

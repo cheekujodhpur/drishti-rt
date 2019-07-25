@@ -12,7 +12,7 @@ protected:
 	static constexpr double eff_zero_intersection = 1e-8;
 public:
 	object(){}
-	// object(material m):mat(m){}
+	~object(){}
 	void setMaterial(material* m);
 	material* getMaterial();
 	virtual double intersect(ray Ray) = 0; //abstract intersect function
@@ -24,7 +24,7 @@ class sphere: public object{
 	double radius;
 public:
 	sphere(){}
-	// sphere(material m):object(m){}
+	~sphere(){}
 	double getRadius();
 	vec getCenter();
 	void setRadius(double r);

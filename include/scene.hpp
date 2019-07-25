@@ -31,6 +31,33 @@ class scene{
     static constexpr double bias = 1e-10;
 
 public:
+	scene(){}
+	~scene()
+	{
+		/*if(img_arr!=NULL)
+			delete img_arr;
+		if(intg!=NULL)
+			delete intg;
+		for(unsigned int i=0;i<materialslist.size();i++)
+			delete materialslist[i];
+		for(unsigned int i=0;i<lightslist.size();i++)
+			delete lightslist[i];*/
+	}
+	scene(const scene &s2) 
+	{
+		ka = s2.ka;
+		cam = s2.cam;
+		img = s2.img;
+		intg = s2.intg;
+		materialslist = s2.materialslist;
+		objectslist = s2.objectslist;
+		lightslist = s2.lightslist;
+		rotation_mat = s2.rotation_mat;
+		translation_mat = s2.translation_mat;
+		inv_rotation_mat = s2.inv_rotation_mat;
+		inv_translation_mat = s2.inv_translation_mat;
+		img_arr = s2.img_arr;
+	}
 	void setAmbient(double ka0);
 	void setCamera(camera cam0);
 	void setImage(image img0);
@@ -56,7 +83,7 @@ public:
 	void write_to_ppm(char[]);
 	std::vector<double> radiance(ray viewingRay, int depth, int max_depth, unsigned short xsubi[]);
 	void render(char[],const int);
-	ray* generate_refract(ray Ray1,vec N, vec origin,double refract_index);
+	std::unique_ptr<ray> generate_refract(ray Ray1,vec N, vec origin,double refract_index);
 };
 
 #endif

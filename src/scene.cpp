@@ -317,7 +317,7 @@ void scene::write_to_ppm(char fname[])
 
 }
 
-ray* scene::generate_refract(ray incidentRay,vec N, vec origin,double refract_index)
+std::unique_ptr<ray> scene::generate_refract(ray incidentRay,vec N, vec origin,double refract_index)
 {
 	vec Incident = incidentRay.get_direction();
 	double n_i_t;
@@ -336,7 +336,7 @@ ray* scene::generate_refract(ray incidentRay,vec N, vec origin,double refract_in
 	vec RefractedRaydirn = Incident*n_i_t + N*beta*((cosine>0)?1:-1);
 	RefractedRaydirn.normalise();
 
-	return new ray(origin,RefractedRaydirn);
+	return std::unique_ptr<ray>(new ray(origin,RefractedRaydirn));
 }
 
 std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, unsigned short xsubi[])
@@ -446,7 +446,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
 	    			}
 	    			else //refraction; weighted with 1/(1-P)
 	    			{
-		    			ray* refractedRay_ptr = generate_refract(viewingRay,normal,intersectPoint,refract_index);
+		    			std::unique_ptr<ray> refractedRay_ptr = generate_refract(viewingRay,normal,intersectPoint,refract_index);
 		    			if(refractedRay_ptr==NULL) // Total Internal Reflection
 		    			{
 			    			refl_dirn = incident + (-normal)*(2*abs(incident.dot(normal)));
@@ -474,7 +474,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
     				refl_dirn = incident + ((cosine<0)? -normal : normal)*(2*abs(cosine));
     				reflectcolor = sim_mat->getReflect();
 
-    				ray* refractedRay_ptr = generate_refract(viewingRay,normal,intersectPoint,refract_index);
+    				std::unique_ptr<ray> refractedRay_ptr = generate_refract(viewingRay,normal,intersectPoint,refract_index);
 
     				if(refractedRay_ptr==NULL) // Total Internal Reflection
 	    			{
@@ -496,7 +496,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
     		}
     		else if(isTransmit) //only refractions
     		{
-    			ray* refractedRay_ptr = generate_refract(viewingRay,normal,intersectPoint,refract_index);
+    			std::unique_ptr<ray> refractedRay_ptr = generate_refract(viewingRay,normal,intersectPoint,refract_index);
     			if(refractedRay_ptr==NULL) //total internal reflection
 				{
 					refl_dirn = incident + (-normal)*(2*abs(incident.dot(normal)));
@@ -521,7 +521,7 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
     		}
     	}
 
-    	intersectPoint = intersectPoint + correct_normal*bias;
+    	// intersectPoint = intersectPoint + correct_normal*bias;
     	
     	//checking the tags
 		if(isFresnel)
@@ -565,7 +565,6 @@ std::vector<double> scene::radiance(ray viewingRay, int depth, int max_depth, un
 			for(int k=0;k<3;k++)
 				result_color[k] += refr_col[k]*refractcolor[k];	//component wise multiplication	
 		}
-
 		return result_color;
     }
     else
@@ -589,6 +588,8 @@ void scene::render(char fname[], const int no_of_rays)
     vec x = cam.getLookat();x.normalise();
 
     double inv_sample_size = 1.0/(n*n*no_of_rays);
+    whitted* _intg = static_cast<whitted*>(intg);
+	int max_depth = _intg->getDepth(); //assuming whitted
   //  std::cout<<"Entering loop"<<std::endl;
 #pragma omp parallel for schedule(dynamic, 1) // OpenMP
     for(int i=0;i<Wres;i++)
@@ -624,9 +625,6 @@ void scene::render(char fname[], const int no_of_rays)
 					 	origin = origin + viewing_dirn*100;
 					  	ray viewingRay(origin,viewing_dirn); 
 
-					  	whitted* _intg = static_cast<whitted*>(intg);
-						int max_depth = _intg->getDepth(); //assuming whitted
-						
 						std::vector<double> color1 = this->radiance(viewingRay,0,max_depth, xsubi); 
 
 						for(int b=0;b<3;b++)

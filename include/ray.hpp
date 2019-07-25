@@ -12,7 +12,9 @@ class ray{
  	vec _direction;
  	std::vector<double> reciprocal_dirn = std::vector<double>(3);
 
-public:   
+public:
+	ray(){}
+	~ray(){}   
     ray(vec origin,vec direction);
     vec get_direction();
     vec get_origin();

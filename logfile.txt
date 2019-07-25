@@ -1,0 +1,1273 @@
+==14301== Memcheck, a memory error detector
+==14301== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==14301== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==14301== Command: ./drishti scenes/cornell.xml test_image.ppm 1
+==14301== Parent PID: 2562
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x12515B: strcpy (string_fortified.h:90)
+==14301==    by 0x12515B: doubleVal(TiXmlElement*, char const*) (main.cpp:45)
+==14301==    by 0x10C966: main (main.cpp:291)
+==14301==  Address 0x6200091 is 0 bytes after a block of size 1 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x10C966: main (main.cpp:291)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125172: length (char_traits.h:320)
+==14301==    by 0x125172: basic_string (basic_string.h:511)
+==14301==    by 0x125172: doubleVal(TiXmlElement*, char const*) (main.cpp:47)
+==14301==    by 0x10C966: main (main.cpp:291)
+==14301==  Address 0x6200091 is 0 bytes after a block of size 1 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x10C966: main (main.cpp:291)
+==14301== 
+==14301== Mismatched free() / delete / delete []
+==14301==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1253D0: doubleVal(TiXmlElement*, char const*) (main.cpp:50)
+==14301==    by 0x10C966: main (main.cpp:291)
+==14301==  Address 0x6200090 is 0 bytes inside a block of size 1 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x10C966: main (main.cpp:291)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259FA: strcpy (string_fortified.h:90)
+==14301==    by 0x1259FA: nodeToVector(TiXmlElement*, char const*) (main.cpp:26)
+==14301==    by 0x126593: nodeToCamera(TiXmlElement*) (main.cpp:61)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301==  Address 0x62002eb is 0 bytes after a block of size 11 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x126593: nodeToCamera(TiXmlElement*) (main.cpp:61)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125A07: length (char_traits.h:320)
+==14301==    by 0x125A07: basic_string (basic_string.h:511)
+==14301==    by 0x125A07: nodeToVector(TiXmlElement*, char const*) (main.cpp:28)
+==14301==    by 0x126593: nodeToCamera(TiXmlElement*) (main.cpp:61)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301==  Address 0x62002eb is 0 bytes after a block of size 11 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x126593: nodeToCamera(TiXmlElement*) (main.cpp:61)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259FA: strcpy (string_fortified.h:90)
+==14301==    by 0x1259FA: nodeToVector(TiXmlElement*, char const*) (main.cpp:26)
+==14301==    by 0x1264B3: nodeToCamera(TiXmlElement*) (main.cpp:65)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301==  Address 0x620061d is 0 bytes after a block of size 13 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x1264B3: nodeToCamera(TiXmlElement*) (main.cpp:65)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125A07: length (char_traits.h:320)
+==14301==    by 0x125A07: basic_string (basic_string.h:511)
+==14301==    by 0x125A07: nodeToVector(TiXmlElement*, char const*) (main.cpp:28)
+==14301==    by 0x1264B3: nodeToCamera(TiXmlElement*) (main.cpp:65)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301==  Address 0x620061d is 0 bytes after a block of size 13 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x1264B3: nodeToCamera(TiXmlElement*) (main.cpp:65)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259FA: strcpy (string_fortified.h:90)
+==14301==    by 0x1259FA: nodeToVector(TiXmlElement*, char const*) (main.cpp:26)
+==14301==    by 0x1263CB: nodeToCamera(TiXmlElement*) (main.cpp:69)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301==  Address 0x620094b is 0 bytes after a block of size 11 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x1263CB: nodeToCamera(TiXmlElement*) (main.cpp:69)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125A07: length (char_traits.h:320)
+==14301==    by 0x125A07: basic_string (basic_string.h:511)
+==14301==    by 0x125A07: nodeToVector(TiXmlElement*, char const*) (main.cpp:28)
+==14301==    by 0x1263CB: nodeToCamera(TiXmlElement*) (main.cpp:69)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301==  Address 0x620094b is 0 bytes after a block of size 11 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x1263CB: nodeToCamera(TiXmlElement*) (main.cpp:69)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x12515B: strcpy (string_fortified.h:90)
+==14301==    by 0x12515B: doubleVal(TiXmlElement*, char const*) (main.cpp:45)
+==14301==    by 0x1263A6: nodeToCamera(TiXmlElement*) (main.cpp:75)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301==  Address 0x6200d98 is 0 bytes after a block of size 8 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x1263A6: nodeToCamera(TiXmlElement*) (main.cpp:75)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125172: length (char_traits.h:320)
+==14301==    by 0x125172: basic_string (basic_string.h:511)
+==14301==    by 0x125172: doubleVal(TiXmlElement*, char const*) (main.cpp:47)
+==14301==    by 0x1263A6: nodeToCamera(TiXmlElement*) (main.cpp:75)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301==  Address 0x6200d98 is 0 bytes after a block of size 8 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x1263A6: nodeToCamera(TiXmlElement*) (main.cpp:75)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301== 
+==14301== Mismatched free() / delete / delete []
+==14301==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1253D0: doubleVal(TiXmlElement*, char const*) (main.cpp:50)
+==14301==    by 0x1263A6: nodeToCamera(TiXmlElement*) (main.cpp:75)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301==  Address 0x6200d90 is 0 bytes inside a block of size 8 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x1263A6: nodeToCamera(TiXmlElement*) (main.cpp:75)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x12515B: strcpy (string_fortified.h:90)
+==14301==    by 0x12515B: doubleVal(TiXmlElement*, char const*) (main.cpp:45)
+==14301==    by 0x126386: nodeToCamera(TiXmlElement*) (main.cpp:79)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301==  Address 0x6200e64 is 0 bytes after a block of size 4 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x126386: nodeToCamera(TiXmlElement*) (main.cpp:79)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125172: length (char_traits.h:320)
+==14301==    by 0x125172: basic_string (basic_string.h:511)
+==14301==    by 0x125172: doubleVal(TiXmlElement*, char const*) (main.cpp:47)
+==14301==    by 0x126386: nodeToCamera(TiXmlElement*) (main.cpp:79)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301==  Address 0x6200e64 is 0 bytes after a block of size 4 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x126386: nodeToCamera(TiXmlElement*) (main.cpp:79)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301== 
+==14301== Mismatched free() / delete / delete []
+==14301==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1253D0: doubleVal(TiXmlElement*, char const*) (main.cpp:50)
+==14301==    by 0x126386: nodeToCamera(TiXmlElement*) (main.cpp:79)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301==  Address 0x6200e60 is 0 bytes inside a block of size 4 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x126386: nodeToCamera(TiXmlElement*) (main.cpp:79)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x12515B: strcpy (string_fortified.h:90)
+==14301==    by 0x12515B: doubleVal(TiXmlElement*, char const*) (main.cpp:45)
+==14301==    by 0x126366: nodeToCamera(TiXmlElement*) (main.cpp:83)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301==  Address 0x6200f33 is 0 bytes after a block of size 3 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x126366: nodeToCamera(TiXmlElement*) (main.cpp:83)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125172: length (char_traits.h:320)
+==14301==    by 0x125172: basic_string (basic_string.h:511)
+==14301==    by 0x125172: doubleVal(TiXmlElement*, char const*) (main.cpp:47)
+==14301==    by 0x126366: nodeToCamera(TiXmlElement*) (main.cpp:83)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301==  Address 0x6200f33 is 0 bytes after a block of size 3 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x126366: nodeToCamera(TiXmlElement*) (main.cpp:83)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301== 
+==14301== Mismatched free() / delete / delete []
+==14301==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1253D0: doubleVal(TiXmlElement*, char const*) (main.cpp:50)
+==14301==    by 0x126366: nodeToCamera(TiXmlElement*) (main.cpp:83)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301==  Address 0x6200f30 is 0 bytes inside a block of size 3 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x126366: nodeToCamera(TiXmlElement*) (main.cpp:83)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x12515B: strcpy (string_fortified.h:90)
+==14301==    by 0x12515B: doubleVal(TiXmlElement*, char const*) (main.cpp:45)
+==14301==    by 0x12682E: nodeToImage(TiXmlElement*) (main.cpp:99)
+==14301==    by 0x10CB7A: main (main.cpp:301)
+==14301==  Address 0x6201064 is 0 bytes after a block of size 4 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x12682E: nodeToImage(TiXmlElement*) (main.cpp:99)
+==14301==    by 0x10CB7A: main (main.cpp:301)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125172: length (char_traits.h:320)
+==14301==    by 0x125172: basic_string (basic_string.h:511)
+==14301==    by 0x125172: doubleVal(TiXmlElement*, char const*) (main.cpp:47)
+==14301==    by 0x12682E: nodeToImage(TiXmlElement*) (main.cpp:99)
+==14301==    by 0x10CB7A: main (main.cpp:301)
+==14301==  Address 0x6201064 is 0 bytes after a block of size 4 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x12682E: nodeToImage(TiXmlElement*) (main.cpp:99)
+==14301==    by 0x10CB7A: main (main.cpp:301)
+==14301== 
+==14301== Mismatched free() / delete / delete []
+==14301==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1253D0: doubleVal(TiXmlElement*, char const*) (main.cpp:50)
+==14301==    by 0x12682E: nodeToImage(TiXmlElement*) (main.cpp:99)
+==14301==    by 0x10CB7A: main (main.cpp:301)
+==14301==  Address 0x6201060 is 0 bytes inside a block of size 4 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x12682E: nodeToImage(TiXmlElement*) (main.cpp:99)
+==14301==    by 0x10CB7A: main (main.cpp:301)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x12515B: strcpy (string_fortified.h:90)
+==14301==    by 0x12515B: doubleVal(TiXmlElement*, char const*) (main.cpp:45)
+==14301==    by 0x12680E: nodeToImage(TiXmlElement*) (main.cpp:107)
+==14301==    by 0x10CB7A: main (main.cpp:301)
+==14301==  Address 0x6201133 is 0 bytes after a block of size 3 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x12680E: nodeToImage(TiXmlElement*) (main.cpp:107)
+==14301==    by 0x10CB7A: main (main.cpp:301)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125172: length (char_traits.h:320)
+==14301==    by 0x125172: basic_string (basic_string.h:511)
+==14301==    by 0x125172: doubleVal(TiXmlElement*, char const*) (main.cpp:47)
+==14301==    by 0x12680E: nodeToImage(TiXmlElement*) (main.cpp:107)
+==14301==    by 0x10CB7A: main (main.cpp:301)
+==14301==  Address 0x6201133 is 0 bytes after a block of size 3 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x12680E: nodeToImage(TiXmlElement*) (main.cpp:107)
+==14301==    by 0x10CB7A: main (main.cpp:301)
+==14301== 
+==14301== Mismatched free() / delete / delete []
+==14301==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1253D0: doubleVal(TiXmlElement*, char const*) (main.cpp:50)
+==14301==    by 0x12680E: nodeToImage(TiXmlElement*) (main.cpp:107)
+==14301==    by 0x10CB7A: main (main.cpp:301)
+==14301==  Address 0x6201130 is 0 bytes inside a block of size 3 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x12680E: nodeToImage(TiXmlElement*) (main.cpp:107)
+==14301==    by 0x10CB7A: main (main.cpp:301)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259FA: strcpy (string_fortified.h:90)
+==14301==    by 0x1259FA: nodeToVector(TiXmlElement*, char const*) (main.cpp:26)
+==14301==    by 0x1267E4: nodeToImage(TiXmlElement*) (main.cpp:113)
+==14301==    by 0x10CB7A: main (main.cpp:301)
+==14301==  Address 0x620120b is 0 bytes after a block of size 11 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x1267E4: nodeToImage(TiXmlElement*) (main.cpp:113)
+==14301==    by 0x10CB7A: main (main.cpp:301)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125A07: length (char_traits.h:320)
+==14301==    by 0x125A07: basic_string (basic_string.h:511)
+==14301==    by 0x125A07: nodeToVector(TiXmlElement*, char const*) (main.cpp:28)
+==14301==    by 0x1267E4: nodeToImage(TiXmlElement*) (main.cpp:113)
+==14301==    by 0x10CB7A: main (main.cpp:301)
+==14301==  Address 0x620120b is 0 bytes after a block of size 11 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x1267E4: nodeToImage(TiXmlElement*) (main.cpp:113)
+==14301==    by 0x10CB7A: main (main.cpp:301)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259FA: strcpy (string_fortified.h:90)
+==14301==    by 0x1259FA: nodeToVector(TiXmlElement*, char const*) (main.cpp:26)
+==14301==    by 0x126DF6: nodeToMaterial(TiXmlElement*) (main.cpp:133)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301==  Address 0x620173a is 0 bytes after a block of size 10 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x126DF6: nodeToMaterial(TiXmlElement*) (main.cpp:133)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125A07: length (char_traits.h:320)
+==14301==    by 0x125A07: basic_string (basic_string.h:511)
+==14301==    by 0x125A07: nodeToVector(TiXmlElement*, char const*) (main.cpp:28)
+==14301==    by 0x126DF6: nodeToMaterial(TiXmlElement*) (main.cpp:133)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301==  Address 0x620173a is 0 bytes after a block of size 10 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x126DF6: nodeToMaterial(TiXmlElement*) (main.cpp:133)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259FA: strcpy (string_fortified.h:90)
+==14301==    by 0x1259FA: nodeToVector(TiXmlElement*, char const*) (main.cpp:26)
+==14301==    by 0x126E36: nodeToMaterial(TiXmlElement*) (main.cpp:137)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301==  Address 0x6201a0b is 0 bytes after a block of size 11 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x126E36: nodeToMaterial(TiXmlElement*) (main.cpp:137)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125A07: length (char_traits.h:320)
+==14301==    by 0x125A07: basic_string (basic_string.h:511)
+==14301==    by 0x125A07: nodeToVector(TiXmlElement*, char const*) (main.cpp:28)
+==14301==    by 0x126E36: nodeToMaterial(TiXmlElement*) (main.cpp:137)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301==  Address 0x6201a0b is 0 bytes after a block of size 11 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x126E36: nodeToMaterial(TiXmlElement*) (main.cpp:137)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259FA: strcpy (string_fortified.h:90)
+==14301==    by 0x1259FA: nodeToVector(TiXmlElement*, char const*) (main.cpp:26)
+==14301==    by 0x126E76: nodeToMaterial(TiXmlElement*) (main.cpp:141)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301==  Address 0x6201cdb is 0 bytes after a block of size 11 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x126E76: nodeToMaterial(TiXmlElement*) (main.cpp:141)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125A07: length (char_traits.h:320)
+==14301==    by 0x125A07: basic_string (basic_string.h:511)
+==14301==    by 0x125A07: nodeToVector(TiXmlElement*, char const*) (main.cpp:28)
+==14301==    by 0x126E76: nodeToMaterial(TiXmlElement*) (main.cpp:141)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301==  Address 0x6201cdb is 0 bytes after a block of size 11 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x126E76: nodeToMaterial(TiXmlElement*) (main.cpp:141)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259FA: strcpy (string_fortified.h:90)
+==14301==    by 0x1259FA: nodeToVector(TiXmlElement*, char const*) (main.cpp:26)
+==14301==    by 0x126EB6: nodeToMaterial(TiXmlElement*) (main.cpp:145)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301==  Address 0x6201fab is 0 bytes after a block of size 11 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x126EB6: nodeToMaterial(TiXmlElement*) (main.cpp:145)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125A07: length (char_traits.h:320)
+==14301==    by 0x125A07: basic_string (basic_string.h:511)
+==14301==    by 0x125A07: nodeToVector(TiXmlElement*, char const*) (main.cpp:28)
+==14301==    by 0x126EB6: nodeToMaterial(TiXmlElement*) (main.cpp:145)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301==  Address 0x6201fab is 0 bytes after a block of size 11 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x126EB6: nodeToMaterial(TiXmlElement*) (main.cpp:145)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x12515B: strcpy (string_fortified.h:90)
+==14301==    by 0x12515B: doubleVal(TiXmlElement*, char const*) (main.cpp:45)
+==14301==    by 0x126EF3: nodeToMaterial(TiXmlElement*) (main.cpp:150)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301==  Address 0x6202273 is 0 bytes after a block of size 3 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x126EF3: nodeToMaterial(TiXmlElement*) (main.cpp:150)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125172: length (char_traits.h:320)
+==14301==    by 0x125172: basic_string (basic_string.h:511)
+==14301==    by 0x125172: doubleVal(TiXmlElement*, char const*) (main.cpp:47)
+==14301==    by 0x126EF3: nodeToMaterial(TiXmlElement*) (main.cpp:150)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301==  Address 0x6202273 is 0 bytes after a block of size 3 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x126EF3: nodeToMaterial(TiXmlElement*) (main.cpp:150)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301== 
+==14301== Mismatched free() / delete / delete []
+==14301==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1253D0: doubleVal(TiXmlElement*, char const*) (main.cpp:50)
+==14301==    by 0x126EF3: nodeToMaterial(TiXmlElement*) (main.cpp:150)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301==  Address 0x6202270 is 0 bytes inside a block of size 3 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x126EF3: nodeToMaterial(TiXmlElement*) (main.cpp:150)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x12515B: strcpy (string_fortified.h:90)
+==14301==    by 0x12515B: doubleVal(TiXmlElement*, char const*) (main.cpp:45)
+==14301==    by 0x126F23: nodeToMaterial(TiXmlElement*) (main.cpp:155)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301==  Address 0x6202343 is 0 bytes after a block of size 3 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x126F23: nodeToMaterial(TiXmlElement*) (main.cpp:155)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125172: length (char_traits.h:320)
+==14301==    by 0x125172: basic_string (basic_string.h:511)
+==14301==    by 0x125172: doubleVal(TiXmlElement*, char const*) (main.cpp:47)
+==14301==    by 0x126F23: nodeToMaterial(TiXmlElement*) (main.cpp:155)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301==  Address 0x6202343 is 0 bytes after a block of size 3 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x126F23: nodeToMaterial(TiXmlElement*) (main.cpp:155)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301== 
+==14301== Mismatched free() / delete / delete []
+==14301==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1253D0: doubleVal(TiXmlElement*, char const*) (main.cpp:50)
+==14301==    by 0x126F23: nodeToMaterial(TiXmlElement*) (main.cpp:155)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301==  Address 0x6202340 is 0 bytes inside a block of size 3 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x126F23: nodeToMaterial(TiXmlElement*) (main.cpp:155)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259FA: strcpy (string_fortified.h:90)
+==14301==    by 0x1259FA: nodeToVector(TiXmlElement*, char const*) (main.cpp:26)
+==14301==    by 0x1279E3: nodeToObject(TiXmlElement*, scene) (main.cpp:201)
+==14301==    by 0x10D264: main (main.cpp:319)
+==14301==  Address 0x620d42c is 0 bytes after a block of size 12 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x1279E3: nodeToObject(TiXmlElement*, scene) (main.cpp:201)
+==14301==    by 0x10D264: main (main.cpp:319)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125A07: length (char_traits.h:320)
+==14301==    by 0x125A07: basic_string (basic_string.h:511)
+==14301==    by 0x125A07: nodeToVector(TiXmlElement*, char const*) (main.cpp:28)
+==14301==    by 0x1279E3: nodeToObject(TiXmlElement*, scene) (main.cpp:201)
+==14301==    by 0x10D264: main (main.cpp:319)
+==14301==  Address 0x620d42c is 0 bytes after a block of size 12 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x1279E3: nodeToObject(TiXmlElement*, scene) (main.cpp:201)
+==14301==    by 0x10D264: main (main.cpp:319)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x12515B: strcpy (string_fortified.h:90)
+==14301==    by 0x12515B: doubleVal(TiXmlElement*, char const*) (main.cpp:45)
+==14301==    by 0x127ACE: nodeToObject(TiXmlElement*, scene) (main.cpp:205)
+==14301==    by 0x10D264: main (main.cpp:319)
+==14301==  Address 0x620d756 is 0 bytes after a block of size 6 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x127ACE: nodeToObject(TiXmlElement*, scene) (main.cpp:205)
+==14301==    by 0x10D264: main (main.cpp:319)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125172: length (char_traits.h:320)
+==14301==    by 0x125172: basic_string (basic_string.h:511)
+==14301==    by 0x125172: doubleVal(TiXmlElement*, char const*) (main.cpp:47)
+==14301==    by 0x127ACE: nodeToObject(TiXmlElement*, scene) (main.cpp:205)
+==14301==    by 0x10D264: main (main.cpp:319)
+==14301==  Address 0x620d756 is 0 bytes after a block of size 6 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x127ACE: nodeToObject(TiXmlElement*, scene) (main.cpp:205)
+==14301==    by 0x10D264: main (main.cpp:319)
+==14301== 
+==14301== Mismatched free() / delete / delete []
+==14301==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1253D0: doubleVal(TiXmlElement*, char const*) (main.cpp:50)
+==14301==    by 0x127ACE: nodeToObject(TiXmlElement*, scene) (main.cpp:205)
+==14301==    by 0x10D264: main (main.cpp:319)
+==14301==  Address 0x620d750 is 0 bytes inside a block of size 6 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x127ACE: nodeToObject(TiXmlElement*, scene) (main.cpp:205)
+==14301==    by 0x10D264: main (main.cpp:319)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259FA: strcpy (string_fortified.h:90)
+==14301==    by 0x1259FA: nodeToVector(TiXmlElement*, char const*) (main.cpp:26)
+==14301==    by 0x127363: nodeToLight(TiXmlElement*) (main.cpp:222)
+==14301==    by 0x10D9DB: main (main.cpp:328)
+==14301==  Address 0x6214d78 is 0 bytes after a block of size 8 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x127363: nodeToLight(TiXmlElement*) (main.cpp:222)
+==14301==    by 0x10D9DB: main (main.cpp:328)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125A07: length (char_traits.h:320)
+==14301==    by 0x125A07: basic_string (basic_string.h:511)
+==14301==    by 0x125A07: nodeToVector(TiXmlElement*, char const*) (main.cpp:28)
+==14301==    by 0x127363: nodeToLight(TiXmlElement*) (main.cpp:222)
+==14301==    by 0x10D9DB: main (main.cpp:328)
+==14301==  Address 0x6214d78 is 0 bytes after a block of size 8 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x127363: nodeToLight(TiXmlElement*) (main.cpp:222)
+==14301==    by 0x10D9DB: main (main.cpp:328)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259FA: strcpy (string_fortified.h:90)
+==14301==    by 0x1259FA: nodeToVector(TiXmlElement*, char const*) (main.cpp:26)
+==14301==    by 0x12732F: nodeToLight(TiXmlElement*) (main.cpp:227)
+==14301==    by 0x10D9DB: main (main.cpp:328)
+==14301==  Address 0x62150ab is 0 bytes after a block of size 11 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x12732F: nodeToLight(TiXmlElement*) (main.cpp:227)
+==14301==    by 0x10D9DB: main (main.cpp:328)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125A07: length (char_traits.h:320)
+==14301==    by 0x125A07: basic_string (basic_string.h:511)
+==14301==    by 0x125A07: nodeToVector(TiXmlElement*, char const*) (main.cpp:28)
+==14301==    by 0x12732F: nodeToLight(TiXmlElement*) (main.cpp:227)
+==14301==    by 0x10D9DB: main (main.cpp:328)
+==14301==  Address 0x62150ab is 0 bytes after a block of size 11 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x12732F: nodeToLight(TiXmlElement*) (main.cpp:227)
+==14301==    by 0x10D9DB: main (main.cpp:328)
+==14301== 
+==14301== Invalid write of size 1
+==14301==    at 0x4C32E0D: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x12515B: strcpy (string_fortified.h:90)
+==14301==    by 0x12515B: doubleVal(TiXmlElement*, char const*) (main.cpp:45)
+==14301==    by 0x12582E: nodeToIntegrator(TiXmlElement*) (main.cpp:251)
+==14301==    by 0x10CCDD: main (main.cpp:335)
+==14301==  Address 0x62154b1 is 0 bytes after a block of size 1 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x12582E: nodeToIntegrator(TiXmlElement*) (main.cpp:251)
+==14301==    by 0x10CCDD: main (main.cpp:335)
+==14301== 
+==14301== Invalid read of size 1
+==14301==    at 0x4C32D04: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125172: length (char_traits.h:320)
+==14301==    by 0x125172: basic_string (basic_string.h:511)
+==14301==    by 0x125172: doubleVal(TiXmlElement*, char const*) (main.cpp:47)
+==14301==    by 0x12582E: nodeToIntegrator(TiXmlElement*) (main.cpp:251)
+==14301==    by 0x10CCDD: main (main.cpp:335)
+==14301==  Address 0x62154b1 is 0 bytes after a block of size 1 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x12582E: nodeToIntegrator(TiXmlElement*) (main.cpp:251)
+==14301==    by 0x10CCDD: main (main.cpp:335)
+==14301== 
+==14301== Mismatched free() / delete / delete []
+==14301==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1253D0: doubleVal(TiXmlElement*, char const*) (main.cpp:50)
+==14301==    by 0x12582E: nodeToIntegrator(TiXmlElement*) (main.cpp:251)
+==14301==    by 0x10CCDD: main (main.cpp:335)
+==14301==  Address 0x62154b0 is 0 bytes inside a block of size 1 alloc'd
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x125146: doubleVal(TiXmlElement*, char const*) (main.cpp:44)
+==14301==    by 0x12582E: nodeToIntegrator(TiXmlElement*) (main.cpp:251)
+==14301==    by 0x10CCDD: main (main.cpp:335)
+==14301== 
+==14301== 
+==14301== HEAP SUMMARY:
+==14301==     in use at exit: 213,405,633 bytes in 6,016,047 blocks
+==14301==   total heap usage: 1,954,940,603 allocs, 1,948,924,556 frees, 47,939,923,892 bytes allocated
+==14301== 
+==14301== 8 bytes in 1 blocks are definitely lost in loss record 2 of 169
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x127363: nodeToLight(TiXmlElement*) (main.cpp:222)
+==14301==    by 0x10D9DB: main (main.cpp:328)
+==14301== 
+==14301== 11 bytes in 1 blocks are definitely lost in loss record 3 of 169
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x126593: nodeToCamera(TiXmlElement*) (main.cpp:61)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301== 
+==14301== 11 bytes in 1 blocks are definitely lost in loss record 4 of 169
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x1263CB: nodeToCamera(TiXmlElement*) (main.cpp:69)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301== 
+==14301== 11 bytes in 1 blocks are definitely lost in loss record 5 of 169
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x1267E4: nodeToImage(TiXmlElement*) (main.cpp:113)
+==14301==    by 0x10CB7A: main (main.cpp:301)
+==14301== 
+==14301== 11 bytes in 1 blocks are definitely lost in loss record 6 of 169
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x12732F: nodeToLight(TiXmlElement*) (main.cpp:227)
+==14301==    by 0x10D9DB: main (main.cpp:328)
+==14301== 
+==14301== 13 bytes in 1 blocks are definitely lost in loss record 7 of 169
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x1264B3: nodeToCamera(TiXmlElement*) (main.cpp:65)
+==14301==    by 0x10C9AA: main (main.cpp:296)
+==14301== 
+==14301== 16 bytes in 1 blocks are definitely lost in loss record 8 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1257BB: nodeToIntegrator(TiXmlElement*) (main.cpp:245)
+==14301==    by 0x10CCDD: main (main.cpp:335)
+==14301== 
+==14301== 24 bytes in 1 blocks are possibly lost in loss record 10 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x12472B: allocate (new_allocator.h:111)
+==14301==    by 0x12472B: allocate (alloc_traits.h:436)
+==14301==    by 0x12472B: _M_allocate (stl_vector.h:172)
+==14301==    by 0x12472B: _M_create_storage (stl_vector.h:187)
+==14301==    by 0x12472B: _Vector_base (stl_vector.h:138)
+==14301==    by 0x12472B: vector (stl_vector.h:284)
+==14301==    by 0x12472B: vec (vector.hpp:10)
+==14301==    by 0x12472B: ray::ray(vec, vec) (ray.cpp:3)
+==14301==    by 0x11143A: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x11354C: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:477)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 24 bytes in 1 blocks are possibly lost in loss record 11 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1246E3: allocate (new_allocator.h:111)
+==14301==    by 0x1246E3: allocate (alloc_traits.h:436)
+==14301==    by 0x1246E3: _M_allocate (stl_vector.h:172)
+==14301==    by 0x1246E3: _M_create_storage (stl_vector.h:187)
+==14301==    by 0x1246E3: _Vector_base (stl_vector.h:138)
+==14301==    by 0x1246E3: vector (stl_vector.h:284)
+==14301==    by 0x1246E3: vec (vector.hpp:10)
+==14301==    by 0x1246E3: ray::ray(vec, vec) (ray.cpp:3)
+==14301==    by 0x11143A: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 24 bytes in 1 blocks are possibly lost in loss record 12 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x12472B: allocate (new_allocator.h:111)
+==14301==    by 0x12472B: allocate (alloc_traits.h:436)
+==14301==    by 0x12472B: _M_allocate (stl_vector.h:172)
+==14301==    by 0x12472B: _M_create_storage (stl_vector.h:187)
+==14301==    by 0x12472B: _Vector_base (stl_vector.h:138)
+==14301==    by 0x12472B: vector (stl_vector.h:284)
+==14301==    by 0x12472B: vec (vector.hpp:10)
+==14301==    by 0x12472B: ray::ray(vec, vec) (ray.cpp:3)
+==14301==    by 0x11143A: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 24 bytes in 1 blocks are possibly lost in loss record 13 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x124774: allocate (new_allocator.h:111)
+==14301==    by 0x124774: allocate (alloc_traits.h:436)
+==14301==    by 0x124774: _M_allocate (stl_vector.h:172)
+==14301==    by 0x124774: _M_create_storage (stl_vector.h:187)
+==14301==    by 0x124774: _Vector_base (stl_vector.h:138)
+==14301==    by 0x124774: vector (stl_vector.h:284)
+==14301==    by 0x124774: ray::ray(vec, vec) (ray.cpp:3)
+==14301==    by 0x11143A: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 24 bytes in 1 blocks are possibly lost in loss record 14 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1246E3: allocate (new_allocator.h:111)
+==14301==    by 0x1246E3: allocate (alloc_traits.h:436)
+==14301==    by 0x1246E3: _M_allocate (stl_vector.h:172)
+==14301==    by 0x1246E3: _M_create_storage (stl_vector.h:187)
+==14301==    by 0x1246E3: _Vector_base (stl_vector.h:138)
+==14301==    by 0x1246E3: vector (stl_vector.h:284)
+==14301==    by 0x1246E3: vec (vector.hpp:10)
+==14301==    by 0x1246E3: ray::ray(vec, vec) (ray.cpp:3)
+==14301==    by 0x11143A: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x11354C: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:477)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 24 bytes in 1 blocks are possibly lost in loss record 15 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x12472B: allocate (new_allocator.h:111)
+==14301==    by 0x12472B: allocate (alloc_traits.h:436)
+==14301==    by 0x12472B: _M_allocate (stl_vector.h:172)
+==14301==    by 0x12472B: _M_create_storage (stl_vector.h:187)
+==14301==    by 0x12472B: _Vector_base (stl_vector.h:138)
+==14301==    by 0x12472B: vector (stl_vector.h:284)
+==14301==    by 0x12472B: vec (vector.hpp:10)
+==14301==    by 0x12472B: ray::ray(vec, vec) (ray.cpp:3)
+==14301==    by 0x11143A: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x11354C: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:477)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 24 bytes in 1 blocks are possibly lost in loss record 16 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x124774: allocate (new_allocator.h:111)
+==14301==    by 0x124774: allocate (alloc_traits.h:436)
+==14301==    by 0x124774: _M_allocate (stl_vector.h:172)
+==14301==    by 0x124774: _M_create_storage (stl_vector.h:187)
+==14301==    by 0x124774: _Vector_base (stl_vector.h:138)
+==14301==    by 0x124774: vector (stl_vector.h:284)
+==14301==    by 0x124774: ray::ray(vec, vec) (ray.cpp:3)
+==14301==    by 0x11143A: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x11354C: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:477)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 72 bytes in 1 blocks are possibly lost in loss record 24 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 72 bytes in 1 blocks are possibly lost in loss record 25 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x11354C: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:477)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 99 bytes in 9 blocks are definitely lost in loss record 26 of 169
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x1279E3: nodeToObject(TiXmlElement*, scene) (main.cpp:201)
+==14301==    by 0x10D264: main (main.cpp:319)
+==14301== 
+==14301== 104 (56 direct, 48 indirect) bytes in 1 blocks are definitely lost in loss record 27 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1271F1: nodeToLight(TiXmlElement*) (main.cpp:218)
+==14301==    by 0x10D9DB: main (main.cpp:328)
+==14301== 
+==14301== 121 bytes in 11 blocks are definitely lost in loss record 28 of 169
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x126E36: nodeToMaterial(TiXmlElement*) (main.cpp:137)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301== 
+==14301== 125 bytes in 11 blocks are definitely lost in loss record 29 of 169
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x126DF6: nodeToMaterial(TiXmlElement*) (main.cpp:133)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301== 
+==14301== 139 bytes in 11 blocks are definitely lost in loss record 30 of 169
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x126E76: nodeToMaterial(TiXmlElement*) (main.cpp:141)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301== 
+==14301== 139 bytes in 11 blocks are definitely lost in loss record 31 of 169
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x1259E1: nodeToVector(TiXmlElement*, char const*) (main.cpp:25)
+==14301==    by 0x126EB6: nodeToMaterial(TiXmlElement*) (main.cpp:145)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301== 
+==14301== 288 (144 direct, 144 indirect) bytes in 2 blocks are definitely lost in loss record 40 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 912 bytes in 3 blocks are possibly lost in loss record 41 of 169
+==14301==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x40134A6: allocate_dtv (dl-tls.c:286)
+==14301==    by 0x40134A6: _dl_allocate_tls (dl-tls.c:530)
+==14301==    by 0x5FA7227: allocate_stack (allocatestack.c:627)
+==14301==    by 0x5FA7227: pthread_create@@GLIBC_2.2.5 (pthread_create.c:644)
+==14301==    by 0x5579F31: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5570EC9: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 1,008 (504 direct, 504 indirect) bytes in 7 blocks are definitely lost in loss record 42 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 2,745 (1,672 direct, 1,073 indirect) bytes in 11 blocks are definitely lost in loss record 44 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x12691F: nodeToMaterial(TiXmlElement*) (main.cpp:127)
+==14301==    by 0x10CBE8: main (main.cpp:310)
+==14301== 
+==14301== 6,144 bytes in 1 blocks are possibly lost in loss record 45 of 169
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x10FEC4: scene::init_img_arr() (scene.cpp:111)
+==14301==    by 0x10CAA3: main (main.cpp:348)
+==14301== 
+==14301== 18,504 bytes in 771 blocks are possibly lost in loss record 46 of 169
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x10FEEC: scene::init_img_arr() (scene.cpp:113)
+==14301==    by 0x10CAA3: main (main.cpp:348)
+==14301== 
+==14301== 127,440 (63,720 direct, 63,720 indirect) bytes in 885 blocks are definitely lost in loss record 65 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 147,744 (73,872 direct, 73,872 indirect) bytes in 1,026 blocks are definitely lost in loss record 66 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 409,824 (204,912 direct, 204,912 indirect) bytes in 2,846 blocks are definitely lost in loss record 82 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 495,792 (247,896 direct, 247,896 indirect) bytes in 3,443 blocks are definitely lost in loss record 86 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 508,320 (254,160 direct, 254,160 indirect) bytes in 3,530 blocks are definitely lost in loss record 90 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 657,936 (328,968 direct, 328,968 indirect) bytes in 4,569 blocks are definitely lost in loss record 97 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 1,008,288 (504,144 direct, 504,144 indirect) bytes in 7,002 blocks are definitely lost in loss record 113 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x11354C: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:477)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 1,508,112 (754,056 direct, 754,056 indirect) bytes in 10,473 blocks are definitely lost in loss record 120 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 1,550,160 (775,080 direct, 775,080 indirect) bytes in 10,765 blocks are definitely lost in loss record 124 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 1,721,088 (860,544 direct, 860,544 indirect) bytes in 11,952 blocks are definitely lost in loss record 128 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 1,804,176 (902,088 direct, 902,088 indirect) bytes in 12,529 blocks are definitely lost in loss record 129 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 2,925,360 (1,462,680 direct, 1,462,680 indirect) bytes in 20,315 blocks are definitely lost in loss record 133 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 3,020,544 (1,510,272 direct, 1,510,272 indirect) bytes in 20,976 blocks are definitely lost in loss record 140 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x11354C: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:477)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 3,198,960 (1,599,480 direct, 1,599,480 indirect) bytes in 22,215 blocks are definitely lost in loss record 150 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 3,610,224 (1,805,112 direct, 1,805,112 indirect) bytes in 25,071 blocks are definitely lost in loss record 151 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x11354C: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:477)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 5,216,400 (2,608,200 direct, 2,608,200 indirect) bytes in 36,225 blocks are definitely lost in loss record 152 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 5,851,152 (2,925,576 direct, 2,925,576 indirect) bytes in 40,633 blocks are definitely lost in loss record 153 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x11354C: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:477)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 5,851,296 (2,925,648 direct, 2,925,648 indirect) bytes in 40,634 blocks are definitely lost in loss record 154 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x11354C: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:477)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 5,851,296 (2,925,648 direct, 2,925,648 indirect) bytes in 40,634 blocks are definitely lost in loss record 155 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x11354C: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:477)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 5,903,712 (2,951,856 direct, 2,951,856 indirect) bytes in 40,998 blocks are definitely lost in loss record 156 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 6,394,896 (3,197,448 direct, 3,197,448 indirect) bytes in 44,409 blocks are definitely lost in loss record 158 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x11354C: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:477)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 6,396,624 (3,198,312 direct, 3,198,312 indirect) bytes in 44,421 blocks are definitely lost in loss record 159 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x11354C: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:477)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x5570ECE: GOMP_parallel (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x110AC0: scene::render(char*, int) (scene.cpp:594)
+==14301==    by 0x10CADC: main (main.cpp:351)
+==14301== 
+==14301== 9,072,720 (4,536,360 direct, 4,536,360 indirect) bytes in 63,005 blocks are definitely lost in loss record 160 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 9,563,760 (4,781,880 direct, 4,781,880 indirect) bytes in 66,415 blocks are definitely lost in loss record 161 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x114BFC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:449)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 11,918,592 (5,959,296 direct, 5,959,296 indirect) bytes in 82,768 blocks are definitely lost in loss record 162 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x11354C: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:477)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 18,099,192 (9,049,608 direct, 9,049,584 indirect) bytes in 125,689 blocks are definitely lost in loss record 163 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x11354C: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:477)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 18,103,824 (9,051,912 direct, 9,051,912 indirect) bytes in 125,721 blocks are definitely lost in loss record 164 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x11354C: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:477)
+==14301==    by 0x112B79: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:557)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 19,101,888 (9,550,944 direct, 9,550,944 indirect) bytes in 132,652 blocks are definitely lost in loss record 166 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x11354C: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:477)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 19,101,888 (9,550,944 direct, 9,550,944 indirect) bytes in 132,652 blocks are definitely lost in loss record 167 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x11354C: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:477)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 19,101,888 (9,550,944 direct, 9,550,944 indirect) bytes in 132,652 blocks are definitely lost in loss record 168 of 169
+==14301==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x111429: scene::generate_refract(ray, vec, vec, double) (scene.cpp:339)
+==14301==    by 0x11354C: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:477)
+==14301==    by 0x1136FB: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:546)
+==14301==    by 0x1137EC: scene::radiance(ray, int, int, unsigned short*) (scene.cpp:548)
+==14301==    by 0x116CC5: scene::render(char*, int) [clone ._omp_fn.0] (scene.cpp:628)
+==14301==    by 0x557995D: ??? (in /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0)
+==14301==    by 0x5FA66DA: start_thread (pthread_create.c:463)
+==14301==    by 0x5ACB88E: clone (clone.S:95)
+==14301== 
+==14301== 25,149,320 (8,192 direct, 25,141,128 indirect) bytes in 1 blocks are definitely lost in loss record 169 of 169
+==14301==    at 0x4C3089F: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14301==    by 0x10FE68: scene::init_img_arr() (scene.cpp:108)
+==14301==    by 0x10CAA3: main (main.cpp:348)
+==14301== 
+==14301== LEAK SUMMARY:
+==14301==    definitely lost: 94,122,832 bytes in 1,307,187 blocks
+==14301==    indirectly lost: 119,254,433 bytes in 4,708,070 blocks
+==14301==      possibly lost: 25,872 bytes in 784 blocks
+==14301==    still reachable: 2,496 bytes in 6 blocks
+==14301==         suppressed: 0 bytes in 0 blocks
+==14301== Reachable blocks (those to which a pointer was found) are not shown.
+==14301== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==14301== 
+==14301== For counts of detected and suppressed errors, rerun with: -v
+==14301== ERROR SUMMARY: 291 errors from 111 contexts (suppressed: 0 from 0)

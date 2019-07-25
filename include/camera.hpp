@@ -15,6 +15,8 @@ class camera
 	double near;
 
 public:
+	camera(){}
+	~camera(){}
 	void setLookat(vec look);
 	void setThird();
 	void setEye(vec eye0);
